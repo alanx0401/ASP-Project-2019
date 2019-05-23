@@ -1,0 +1,590 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A19B1E52-65E9-4187-8C44-167CCA7F6127}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ITP213</RootNamespace>
+    <AssemblyName>ITP213</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.0.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.0.0\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.0.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.0.0\lib\net45\Microsoft.AI.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.0.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.0.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.DataVisualization" />
+    <Reference Include="System.Web.DataVisualization.Design" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AddRemarks.aspx" />
+    <Content Include="App_Data\ITP213.mdf" />
+    <Content Include="App_Data\ITP213_log.ldf">
+      <DependentUpon>ITP213.mdf</DependentUpon>
+    </Content>
+    <Content Include="BlogDetails.aspx" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\imageGallery.css" />
+    <Content Include="Content\jquery-ui-timepicker-addon.min.css" />
+    <Content Include="Content\mdb.min.css" />
+    <Content Include="Content\mdb1.min.css" />
+    <Content Include="Content\style.css" />
+    <Content Include="CreateAnnouncement.aspx" />
+    <Content Include="CreateBlog.aspx" />
+    <Content Include="CreateComplaints.aspx" />
+    <Content Include="CreateFeedback.aspx" />
+    <Content Include="CreateReflection.aspx" />
+    <Content Include="CreateRemarks.aspx" />
+    <Content Include="CreateTest.aspx" />
+    <Content Include="Default.aspx" />
+    <Content Include="DefaultErrorPage.aspx" />
+    <Content Include="ImageGallery.aspx" />
+    <Content Include="Images\trip_background.jpg" />
+    <Content Include="InformationSummary.aspx" />
+    <Content Include="InternalServerErrorPage.aspx" />
+    <Content Include="LecturerWithdrawalRequest.aspx" />
+    <Content Include="login.aspx" />
+    <Content Include="Logout.aspx" />
+    <Content Include="ManageImageGallery.aspx" />
+    <Content Include="OverseasInternMain.aspx" />
+    <Content Include="Format.aspx" />
+    <Content Include="Images\favicon.png" />
+    <Content Include="packages.config" />
+    <Content Include="ApplicationInsights.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PageNotFoundErrorPage.aspx" />
+    <Content Include="ReportInjury.aspx" />
+    <Content Include="Content\jquery-steps.css" />
+    <Content Include="Scripts\jquery-steps.js" />
+    <Content Include="Scripts\jquery-ui-timepicker-addon-i18n.js" />
+    <Content Include="Scripts\jquery-ui-timepicker-addon.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Service References\SMSSvrRef\ITP213.SMSSvrRef.SMSData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Service References\SMSSvrRef\Sms.disco" />
+    <None Include="Service References\SMSSvrRef\configuration91.svcinfo" />
+    <None Include="Service References\SMSSvrRef\configuration.svcinfo" />
+    <None Include="Service References\SMSSvrRef\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="Site.master" />
+    <None Include="Service References\SMSSvrRef\Sms.wsdl" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\ai.0.22.9-build00167.js" />
+    <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery.easing.min.js" />
+    <Content Include="Scripts\jquery.min.js" />
+    <Content Include="Scripts\script.min.js" />
+    <Content Include="StudentParticulars.aspx" />
+    <Content Include="StudentWithdrawalRequest.aspx" />
+    <Content Include="StudentWithdrawalResult.aspx" />
+    <Content Include="SubmitFeedback.aspx" />
+    <Content Include="TestDetails.aspx" />
+    <Content Include="TripAllocation.aspx" />
+    <Content Include="UnauthorizedErrorPage.aspx" />
+    <Content Include="UploadedImages.aspx" />
+    <Content Include="UploadReport.aspx" />
+    <Content Include="ViewAllocatedTrip.aspx" />
+    <Content Include="ViewAnnouncement.aspx" />
+    <Content Include="ViewBlog.aspx" />
+    <Content Include="ViewComplain.aspx" />
+    <Content Include="ViewFeedback.aspx" />
+    <Content Include="ViewIndividualTrip.aspx" />
+    <Content Include="ViewInjuryReport.aspx" />
+    <Content Include="ViewReflections.aspx" />
+    <Content Include="ViewReports.aspx" />
+    <Content Include="ViewStatistics.aspx" />
+    <Content Include="ViewTestAnswers.aspx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddRemarks.aspx.cs">
+      <DependentUpon>AddRemarks.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddRemarks.aspx.designer.cs">
+      <DependentUpon>AddRemarks.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BlogDetails.aspx.cs">
+      <DependentUpon>BlogDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BlogDetails.aspx.designer.cs">
+      <DependentUpon>BlogDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CreateAnnouncement.aspx.cs">
+      <DependentUpon>CreateAnnouncement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CreateAnnouncement.aspx.designer.cs">
+      <DependentUpon>CreateAnnouncement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CreateBlog.aspx.cs">
+      <DependentUpon>CreateBlog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CreateBlog.aspx.designer.cs">
+      <DependentUpon>CreateBlog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CreateComplaints.aspx.cs">
+      <DependentUpon>CreateComplaints.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CreateComplaints.aspx.designer.cs">
+      <DependentUpon>CreateComplaints.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CreateFeedback.aspx.cs">
+      <DependentUpon>CreateFeedback.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CreateFeedback.aspx.designer.cs">
+      <DependentUpon>CreateFeedback.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CreateReflection.aspx.cs">
+      <DependentUpon>CreateReflection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CreateReflection.aspx.designer.cs">
+      <DependentUpon>CreateReflection.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CreateRemarks.aspx.cs">
+      <DependentUpon>CreateRemarks.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CreateRemarks.aspx.designer.cs">
+      <DependentUpon>CreateRemarks.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CreateTest.aspx.cs">
+      <DependentUpon>CreateTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CreateTest.aspx.designer.cs">
+      <DependentUpon>CreateTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\AcademicResult.cs" />
+    <Compile Include="DAL\AcademicResultDAO.cs" />
+    <Compile Include="DAL\Announcement.cs" />
+    <Compile Include="DAL\AnnouncementDAO.cs" />
+    <Compile Include="DAL\Blog.cs" />
+    <Compile Include="DAL\BlogDAO.cs" />
+    <Compile Include="DAL\CCARecord.cs" />
+    <Compile Include="DAL\CCARecordDAO.cs" />
+    <Compile Include="DAL\Complain.cs" />
+    <Compile Include="DAL\ComplainDAO.cs" />
+    <Compile Include="DAL\Feedback.cs" />
+    <Compile Include="DAL\FeedbackDAO.cs" />
+    <Compile Include="DAL\GeneralRecord.cs" />
+    <Compile Include="DAL\GeneralRecordDAO.cs" />
+    <Compile Include="DAL\ImageDAO.cs" />
+    <Compile Include="DAL\Internship.cs" />
+    <Compile Include="DAL\InternshipDAO.cs" />
+    <Compile Include="DAL\MedicalRecord.cs" />
+    <Compile Include="DAL\MedicalRecordDAO.cs" />
+    <Compile Include="DAL\OverallReport.cs" />
+    <Compile Include="DAL\OverallReportDAO.cs" />
+    <Compile Include="DAL\Question.cs" />
+    <Compile Include="DAL\QuestionDAO.cs" />
+    <Compile Include="DAL\Response.cs" />
+    <Compile Include="DAL\ResponseDAO.cs" />
+    <Compile Include="DAL\Login.cs" />
+    <Compile Include="DAL\LoginDAO.cs" />
+    <Compile Include="DAL\ReportInjury.cs" />
+    <Compile Include="DAL\ReportInjuryDAO.cs" />
+    <Compile Include="DAL\Test.cs" />
+    <Compile Include="DAL\TestDAO.cs" />
+    <Compile Include="DAL\TripAllocation.cs" />
+    <Compile Include="DAL\TripAllocationDAO.cs" />
+    <Compile Include="DAL\UploadedImage.cs" />
+    <Compile Include="DAL\WithdrawalRequest.cs" />
+    <Compile Include="DAL\WithdrawalRequestDAO.cs" />
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DefaultErrorPage.aspx.cs">
+      <DependentUpon>DefaultErrorPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DefaultErrorPage.aspx.designer.cs">
+      <DependentUpon>DefaultErrorPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ImageGallery.aspx.cs">
+      <DependentUpon>ImageGallery.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ImageGallery.aspx.designer.cs">
+      <DependentUpon>ImageGallery.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="InformationSummary.aspx.cs">
+      <DependentUpon>InformationSummary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="InformationSummary.aspx.designer.cs">
+      <DependentUpon>InformationSummary.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="InternalServerErrorPage.aspx.cs">
+      <DependentUpon>InternalServerErrorPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="InternalServerErrorPage.aspx.designer.cs">
+      <DependentUpon>InternalServerErrorPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LecturerWithdrawalRequest.aspx.cs">
+      <DependentUpon>LecturerWithdrawalRequest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LecturerWithdrawalRequest.aspx.designer.cs">
+      <DependentUpon>LecturerWithdrawalRequest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="login.aspx.cs">
+      <DependentUpon>login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="login.aspx.designer.cs">
+      <DependentUpon>login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Logout.aspx.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Logout.aspx.designer.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ManageImageGallery.aspx.cs">
+      <DependentUpon>ManageImageGallery.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ManageImageGallery.aspx.designer.cs">
+      <DependentUpon>ManageImageGallery.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OverseasInternMain.aspx.cs">
+      <DependentUpon>OverseasInternMain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OverseasInternMain.aspx.designer.cs">
+      <DependentUpon>OverseasInternMain.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Format.aspx.cs">
+      <DependentUpon>Format.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Format.aspx.designer.cs">
+      <DependentUpon>Format.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PageNotFoundErrorPage.aspx.cs">
+      <DependentUpon>PageNotFoundErrorPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PageNotFoundErrorPage.aspx.designer.cs">
+      <DependentUpon>PageNotFoundErrorPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportInjury.aspx.cs">
+      <DependentUpon>ReportInjury.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ReportInjury.aspx.designer.cs">
+      <DependentUpon>ReportInjury.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\SMSSvrRef\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Site.master.cs">
+      <DependentUpon>Site.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Site.master.designer.cs">
+      <DependentUpon>Site.master</DependentUpon>
+    </Compile>
+    <Compile Include="StudentParticulars.aspx.cs">
+      <DependentUpon>StudentParticulars.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StudentParticulars.aspx.designer.cs">
+      <DependentUpon>StudentParticulars.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StudentWithdrawalRequest.aspx.cs">
+      <DependentUpon>StudentWithdrawalRequest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StudentWithdrawalRequest.aspx.designer.cs">
+      <DependentUpon>StudentWithdrawalRequest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StudentWithdrawalResult.aspx.cs">
+      <DependentUpon>StudentWithdrawalResult.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StudentWithdrawalResult.aspx.designer.cs">
+      <DependentUpon>StudentWithdrawalResult.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SubmitFeedback.aspx.cs">
+      <DependentUpon>SubmitFeedback.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SubmitFeedback.aspx.designer.cs">
+      <DependentUpon>SubmitFeedback.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TestDetails.aspx.cs">
+      <DependentUpon>TestDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TestDetails.aspx.designer.cs">
+      <DependentUpon>TestDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TripAllocation.aspx.cs">
+      <DependentUpon>TripAllocation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TripAllocation.aspx.designer.cs">
+      <DependentUpon>TripAllocation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UnauthorizedErrorPage.aspx.cs">
+      <DependentUpon>UnauthorizedErrorPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UnauthorizedErrorPage.aspx.designer.cs">
+      <DependentUpon>UnauthorizedErrorPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UploadedImages.aspx.cs">
+      <DependentUpon>UploadedImages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UploadedImages.aspx.designer.cs">
+      <DependentUpon>UploadedImages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UploadReport.aspx.cs">
+      <DependentUpon>UploadReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UploadReport.aspx.designer.cs">
+      <DependentUpon>UploadReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewAllocatedTrip.aspx.cs">
+      <DependentUpon>ViewAllocatedTrip.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewAllocatedTrip.aspx.designer.cs">
+      <DependentUpon>ViewAllocatedTrip.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewAnnouncement.aspx.cs">
+      <DependentUpon>ViewAnnouncement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewAnnouncement.aspx.designer.cs">
+      <DependentUpon>ViewAnnouncement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewBlog.aspx.cs">
+      <DependentUpon>ViewBlog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewBlog.aspx.designer.cs">
+      <DependentUpon>ViewBlog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewComplain.aspx.cs">
+      <DependentUpon>ViewComplain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewComplain.aspx.designer.cs">
+      <DependentUpon>ViewComplain.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewFeedback.aspx.cs">
+      <DependentUpon>ViewFeedback.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewFeedback.aspx.designer.cs">
+      <DependentUpon>ViewFeedback.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewIndividualTrip.aspx.cs">
+      <DependentUpon>ViewIndividualTrip.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewIndividualTrip.aspx.designer.cs">
+      <DependentUpon>ViewIndividualTrip.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewInjuryReport.aspx.cs">
+      <DependentUpon>ViewInjuryReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewInjuryReport.aspx.designer.cs">
+      <DependentUpon>ViewInjuryReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewReflections.aspx.cs">
+      <DependentUpon>ViewReflections.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewReflections.aspx.designer.cs">
+      <DependentUpon>ViewReflections.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewReports.aspx.cs">
+      <DependentUpon>ViewReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewReports.aspx.designer.cs">
+      <DependentUpon>ViewReports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewStatistics.aspx.cs">
+      <DependentUpon>ViewStatistics.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewStatistics.aspx.designer.cs">
+      <DependentUpon>ViewStatistics.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewTestAnswers.aspx.cs">
+      <DependentUpon>ViewTestAnswers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewTestAnswers.aspx.designer.cs">
+      <DependentUpon>ViewTestAnswers.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\SMSSvrRef\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\" />
+    <Folder Include="Images\InjuryPics\" />
+    <Folder Include="Report\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>16452</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:16452/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

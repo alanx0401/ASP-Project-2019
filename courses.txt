@@ -1,0 +1,78 @@
+COURSES:
+=====================================
+School of Information Technology(SIT)
+=====================================
+C35:Business & Financial Technology
+C78:Business Informatics
+C43:Business Intelligence & Analytics
+C36:Common ICT Programme
+C54:Cybersecurity & Digital Forensics
+C58:Financial Informatics
+C80:Infocomm & Security
+C85:Information Technology
+
+==================================
+School of Business Management(SBM)
+==================================
+C98:Accountancy & Finance
+C96:Banking & Finance
+C94:Business Management
+C34:Common Business Programme
+C46:Food & Beverage Business
+C67:Hospitality & Tourism Management
+C99:Marketing
+C93:Mass Media Management
+C81:Sport & Wellness Management
+
+=======================================
+School of Chemical & Life Sciences(SCL)
+=======================================
+C49:Biologics & Process Technology
+C55:Chemical & Green Techology
+C73:Chemical & Pharmaceutical Technology
+C69:Food Science & Nutrition
+C45:Medicinal Chemistry
+C74:Molecular Biotechnology
+C65:Pharmaceutical Science
+
+======================
+School of Design (SID)
+======================
+C38:Architecture
+C83:Industrial Design
+C64:Spatial Design
+C63:Visual Communication
+
+==========================
+School of Engineering(SEG)
+==========================
+C39:Aerospace/Electrical/Electronics Programme
+C40:Aerospace/Mechatronics Programme
+C51:Aeronautical & Aerospace Technology
+C52:Aerospace System & Management
+C71:Biomedical Engineering
+C42:Common Engineering Programme
+C62:Digital & Precision Engineering
+C48:Electrical Engineering with Eco-Design
+C89:Electronic Systems
+C41:Engineering with Business
+C75:Multimedia & Infocomm Technology
+C50:Nanotechnology & Materials Science
+C87:Robotics & Mechatronics
+
+================================================
+School of Health Science & Social Sciences(SHSS)
+================================================
+C97:Nursing
+C72:Oral Healthy Theraphy
+C47:Social Sciences(Social Work)
+
+===========================================
+School of Interactive & Digital Media(SIDM)
+===========================================
+C61:Animation
+C60:Digital Game Art & Design
+C57:Digital Visual Effects
+C70:Game Development Technology
+C59:Interaction Design
+C66:Motion Graphics & Broadcast Design
