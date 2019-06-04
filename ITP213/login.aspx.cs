@@ -18,6 +18,8 @@ namespace ITP213
         string hash = @"foxle@rn";
         protected void Page_Load(object sender, EventArgs e)
         {
+            tbEmail.Attributes.Add("autocomplete", "off");
+            tbPassword.Attributes.Add("autocomplete", "off");
             if (!IsPostBack) // First Load of the page
             {
                 if (Request.Browser.Cookies)

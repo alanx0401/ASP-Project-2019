@@ -41,15 +41,17 @@
                             <div class="card-body">
                                 <form id="form1" runat="server">
                                     <div class="form-group">
-                                        <asp:TextBox ID="tbEmail" runat="server" placeholder="Email" TextMode="Email" oninput="checkPassword();"></asp:TextBox>
+                                        <asp:TextBox ID="tbEmail" runat="server" placeholder="Email" TextMode="Email" oninput="checkPassword();" AutoCompleteType="Disabled"></asp:TextBox>
                                     </div>
                                     <div class="form-group">
-                                        <asp:TextBox ID="tbPassword" runat="server" placeholder="Password" TextMode="Password" oninput="checkPassword();"></asp:TextBox>
+                                        <asp:TextBox ID="tbPassword" runat="server" placeholder="Password" TextMode="Password" oninput="checkPassword();" AutoCompleteType="Disabled"></asp:TextBox>
                                     </div>
                                     <div class="form-group">
-                                        <asp:CheckBox ID="cbRememberMe" lass="form-check-input" runat="server" text="Remember Me" Checked="True" />
+                                        <!--<asp:CheckBox ID="cbRememberMe" lass="form-check-input" runat="server" text="Remember Me" Checked="True" />-->
+                                        <asp:Label ID="lblForgetAccount" runat="server"><a href="#">Forget Account?</a></asp:Label>
                                     </div>
                                     <p>
+                                        <asp:Label ID="lblCreateAccount" runat="server"><a href="register.aspx">Create Account</a></asp:Label>
                                         <asp:Button ID="btnLogin" class="btn btn-success float-right" runat="server" Text="Login" OnClick="btnLogin_Click" />
                                     </p>
                                     <p>

@@ -24,6 +24,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -135,6 +136,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="PageNotFoundErrorPage.aspx" />
+    <Content Include="register.aspx" />
     <Content Include="ReportInjury.aspx" />
     <Content Include="Content\jquery-steps.css" />
     <Content Include="Scripts\jquery-steps.js" />
@@ -144,6 +146,7 @@
     <Content Include="Service References\SMSSvrRef\ITP213.SMSSvrRef.SMSData.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <Content Include="WebForm1.aspx" />
     <None Include="Service References\SMSSvrRef\Sms.disco" />
     <None Include="Service References\SMSSvrRef\configuration91.svcinfo" />
     <None Include="Service References\SMSSvrRef\configuration.svcinfo" />
@@ -377,6 +380,13 @@
       <DependentUpon>PageNotFoundErrorPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="register.aspx.cs">
+      <DependentUpon>register.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="register.aspx.designer.cs">
+      <DependentUpon>register.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ReportInjury.aspx.cs">
       <DependentUpon>ReportInjury.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -535,6 +545,13 @@
     </Compile>
     <Compile Include="ViewTestAnswers.aspx.designer.cs">
       <DependentUpon>ViewTestAnswers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
