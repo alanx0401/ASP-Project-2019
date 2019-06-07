@@ -105,6 +105,7 @@
       <DependentUpon>ITP213.mdf</DependentUpon>
     </Content>
     <Content Include="BlogDetails.aspx" />
+    <Content Include="changePassword.aspx" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\imageGallery.css" />
     <Content Include="Content\jquery-ui-timepicker-addon.min.css" />
@@ -209,6 +210,13 @@
     </Compile>
     <Compile Include="BlogDetails.aspx.designer.cs">
       <DependentUpon>BlogDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="changePassword.aspx.cs">
+      <DependentUpon>changePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="changePassword.aspx.designer.cs">
+      <DependentUpon>changePassword.aspx</DependentUpon>
     </Compile>
     <Compile Include="CreateAnnouncement.aspx.cs">
       <DependentUpon>CreateAnnouncement.aspx</DependentUpon>

@@ -17,6 +17,17 @@
 
     <!--Custom styles for this template-->
     <link rel="stylesheet" href="Content/style.css" />
+
+    <!--Date time picker-->
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="Scripts/jquery-ui.js"></script>
+    <script src='Scripts/jquery-ui-timepicker-addon.js'></script>
+    <script src='Scripts/jquery-ui-timepicker-addon-i18n.js'></script>
+   
+    <link rel='stylesheet' href='Content/jquery-ui-timepicker-addon.min.css'/>
+    <!--Tab-->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+
 </head>
 <body>
     <style>
@@ -49,36 +60,46 @@
                                             <asp:TextBox ID="tbEmail" runat="server" placeholder="Email" TextMode="Email" oninput="checkPassword();"></asp:TextBox>
                                         </div>
                                         <div class="form-group">
-                                            <asp:TextBox ID="tbPassword" runat="server" placeholder="Password" TextMode="Password" oninput="checkPassword();"></asp:TextBox>
+                                            <!--TextMode="Password"-->
+                                            <asp:TextBox ID="tbPassword" runat="server" placeholder="Password"  oninput="checkPassword();"></asp:TextBox>
                                             <asp:Label ID="passstrength" runat="server"></asp:Label>
                                         </div>
                                         <div class="form-group">
-                                            <asp:TextBox ID="tbConfirmPassword" runat="server" placeholder="Confirm Password" TextMode="Password"></asp:TextBox>
+                                            <asp:TextBox ID="tbConfirmPassword" runat="server" placeholder="Confirm Password"></asp:TextBox>
                                             <asp:Label ID="matchpassword" runat="server"></asp:Label>
                                         </div>
-
                                     </asp:Panel>
                                     <asp:Panel ID="PanelPart2" runat="server" Visible="false">
                                         <div class="form-group">
-                                            <asp:TextBox ID="tbContactNumber" runat="server" placeholder="Contact Number"></asp:TextBox>
+                                            <asp:TextBox ID="tbDateOfBirth" runat="server" class="form-control" TextMode="DateTime" ClientIDMode="Static" placeholder="Date of birth"></asp:TextBox>
+                                        </div>
+                                        <div class="form-group">
+                                             <asp:TextBox ID="tbContactNumber" runat="server" placeholder="Contact Number"></asp:TextBox>
                                         </div>
                                         <div class="form-group">
                                             <asp:CheckBox ID="cbReadAgreement" lass="form-check-input" runat="server" Text="I have read the agreement." />
                                         </div>
                                     </asp:Panel>
+                                    <asp:Panel ID="PanelPart3" runat="server" Visible="false">
+                                        <div class="form-group">
+                                            <asp:TextBox ID="tbVerifyPassword" runat="server" placeholder="Enter code"></asp:TextBox>
+                                        </div>
+                                    </asp:Panel>
 
-                                    <p>  
+                                    <p>
                                         <asp:Label ID="lblLogin" runat="server"><a href="/login.aspx">Sign in instead.</a></asp:Label>
-                                        <asp:Button ID="btnBack" class="btn btn-default float-left" runat="server" Text="Back" visible="false" OnClick="btnBack_Click"/>
-                                        <asp:Button ID="btnNext" class="btn btn-primary float-right" runat="server" Text="Next" OnClick="btnNext_Click" />
-                                        <asp:Button ID="btnRegister" class="btn btn-success float-right" runat="server" Text="Register" visible="false"/>
+                                        <asp:Button ID="btnBack" class="btn btn-default float-left" runat="server" Text="Back" Visible="false" OnClick="btnBack_Click" />
+                                        <asp:Button ID="btnNext" class="btn btn-primary float-right" runat="server" Text="Next" OnClick="btnNext_Click" CausesValidation="False" />
+                                        <asp:Button ID="btnNext1" class="btn btn-primary float-right" runat="server" Text="Next" OnClick="btnNext1_Click" visible="false" CausesValidation="False"/>
+                                        <asp:Button ID="btnBack1" class="btn btn-default float-left" runat="server" Text="Back" Visible="false" OnClick="btnBack1_Click" />
+                                        <asp:Button ID="btnRegister" class="btn btn-success float-right" runat="server" Text="Register" Visible="false" OnClick="btnRegister_Click"/>
                                     </p>
                                     <p>
                                         <asp:Label ID="lblError" runat="server"></asp:Label>
                                     </p>
                                 </form>
                                 <style>
-                                    #tbEmail, #tbPassword, #tbName, #tbContactNumber, #tbConfirmPassword {
+                                    #tbEmail, #tbPassword, #tbName, #tbContactNumber, #tbConfirmPassword, #tbDateOfBirth {
                                         width: 100%;
                                         padding: 10px;
                                         box-sizing: border-box;
@@ -91,7 +112,7 @@
                                         border-bottom: 2px solid #bebed2
                                     }
 
-                                        #tbEmail:focus, #tbPassword:focus, #tbName:focus, #tbContactNumber:focus, tbConfirmPassword:focus {
+                                        #tbEmail:focus, #tbPassword:focus, #tbName:focus, #tbContactNumber:focus, tbConfirmPassword:focus, tbDateOfBirth:focus {
                                             border-bottom: 2px solid #78788c
                                         }
                                 </style>
@@ -114,7 +135,7 @@
         </style>
     </div>
     <!--Bootstrap core Javascript-->
-    <script src="Scripts/jquery.min.js"></script>
+    <!--<script src="Scripts/jquery.min.js"></script>--> <!--Comment this bc it doesn't work well with datetime picker-->
     <script src="Scripts/bootstrap.bundle.min.js"></script>
     <!--//Bootstrap core Javascript-->
     <!--Core plugin Javascript-->
@@ -125,11 +146,18 @@
     <!--//Custom scripts for all pages-->
 
     <script>
+        $(document).ready(function () {
+            $(function () {
+                $("#tbDateOfBirth").datepicker({
+                    maxDate: 0
+                });
+            });
+        });
         function checkPassword() {
             var password = document.getElementById("tbPassword")
             var email = document.getElementById("tbEmail")
             var confirmPassword = document.getElementById("tbConfirmPassword")
-            
+
             if (password.value == "") {
                 password.setCustomValidity("Field cannot be empty!");
             } else {
@@ -142,11 +170,11 @@
                 email.setCustomValidity('');
             }
 
-           /*if (confirmPassword.value == "") {
-                confirmPassword.setCustomValidity("Field cannot be empty!");
-            } else {
-                confirmPassword.setCustomValidity('');
-            }*/
+            /*if (confirmPassword.value == "") {
+                 confirmPassword.setCustomValidity("Field cannot be empty!");
+             } else {
+                 confirmPassword.setCustomValidity('');
+             }*/
             /*var con = (document.getElementById("tbPassword").value != document.getElementById("tbConfirmPassword").value)
             if (con == true) {
                 confirmPassword.setCustomValidity("Passwords do not match!");

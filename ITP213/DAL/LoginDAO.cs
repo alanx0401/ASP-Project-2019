@@ -18,7 +18,7 @@ namespace ITP213.DAL
 
             // Create adapter 
             // Write SQL Statement to retrieve all columns from account by email & password using query parameter
-            string sqlString = "SELECT * FROM account WHERE email = @aEmail AND password = @aPassword";
+            string sqlString = "SELECT * FROM account WHERE email = @aEmail AND passwordHash = @aPassword";
 
             Login obj = new Login(); // create a login instance;
 
@@ -38,7 +38,7 @@ namespace ITP213.DAL
                 obj.email = row["email"].ToString();
                 obj.mobile = row["mobile"].ToString();
                 obj.dateOfBirth = Convert.ToDateTime(row["dateOfBirth"]);
-                obj.password = row["password"].ToString();
+                obj.password = row["passwordHash"].ToString();
             }
             else
             {
@@ -147,6 +147,35 @@ namespace ITP213.DAL
                 obj = null;
             }
             return obj;
+        }
+        // insert
+        public static int insert(string name, string email, string mobile, string dateOfBirth, string passwordHash, string passwordSalt)
+        {
+            //Get connection string from web.config
+            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+
+            /* 
+             * "INSERT INTO account(name, accountType, accountStatus, email, mobile, dateOfBirth, passwordHash, passwordSalt, emailVerified, phoneVerified, banAccountDateTime, googleAuthEnabled, otpEnabled, changePasswordDate)
+             VALUES('Lin Peishan1111', 'student', 'Not ban', 'lin@email.com', '81849020', '1/31/2018', 'ewewfewfw', 'anything', 'No', 'No', '','No', 'No', GETDATE())"
+             * 
+             */
+            string sqlStr =
+                "INSERT INTO account(name, accountType, accountStatus, email, mobile, dateOfBirth, passwordHash, passwordSalt, emailVerified, phoneVerified, banAccountDateTime, googleAuthEnabled, otpEnabled, changePasswordDate) VALUES(@name, 'student', 'Not ban', @email, @mobile, @dateOfBirth, @passwordHash, @passwordSalt, 'No', 'No', '', 'No', 'No', GETDATE())";
+                //"INSERT INTO Person (FullName,Gender,PersonRole)VALUES(@pFullName,@pGender,@pPersonRole)";
+
+            SqlConnection myConn = new SqlConnection(DBConnect);
+            myConn.Open();
+            SqlCommand cmd = new SqlCommand(sqlStr, myConn);
+            cmd.Parameters.AddWithValue("@name", name);
+            cmd.Parameters.AddWithValue("@email", email);
+            cmd.Parameters.AddWithValue("@mobile", mobile);
+            // DateTime.ParseExact(arrivalDate,"MM/dd/yyyy", null)
+            cmd.Parameters.AddWithValue("@dateOfBirth", DateTime.ParseExact(dateOfBirth, "MM/dd/yyyy", null));
+            cmd.Parameters.AddWithValue("@passwordHash", passwordHash);
+            cmd.Parameters.AddWithValue("@passwordSalt", passwordSalt);
+
+            int result = cmd.ExecuteNonQuery();
+            return result;
         }
     }
 }
