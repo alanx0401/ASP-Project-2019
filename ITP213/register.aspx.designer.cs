@@ -10,16 +10,16 @@
 namespace ITP213 {
     
     
-    public partial class login {
+    public partial class register {
         
         /// <summary>
-        /// lblTitle control.
+        /// Label1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTitle;
+        protected global::System.Web.UI.WebControls.Label Label1;
         
         /// <summary>
         /// form1 control.
@@ -40,6 +40,15 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.Panel PanelPart1;
         
         /// <summary>
+        /// tbName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbName;
+        
+        /// <summary>
         /// tbEmail control.
         /// </summary>
         /// <remarks>
@@ -58,40 +67,31 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.TextBox tbPassword;
         
         /// <summary>
-        /// cbRememberMe control.
+        /// passstrength control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbRememberMe;
+        protected global::System.Web.UI.WebControls.Label passstrength;
         
         /// <summary>
-        /// lblForgetAccount control.
+        /// tbConfirmPassword control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblForgetAccount;
+        protected global::System.Web.UI.WebControls.TextBox tbConfirmPassword;
         
         /// <summary>
-        /// lblCreateAccount control.
+        /// matchpassword control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCreateAccount;
-        
-        /// <summary>
-        /// btnLogin control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnLogin;
+        protected global::System.Web.UI.WebControls.Label matchpassword;
         
         /// <summary>
         /// PanelPart2 control.
@@ -103,31 +103,31 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.Panel PanelPart2;
         
         /// <summary>
-        /// RadioButtonList1 control.
+        /// tbDateOfBirth control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList RadioButtonList1;
+        protected global::System.Web.UI.WebControls.TextBox tbDateOfBirth;
         
         /// <summary>
-        /// btnBack1 control.
+        /// tbContactNumber control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnBack1;
+        protected global::System.Web.UI.WebControls.TextBox tbContactNumber;
         
         /// <summary>
-        /// btnSubmitChoice control.
+        /// cbReadAgreement control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubmitChoice;
+        protected global::System.Web.UI.WebControls.CheckBox cbReadAgreement;
         
         /// <summary>
         /// PanelPart3 control.
@@ -139,31 +139,67 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.Panel PanelPart3;
         
         /// <summary>
-        /// tb2FAPin control.
+        /// tbVerifyPassword control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb2FAPin;
+        protected global::System.Web.UI.WebControls.TextBox tbVerifyPassword;
         
         /// <summary>
-        /// btnBack2 control.
+        /// lblLogin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnBack2;
+        protected global::System.Web.UI.WebControls.Label lblLogin;
         
         /// <summary>
-        /// btnSubmitPassword control.
+        /// btnBack control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubmitPassword;
+        protected global::System.Web.UI.WebControls.Button btnBack;
+        
+        /// <summary>
+        /// btnNext control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnNext;
+        
+        /// <summary>
+        /// btnNext1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnNext1;
+        
+        /// <summary>
+        /// btnBack1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnBack1;
+        
+        /// <summary>
+        /// btnRegister control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnRegister;
         
         /// <summary>
         /// lblError control.
