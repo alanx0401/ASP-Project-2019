@@ -327,8 +327,11 @@ C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\Microsoft.AI.Web.
 C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\Microsoft.AI.WindowsServer.xml
 C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\Microsoft.ApplicationInsights.xml
 C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\obj\Debug\ITP213.csprojAssemblyReference.cache
-C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\obj\Debug\ITP213.csproj.CoreCompileInputs.cache
-C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\obj\Debug\ITP213.csproj.CopyComplete
 C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\obj\Debug\ITP213.dll
 C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\obj\Debug\ITP213.pdb
+C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\obj\Debug\ITP213.csprojResolveAssemblyReference.cache
+C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\Newtonsoft.Json.dll
+C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\SendGrid.dll
+C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\Newtonsoft.Json.xml
+C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\SendGrid.pdb
+C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\SendGrid.xml

@@ -1,9 +1,13 @@
-﻿using System;
+﻿using SendGrid;
+using SendGrid.Helpers.Mail;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace ITP213.DAL
@@ -175,7 +179,50 @@ namespace ITP213.DAL
             cmd.Parameters.AddWithValue("@passwordSalt", passwordSalt);
 
             int result = cmd.ExecuteNonQuery();
+            /*string sendEmail = ConfigurationManager.AppSettings["SendEmail"];
+            if (sendEmail.ToLower() == "true")
+            {
+                SendEmail("Yayy!");
+            }*/
+            string sendEmail = ConfigurationManager.AppSettings["SendEmail"];
+            if (sendEmail.ToLower() == "true")
+            {
+                Execute();
+            }
+            //Execute().Wait();
             return result;
         }
+
+        public static void SendEmail(string emailBody)
+        {
+            MailMessage mailMessage = new MailMessage("nyptravel2019@gmail.com", "linpeishann@gmail.com");
+            mailMessage.Subject = "Exception";
+            mailMessage.Body = emailBody;
+
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+            smtpClient.Credentials = new System.Net.NetworkCredential()
+            {
+                UserName = "nyptravel2019@gmail.com",
+                Password = "P@ssw0rd2019"
+            };
+            smtpClient.EnableSsl = true;
+            smtpClient.Send(mailMessage);
+        }
+
+        // send grid
+        static async Task Execute()
+        {
+            var apiKey = ConfigurationManager.AppSettings["SENDGRID_API_KEY"];
+            //var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress("nyptravel2019@gmail.com", "NYP Travel");
+            var subject = "Sending with SendGrid is Fun";
+            var to = new EmailAddress("linpeishann@gmail.com", "Peishan");
+            var plainTextContent = "and easy to do anywhere, even with C#";
+            var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = await client.SendEmailAsync(msg);
+        }
+
     }
 }
