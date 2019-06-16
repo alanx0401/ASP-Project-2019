@@ -335,3 +335,16 @@ C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\SendGrid.dll
 C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\Newtonsoft.Json.xml
 C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\SendGrid.pdb
 C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\SendGrid.xml
+C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\Antlr3.Runtime.dll
+C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\EntityFramework.dll
+C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\EntityFramework.SqlServer.dll
+C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\Antlr3.Runtime.pdb
+C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\EntityFramework.xml
+C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\EntityFramework.SqlServer.xml
+C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\Microsoft.IdentityModel.Logging.dll
+C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\Microsoft.IdentityModel.Tokens.dll
+C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\Twilio.dll
+C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\Microsoft.IdentityModel.Tokens.xml
+C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\System.IdentityModel.Tokens.Jwt.xml
+C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\Twilio.xml

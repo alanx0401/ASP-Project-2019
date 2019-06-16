@@ -58,6 +58,15 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.TextBox tbPassword;
         
         /// <summary>
+        /// ReCaptchContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ReCaptchContainer;
+        
+        /// <summary>
         /// cbRememberMe control.
         /// </summary>
         /// <remarks>
@@ -103,22 +112,13 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.Panel PanelPart2;
         
         /// <summary>
-        /// RadioButtonList1 control.
+        /// rb2FATypes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList RadioButtonList1;
-        
-        /// <summary>
-        /// btnBack1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnBack1;
+        protected global::System.Web.UI.WebControls.RadioButtonList rb2FATypes;
         
         /// <summary>
         /// btnSubmitChoice control.

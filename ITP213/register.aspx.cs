@@ -1,12 +1,19 @@
 ﻿using ITP213.DAL;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
+using Twilio.Types;
 
 namespace ITP213
 {
@@ -19,6 +26,7 @@ namespace ITP213
         
         protected void Page_Load(object sender, EventArgs e)
         {
+            phoneVerification(); // --> costs $0.05 per sms
             /*string password;
             if (IsPostBack)
             {
@@ -30,7 +38,7 @@ namespace ITP213
                 }
             }*/
         }
-        protected void btnNext_Click(object sender, EventArgs e)
+        protected void btnNext_Click(object sender, EventArgs e) // Panel 1
         {
             PanelPart1.Visible = false;
             btnNext.Visible = false;
@@ -40,18 +48,55 @@ namespace ITP213
             Label1.Text = "More information details";
             lblLogin.Visible = false;
             btnNext1.Visible = true;
+
+            // -------------------
+            hashingAndSaltingPassword(tbPassword.Text);
+
+            try
+            {
+                string UUID = Guid.NewGuid().ToString("X");
+                int result = LoginDAO.insertIntoAccountTable(UUID, tbName.Text, tbEmail.Text, finalHash, salt); // account table
+                int result2 = LoginDAO.insertaAdminNoInAdminTable(tbAdminNo.Text, UUID); // student table
+                if (result == 1 && result2 == 1)
+                {
+                    btnBack.Visible = false;
+                }
+            }
+            catch (Exception)
+            {
+
+            }
         }
-        protected void btnNext1_Click(object sender, EventArgs e)
+        protected void btnNext1_Click(object sender, EventArgs e) // Panel 2
         {
             PanelPart1.Visible = false;
             btnNext.Visible = false;
             btnNext1.Visible = false;
             PanelPart2.Visible = false;
-            btnBack.Visible = true;
+            btnBack.Visible = false;
+            btnBack1.Visible = true;
             btnRegister.Visible = true;
             Label1.Text = "Verify your phone number";
             lblLogin.Visible = false;
             PanelPart3.Visible = true;
+
+            try
+            {
+                int result = LoginDAO.updateById(tbContactNumber.Text, tbDateOfBirth.Text, tbAdminNo.Text);
+                if (result == 1)
+                {
+
+                }
+                else
+                {
+                    lblError.Text = "Sorry! An error has occurred!";
+                    lblError.ForeColor = System.Drawing.Color.Red;
+                }
+            }
+            catch (Exception)
+            {
+
+            }
         }
         protected void btnBack_Click(object sender, EventArgs e)
         {
@@ -79,8 +124,52 @@ namespace ITP213
         }
         protected void btnRegister_Click(object sender, EventArgs e)
         {
-            string password = "";
-            password = tbPassword.Text;
+            
+            Response.Redirect("/login.aspx");
+        }
+        //=============================================================================================================================================================
+        public void phoneVerification()
+        {
+            // Generate OTP
+            string num = "0123456789";
+            int len = num.Length;
+            string otp = string.Empty;
+            // How many digits otp you want to mention
+            int otpdigit = 6;
+            string finalDigit;
+            int getindex;
+            for (int i = 0; i < otpdigit; i++)
+            {
+                do
+                {
+                    getindex = new Random().Next(0, len);
+                    finalDigit = num.ToCharArray()[getindex].ToString();
+                }
+                while (otp.IndexOf(finalDigit) != -1);
+                otp += finalDigit;
+            }
+
+            lblError.Text = otp;
+            /*string accountSid = Environment.GetEnvironmentVariable("TWILIO_ACCOUNT_SID");
+            string authToken = Environment.GetEnvironmentVariable("TWILIO_AUTH_TOKEN");
+            TwilioClient.Init(accountSid, authToken);
+            var to = new PhoneNumber("+6583997254"); // Verifying number
+            var from = new PhoneNumber("+12565703020"); // Twilio num
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                                                | SecurityProtocolType.Tls11
+                                                | SecurityProtocolType.Tls12
+                                                | SecurityProtocolType.Ssl3;
+            var message = MessageResource.Create(
+                to: to,
+                from: from,
+                body: "My first sms");*/
+
+        }
+        // hashing + salting password
+        private void hashingAndSaltingPassword(string pwd)
+        {
+            string password = pwd.Trim();
 
             // Generate random "salt"
             RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
@@ -102,10 +191,6 @@ namespace ITP213
             cipher.GenerateKey();
             Key = cipher.Key;
             IV = cipher.IV;
-
-            LoginDAO.insert(tbName.Text, tbEmail.Text, tbContactNumber.Text, tbDateOfBirth.Text, finalHash, salt);
-            Response.Redirect("/login.aspx");
         }
-
     }
 }
