@@ -49,12 +49,16 @@
                                         </div>
                                         <!--TextMode="Password"-->
                                         <div class="form-group">
-                                            <asp:TextBox ID="tbPassword" runat="server" placeholder="Password" oninput="checkPassword();" AutoCompleteType="Disabled"></asp:TextBox>
+                                            <asp:TextBox ID="tbPassword" runat="server" placeholder="Password" oninput="checkPassword();" AutoCompleteType="Disabled" TextMode="Password"></asp:TextBox>
+                                        </div>
+                                        <div class="form-group">
+                                            <div id="ReCaptchContainer" runat="server" visible="false"></div>
                                         </div>
                                         <div class="form-group">
                                             <!--<asp:CheckBox ID="cbRememberMe" lass="form-check-input" runat="server" text="Remember Me" Checked="True" />-->
                                             <asp:Label ID="lblForgetAccount" runat="server"><a href="#">Forget Account?</a></asp:Label>
                                         </div>
+                                        
                                         <p>
                                             <asp:Label ID="lblCreateAccount" runat="server"><a href="register.aspx">Create Account</a></asp:Label>
                                             <asp:Button ID="btnLogin" class="btn btn-success float-right" runat="server" Text="Login" OnClick="btnCheckFor2FA_Click"/>
@@ -65,13 +69,12 @@
                                     <!--2FA Choice-->
                                     <asp:Panel ID="PanelPart2" runat="server" Visible="false">
                                         <div class="form-group">
-                                            <asp:RadioButtonList ID="RadioButtonList1" runat="server">
+                                            <asp:RadioButtonList ID="rb2FATypes" runat="server">
                                                 <asp:ListItem>Google Authenticator</asp:ListItem>
                                                 <asp:ListItem>One Time Password</asp:ListItem>
                                             </asp:RadioButtonList>
                                         </div>
                                         <div class="form-group">
-                                            <asp:Button ID="btnBack1" class="btn btn-default float-left" runat="server" Text="Back" OnClick="btnBack1_Click"/>
                                             <asp:Button ID="btnSubmitChoice" class="btn btn-primary float-right" runat="server" Text="Next" OnClick="btnSubmitChoice_Click"/>
                                         </div>
                                         <br />
@@ -156,15 +159,19 @@
             }
         }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js" type="text/javascript"></script>
-    <script>
-        function alertme() {
-            Swal(
-                'Good job!',
-                'You clicked the button!',
-                'success'
-            )
-        }
+    <!--Refere reCaptcha API-->    
+    <script src="https://www.google.com/recaptcha/api.js?onload=renderRecaptcha&render=explicit" async defer></script>  
+    <script type="text/javascript">  
+    var your_site_key = '<%= ConfigurationManager.AppSettings["SiteKey"]%>';  
+    var renderRecaptcha = function () {  
+        grecaptcha.render('ReCaptchContainer', {
+            'sitekey': your_site_key,
+            theme: 'light', //light or dark    
+            type: 'image',// image or audio    
+            size: 'normal'//normal or compact    
+        });  
+    };
+  
     </script>
 </body>
 </html>
