@@ -33,18 +33,18 @@
     <h1>Event Logs</h1> <!--2. Change the title!-->
     <hr />
     <div>
-    Search for Events: <asp:DropDownList ID="DDEventLogList" runat="server" DataSourceID="SqlDataSourceEventLog" DataTextField="eventDesc" DataValueField="eventID"></asp:DropDownList>
+  
     </div>
     <div>
-        <asp:GridView ID="GVEventLog" runat="server" AutoGenerateColumns="False" DataKeyNames="eventID" DataSourceID="SqlDataSourceEventLog" Height="217px" Width="747px">
+        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="eventID" DataSourceID="SqlDataSourceEventLog" Height="217px" Width="747px">
             <Columns>
-                <asp:BoundField DataField="eventID" HeaderText="eventID" ReadOnly="True" SortExpression="eventID" InsertVisible="False" />
+                <asp:BoundField DataField="eventID" HeaderText="eventID" ReadOnly="True" SortExpression="eventID" />
                 <asp:BoundField DataField="eventDesc" HeaderText="eventDesc" SortExpression="eventDesc" />
                 <asp:BoundField DataField="dateTimeDetails" HeaderText="dateTimeDetails" SortExpression="dateTimeDetails" />
                 <asp:BoundField DataField="UUID" HeaderText="UUID" SortExpression="UUID" />
             </Columns>
         </asp:GridView>
-        <asp:SqlDataSource ID="SqlDataSourceEventLog" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT * FROM [Eventlogs]"></asp:SqlDataSource>
+        <asp:SqlDataSource ID="SqlDataSourceEventLog" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT * FROM [Eventlogs] ORDER BY [eventID] DESC"></asp:SqlDataSource>
     </div>
 </asp:Content>
 
