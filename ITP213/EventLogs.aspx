@@ -1,8 +1,8 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeBehind="EventLogs.aspx.cs" Inherits="ITP213.EventLogs" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeBehind="EventLogs.aspx.cs" Inherits="ITP213.EventLogs1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <!--************README: Hi, please change some of the following things below when you're coding your features. Thanks! -PS -->
+     <!--************README: Hi, please change some of the following things below when you're coding your features. Thanks! -PS -->
 
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
@@ -30,21 +30,19 @@
     <!-- //Breadcrumbs end-->
 
     <!-- Page Content -->
-    <h1>Event Logs</h1> <!--2. Change the title!-->
+    <h1>Security Event Logs</h1> <!--2. Change the title!-->
     <hr />
     <div>
   
     </div>
     <div>
-        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="eventID" DataSourceID="SqlDataSourceEventLog" Height="217px" Width="747px">
+        <asp:GridView ID="GVEventLogs" runat="server" AutoGenerateColumns="False">
             <Columns>
-                <asp:BoundField DataField="eventID" HeaderText="eventID" ReadOnly="True" SortExpression="eventID" />
-                <asp:BoundField DataField="eventDesc" HeaderText="eventDesc" SortExpression="eventDesc" />
-                <asp:BoundField DataField="dateTimeDetails" HeaderText="dateTimeDetails" SortExpression="dateTimeDetails" />
-                <asp:BoundField DataField="UUID" HeaderText="UUID" SortExpression="UUID" />
+                <asp:BoundField DataField="eventID" HeaderText="Event ID:" />
+                <asp:BoundField DataField="eventDesc" HeaderText="Event Description:" />
+                <asp:BoundField DataField="dateTimeDetails" HeaderText="Date and Time of Event:" />
+                <asp:BoundField DataField="UUID" HeaderText="Unique User Identification:" />
             </Columns>
         </asp:GridView>
-        <asp:SqlDataSource ID="SqlDataSourceEventLog" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT * FROM [Eventlogs] ORDER BY [eventID] DESC"></asp:SqlDataSource>
     </div>
 </asp:Content>
-
