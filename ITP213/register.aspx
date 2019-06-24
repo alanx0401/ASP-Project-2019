@@ -57,15 +57,18 @@
                                             <asp:TextBox ID="tbName" runat="server" placeholder="Name"></asp:TextBox>
                                         </div>
                                         <div class="form-group">
+                                            <asp:TextBox ID="tbAdminNo" runat="server" placeholder="Admin No"></asp:TextBox>
+                                        </div>
+                                        <div class="form-group">
                                             <asp:TextBox ID="tbEmail" runat="server" placeholder="Email" TextMode="Email" oninput="checkPassword();"></asp:TextBox>
                                         </div>
                                         <div class="form-group">
                                             <!--TextMode="Password"-->
-                                            <asp:TextBox ID="tbPassword" runat="server" placeholder="Password"  oninput="checkPassword();"></asp:TextBox>
+                                            <asp:TextBox ID="tbPassword" runat="server" placeholder="Password" TextMode="Password" oninput="checkPassword();"></asp:TextBox>
                                             <asp:Label ID="passstrength" runat="server"></asp:Label>
                                         </div>
                                         <div class="form-group">
-                                            <asp:TextBox ID="tbConfirmPassword" runat="server" placeholder="Confirm Password"></asp:TextBox>
+                                            <asp:TextBox ID="tbConfirmPassword" runat="server" TextMode="Password" placeholder="Confirm Password"></asp:TextBox>
                                             <asp:Label ID="matchpassword" runat="server"></asp:Label>
                                         </div>
                                     </asp:Panel>
@@ -99,7 +102,7 @@
                                     </p>
                                 </form>
                                 <style>
-                                    #tbEmail, #tbPassword, #tbName, #tbContactNumber, #tbConfirmPassword, #tbDateOfBirth {
+                                    #tbEmail, #tbPassword, #tbName, #tbContactNumber, #tbConfirmPassword, #tbDateOfBirth, #tbAdminNo{
                                         width: 100%;
                                         padding: 10px;
                                         box-sizing: border-box;
@@ -112,7 +115,7 @@
                                         border-bottom: 2px solid #bebed2
                                     }
 
-                                        #tbEmail:focus, #tbPassword:focus, #tbName:focus, #tbContactNumber:focus, tbConfirmPassword:focus, tbDateOfBirth:focus {
+                                        #tbEmail:focus, #tbPassword:focus, #tbName:focus, #tbContactNumber:focus, tbConfirmPassword:focus, tbDateOfBirth:focus, tbAdminNo:focus {
                                             border-bottom: 2px solid #78788c
                                         }
                                 </style>
