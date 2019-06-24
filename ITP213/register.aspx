@@ -153,7 +153,6 @@
 
                                     <p>
                                         <asp:Label ID="lblLogin" runat="server"><a href="/login.aspx">Sign in instead.</a></asp:Label>
-                                        <!--<asp:Button ID="btnBack" class="btn btn-default float-left" runat="server" Text="Back" Visible="false" OnClick="btnBack_Click" />-->
                                         <asp:Button ID="btnNext" class="btn btn-primary float-right" runat="server" Text="Next" OnClick="btnNext_Click" CausesValidation="False" />
                                         <asp:Button ID="btnNext1" class="btn btn-primary float-right" runat="server" Text="Next" OnClick="btnNext1_Click" Visible="false" CausesValidation="False" />
                                         <asp:Button ID="btnBack1" class="btn btn-default float-left" runat="server" Text="Back" Visible="false" OnClick="btnBack1_Click" />

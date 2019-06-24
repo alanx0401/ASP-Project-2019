@@ -23,8 +23,10 @@ namespace ITP213
 {
     public partial class register : System.Web.UI.Page
     {
-        
-        
+        // for encryption & decryption
+        byte[] Key;
+        byte[] IV;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             // disable autocomplete form        
@@ -36,40 +38,42 @@ namespace ITP213
             tbDateOfBirth.Attributes.Add("autocomplete", "off");
             tbContactNumber.Attributes.Add("autocomplete", "off");
             tbVerifyPassword.Attributes.Add("autocomplete", "off");
-
-            /*
-            if (IsPostBack)
-            {
-            }
-            }*/
         }
-        protected void btnNext_Click(object sender, EventArgs e) // Panel 1
-        {
+        protected void btnNext_Click(object sender, EventArgs e) // Panel 1: Inserting data in account table
+        { 
+            // Disable Panel 1's Content
             PanelPart1.Visible = false;
             btnNext.Visible = false;
-            PanelPart2.Visible = true;
-            btnBack.Visible = true;
             btnRegister.Visible = false;
-            Label1.Text = "More information details";
             lblLogin.Visible = false;
+
+            // Enable Panel 2's Content
+            PanelPart2.Visible = true;
+            Label1.Text = "More information details";
             btnNext1.Visible = true;
 
-            registeringAccount(tbPassword.Text); // register
-            
+            registeringAccount(tbPassword.Text); // Inserting data in account table
+
         }
-        protected void btnNext1_Click(object sender, EventArgs e) // Panel 2
+        protected void btnNext1_Click(object sender, EventArgs e) // Panel 2: Update contact number, date of birth and adminNo
         {
+            // Disable Panel 1's Content: Optional
             PanelPart1.Visible = false;
             btnNext.Visible = false;
-            btnNext1.Visible = false;
+            btnRegister.Visible = false;
+            lblLogin.Visible = false;
+
+
+            // Disable Panel 2's Content
             PanelPart2.Visible = false;
-            btnBack.Visible = false;
+            btnNext1.Visible = false;
+
+            // Enable Panel 3's Content
+            PanelPart3.Visible = true;
             btnBack1.Visible = true;
             btnRegister.Visible = true;
             Label1.Text = "Verify your phone number";
-            lblLogin.Visible = false;
-            PanelPart3.Visible = true;
-
+            
             try
             {
                 int result = RegisterDAO.updateById(tbContactNumber.Text, tbDateOfBirth.Text, tbAdminNo.Text); // Based on admin no
@@ -88,46 +92,33 @@ namespace ITP213
 
             }
         }
-        protected void btnBack_Click(object sender, EventArgs e)
+
+        protected void btnBack1_Click(object sender, EventArgs e) // To enable Panel 2's Content
         {
-            PanelPart1.Visible = true;
-            btnNext.Visible = true;
-            btnNext1.Visible = false;
-            PanelPart2.Visible = false;
-            PanelPart3.Visible = false;
-            btnBack.Visible = false;
-            btnRegister.Visible = false;
-            Label1.Text = "Register";
-            lblLogin.Visible = true;
-        }
-        protected void btnBack1_Click(object sender, EventArgs e)
-        {
+            // Disable Panel 1's Content: Optional
             PanelPart1.Visible = false;
-            PanelPart2.Visible = true;
-            PanelPart3.Visible = false;
-            btnNext.Visible = true;
-            btnNext1.Visible = false;
-            btnBack.Visible = false;
+            btnNext.Visible = false;
             btnRegister.Visible = false;
+            lblLogin.Visible = false;
+
+
+            // Disable Panel 2's Content
+            PanelPart2.Visible = true;
+            btnNext1.Visible = true;
             Label1.Text = "More information details";
-            lblLogin.Visible = true;
+
+            // Diable Panel 3's Content
+            PanelPart3.Visible = false;
+            btnBack1.Visible = false;
+            btnRegister.Visible = false;
         }
-        protected void btnRegister_Click(object sender, EventArgs e)
+        protected void btnRegister_Click(object sender, EventArgs e) // Verify Phone & Sending Email Verification
         {
-            // Verify email
+            // Sending email verification
             string sendEmail = ConfigurationManager.AppSettings["SendEmail"];
             if (sendEmail.ToLower() == "true")
             {
-                //var emailVerificatonCode = mUserManger.Gener
-                //Execute("Hi","www.localhost");
-                //string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-
-                //Execute().Wait();
-
-                //Execute(tbName.Text, tbEmail.Text);
-
                 sendingEmailVerification();
-
             }
 
             // Verify phone code
@@ -135,14 +126,45 @@ namespace ITP213
         }
 
         //=============================================================================================================================================================
-        // hashing + salting password method
+        // Panel 1's stuff:
+        private void registeringAccount(string pwd)
+        {
+            string finalHash;
+            string salt;
+
+            try
+            {
+                // hashing + salting password
+                string password = string.Empty;
+                password = pwd.Trim();
+                var getHashingAndSaltingPwd = hashingAndSaltingPassword(password);
+
+                finalHash = string.Empty;
+                finalHash = getHashingAndSaltingPwd.Item1;
+
+                salt = string.Empty;
+                salt = getHashingAndSaltingPwd.Item2;
+
+                string UUID = Guid.NewGuid().ToString("X"); // generate random UUID
+                int result = RegisterDAO.insertIntoAccountTable(UUID, tbName.Text, tbEmail.Text, finalHash, salt); // account table
+                int result2 = RegisterDAO.insertaAdminNoInAdminTable(tbAdminNo.Text, UUID); // student table: assuming the registered users are all users
+                if (result == 1 && result2 == 1)
+                {
+                    // success
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        // Panel 3's stuff:
         public Tuple<string, string> hashingAndSaltingPassword(string pwd)
         {
             //hashing & salting pwd
             string finalHash;
             string salt;
-            byte[] Key;
-            byte[] IV;
 
             string password = pwd.Trim();
 
@@ -170,37 +192,7 @@ namespace ITP213
             return Tuple.Create(finalHash, salt);
         }
 
-        private void registeringAccount(string pwd)
-        {
-            string finalHash;
-            string salt;
-
-            try
-            {
-                // hashing + salting password
-                string password = string.Empty;
-                password = pwd.Trim();
-                var getHashingAndSaltingPwd = hashingAndSaltingPassword(password);
-
-                finalHash = string.Empty;
-                finalHash = getHashingAndSaltingPwd.Item1;
-
-                salt = string.Empty;
-                salt = getHashingAndSaltingPwd.Item2;
-
-                string UUID = Guid.NewGuid().ToString("X"); // generate random UUID
-                int result = RegisterDAO.insertIntoAccountTable(UUID, tbName.Text, tbEmail.Text, finalHash, salt); // account table
-                int result2 = RegisterDAO.insertaAdminNoInAdminTable(tbAdminNo.Text, UUID); // student table
-                if (result == 1 && result2 == 1)
-                {
-                    btnBack.Visible = false;
-                }
-            }
-            catch (Exception)
-            {
-
-            }
-        }
+        
 
         public string otp()
         {
@@ -208,6 +200,7 @@ namespace ITP213
             string num = "0123456789";
             int len = num.Length;
             string otp = string.Empty;
+
             // How many digits otp you want to mention
             int otpdigit = 6;
             string finalDigit;
@@ -478,7 +471,7 @@ namespace ITP213
             if (RegisterDAO.checkEmailVerificationTable(UUID) == null) // nth in the verification table
             {
                 string randomToken = Guid.NewGuid().ToString(); // email Token
-                string encodeRandomToken = EncodeServerName(randomToken); // not used 
+                string encodeRandomToken = Convert.ToBase64String(encryptData(randomToken)); // not used 
 
                 // insert
                 int result = RegisterDAO.insertIntoVerifyEmail(UUID, randomToken);
@@ -511,7 +504,7 @@ namespace ITP213
                     if (result == 1)
                     {
                         string randomToken = Guid.NewGuid().ToString(); // email Token
-                        string encodeRandomToken = EncodeServerName(randomToken); // not used 
+                        string encodeRandomToken = Convert.ToBase64String(encryptData(randomToken)); // not used yet
 
                         // insert
                         int result2 = RegisterDAO.insertIntoVerifyEmail(UUID, randomToken);
@@ -537,15 +530,25 @@ namespace ITP213
             }
         }
 
-        public static string EncodeServerName(string serverName)
+        protected byte[] encryptData(string data)
         {
-            return Convert.ToBase64String(Encoding.UTF8.GetBytes(serverName));
-        }
+            byte[] cipherText = null;
+            try
+            {
+                RijndaelManaged cipher = new RijndaelManaged();
+                cipher.Key = Key;
+                cipher.IV = IV;
+                ICryptoTransform encryptTransform = cipher.CreateEncryptor();
+                byte[] plainText = Encoding.UTF8.GetBytes(data);
+                cipherText = encryptTransform.TransformFinalBlock(plainText, 0, plainText.Length);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+            finally { }
 
-        public static string DecodeServerName(string encodedServername)
-        {
-            return Encoding.UTF8.GetString(Convert.FromBase64String(encodedServername));
+            return cipherText;
         }
-
     }
 }
