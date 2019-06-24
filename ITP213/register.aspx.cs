@@ -18,6 +18,10 @@ using Twilio.Types;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Threading.Tasks;
+using System.Net.NetworkInformation;
+using System.Text.RegularExpressions;
+using System.IO;
+using System.Xml;
 
 namespace ITP213
 {
@@ -38,6 +42,7 @@ namespace ITP213
             tbDateOfBirth.Attributes.Add("autocomplete", "off");
             tbContactNumber.Attributes.Add("autocomplete", "off");
             tbVerifyPassword.Attributes.Add("autocomplete", "off");
+           
         }
         protected void btnNext_Click(object sender, EventArgs e) // Panel 1: Inserting data in account table
         { 
@@ -107,13 +112,17 @@ namespace ITP213
             btnNext1.Visible = true;
             Label1.Text = "More information details";
 
-            // Diable Panel 3's Content
+            // Disable Panel 3's Content
             PanelPart3.Visible = false;
             btnBack1.Visible = false;
             btnRegister.Visible = false;
         }
         protected void btnRegister_Click(object sender, EventArgs e) // Verify Phone & Sending Email Verification
         {
+            // Assuming that email verification has been sent & user verified their phone code, 
+            // we need to insert the current device details now
+            insertIntoNewDeviceLoginTable();
+
             // Sending email verification
             string sendEmail = ConfigurationManager.AppSettings["SendEmail"];
             if (sendEmail.ToLower() == "true")
@@ -184,10 +193,10 @@ namespace ITP213
 
             finalHash = Convert.ToBase64String(hashWithSalt);
 
-            RijndaelManaged cipher = new RijndaelManaged();
+            /*RijndaelManaged cipher = new RijndaelManaged();
             cipher.GenerateKey();
             Key = cipher.Key;
-            IV = cipher.IV;
+            IV = cipher.IV;*/
 
             return Tuple.Create(finalHash, salt);
         }
@@ -532,10 +541,15 @@ namespace ITP213
 
         protected byte[] encryptData(string data)
         {
+            RijndaelManaged cipher = new RijndaelManaged();
+            cipher.GenerateKey();
+            Key = cipher.Key;
+            IV = cipher.IV;
+
             byte[] cipherText = null;
             try
             {
-                RijndaelManaged cipher = new RijndaelManaged();
+                //RijndaelManaged cipher = new RijndaelManaged();
                 cipher.Key = Key;
                 cipher.IV = IV;
                 ICryptoTransform encryptTransform = cipher.CreateEncryptor();
@@ -549,6 +563,79 @@ namespace ITP213
             finally { }
 
             return cipherText;
+        }
+
+        // Part 3: NewDeviceLogin
+        public string GetMACAddress()
+        {
+            NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
+            String sMacAddress = string.Empty;
+            foreach (NetworkInterface adapter in nics)
+            {
+                if (sMacAddress == String.Empty) // only return MAC Address from first card
+                {
+                    IPInterfaceProperties properties = adapter.GetIPProperties();
+                    sMacAddress = adapter.GetPhysicalAddress().ToString();
+                }
+
+            }
+            return sMacAddress;
+        }
+
+        public static string getExternalIp()
+        {
+            try
+            {
+                string externalIP;
+                externalIP = (new WebClient()).DownloadString("http://checkip.dyndns.org/");
+                externalIP = (new Regex(@"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"))
+                             .Matches(externalIP)[0].ToString();
+                return externalIP;
+            }
+            catch { return null; }
+        }
+
+        public string IPRequestHelper(string url)
+        {
+            HttpWebRequest objrequest = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebResponse objresponse = (HttpWebResponse)objrequest.GetResponse();
+            StreamReader responsereader = new StreamReader(objresponse.GetResponseStream());
+            string responseread = responsereader.ReadToEnd();
+            responsereader.Close();
+            responsereader.Dispose();
+            return responseread;
+        }
+
+        public string GetCountrybyip()
+        {
+            string ipaddress = getExternalIp();
+            string strreturnvalue = string.Empty;
+            string ipResponse = IPRequestHelper("http://ip-api.com/xml/" + ipaddress);
+            XmlDocument ipInfixml = new XmlDocument();
+            ipInfixml.LoadXml(ipResponse);
+            XmlNodeList responseXML = ipInfixml.GetElementsByTagName("query");
+            string returnvalue = responseXML.Item(0).ChildNodes[2].InnerText.ToString();
+
+            return returnvalue;
+
+        }
+
+        private void insertIntoNewDeviceLoginTable()
+        {
+            DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
+            string UUID = loginObj.UUID; // retriving UUID from loginObj
+
+            string country = GetCountrybyip();
+
+            int result = DAL.RegisterDAO.insertIntoNewDeviceLogin(GetMACAddress(), country, getExternalIp(), DateTime.Now, UUID);
+
+            if (result == 1)
+            {
+            }
+            else
+            {
+                lblError.Text = "Sorry! An error has occurred! Please try again later!";
+            }
         }
     }
 }

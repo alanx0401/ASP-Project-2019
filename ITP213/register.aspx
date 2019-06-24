@@ -160,6 +160,7 @@
                                     </p>
                                     <p>
                                         <asp:Label ID="lblError" runat="server"></asp:Label>
+                                        <asp:Label ID="lblError0" runat="server"></asp:Label>
                                     </p>
                                 </form>
                                 <style>

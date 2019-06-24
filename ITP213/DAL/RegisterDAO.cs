@@ -435,6 +435,31 @@ namespace ITP213.DAL
             return result;
         }
 
+        public static int insertIntoNewDeviceLogin(string macAddress, string Location, string PublicIPAddress, DateTime LastLogin,string UUID)
+        {
+            //Get connection string from web.config
+            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+
+            /* 
+            INSERT INTO NewDeviceLogin
+            VALUES ('00FFE61D21D4', 'SG', '219.74.70.95', GETDATE(), '{0x3adb3b4d,0xf5ee,0x4684,{0xb5,0xd7,0x06,0xa0,0x61,0xd2,0x85,0x83}}');
+             */
+            StringBuilder sqlStr = new StringBuilder();
+            sqlStr.AppendLine("INSERT INTO NewDeviceLogin");
+            sqlStr.AppendLine("VALUES (@macAddress, @Location, @PublicIPAddress, GETDATE(), @UUID);");
+
+            SqlConnection myConn = new SqlConnection(DBConnect);
+            myConn.Open();
+            SqlCommand cmd = new SqlCommand(sqlStr.ToString(), myConn);
+            cmd.Parameters.AddWithValue("@macAddress", macAddress);
+            cmd.Parameters.AddWithValue("@Location", Location);
+            cmd.Parameters.AddWithValue("@PublicIPAddress", PublicIPAddress);
+            cmd.Parameters.AddWithValue("@UUID", UUID);
+
+            int result = cmd.ExecuteNonQuery();
+            return result;
+        }
+
         //========================================================================
         public static Login getLoginByUUID(string UUID)
         {
