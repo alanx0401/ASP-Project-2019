@@ -212,6 +212,7 @@
     <Content Include="CreateTest.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="DefaultErrorPage.aspx" />
+    <Content Include="ForgetPassword.aspx" />
     <Content Include="GoogleAuth.aspx" />
     <Content Include="ImageGallery.aspx" />
     <Content Include="Images\check.png" />
@@ -248,6 +249,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="SecurityEventLogs.aspx" />
     <Content Include="Service References\SMSSvrRef\ITP213.SMSSvrRef.SMSData.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -389,6 +391,7 @@
     <Compile Include="DAL\CCARecordDAO.cs" />
     <Compile Include="DAL\Complain.cs" />
     <Compile Include="DAL\ComplainDAO.cs" />
+    <Compile Include="DAL\EventLog.cs" />
     <Compile Include="DAL\Feedback.cs" />
     <Compile Include="DAL\FeedbackDAO.cs" />
     <Compile Include="DAL\GeneralRecord.cs" />
@@ -436,6 +439,13 @@
     <Compile Include="Email\IEmailSender.cs" />
     <Compile Include="Email\SendEmailDetails.cs" />
     <Compile Include="Email\SendEmailResponse.cs" />
+    <Compile Include="ForgetPassword.aspx.cs">
+      <DependentUpon>ForgetPassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ForgetPassword.aspx.designer.cs">
+      <DependentUpon>ForgetPassword.aspx</DependentUpon>
+    </Compile>
     <Compile Include="GoogleAuth.aspx.cs">
       <DependentUpon>GoogleAuth.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -541,6 +551,13 @@
     </Compile>
     <Compile Include="ReportInjury.aspx.designer.cs">
       <DependentUpon>ReportInjury.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SecurityEventLogs.aspx.cs">
+      <DependentUpon>SecurityEventLogs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SecurityEventLogs.aspx.designer.cs">
+      <DependentUpon>SecurityEventLogs.aspx</DependentUpon>
     </Compile>
     <Compile Include="Service References\SMSSvrRef\Reference.cs">
       <AutoGen>True</AutoGen>
