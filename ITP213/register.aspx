@@ -23,10 +23,10 @@
     <script src="Scripts/jquery-ui.js"></script>
     <script src='Scripts/jquery-ui-timepicker-addon.js'></script>
     <script src='Scripts/jquery-ui-timepicker-addon-i18n.js'></script>
-   
-    <link rel='stylesheet' href='Content/jquery-ui-timepicker-addon.min.css'/>
+
+    <link rel='stylesheet' href='Content/jquery-ui-timepicker-addon.min.css' />
     <!--Tab-->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
 
 </head>
 <body>
@@ -63,9 +63,71 @@
                                             <asp:TextBox ID="tbEmail" runat="server" placeholder="Email" TextMode="Email" oninput="checkPassword();"></asp:TextBox>
                                         </div>
                                         <div class="form-group">
-                                            <!--TextMode="Password"-->
                                             <asp:TextBox ID="tbPassword" runat="server" placeholder="Password" TextMode="Password" oninput="checkPassword();"></asp:TextBox>
                                             <asp:Label ID="passstrength" runat="server"></asp:Label>
+                                            <div id="pswd_info">
+                                                <strong>Your password must:</strong>
+                                                <ul style="list-style-type:none;padding:0;margin:0;">
+                                                    <li id="length" class="invalid">Be at least <strong>8 characters</strong></li>
+                                                    <li id="letter" class="invalid">At least <strong>one letter</strong></li>
+                                                    <li id="capital" class="invalid">At least <strong>one capital letter</strong></li>
+                                                    <li id="number" class="invalid">At least <strong>one number</strong></li>
+                                                    <li id="symbol" class="invalid">At least <strong>1 <a href="#" data-toggle="tooltip" data-placement="top" title="For example: @%+\\\/'!#$^?:.(){}\[\]~\-_.">symbol</a></strong></li>
+                                                </ul>
+                                            </div>
+                                            <style>
+                                                #pswd_info {
+                                                    position: absolute;
+                                                    bottom: -50px;
+                                                    bottom: -115px\9; /* IE Specific */
+                                                    right: 55px;
+                                                    width: 250px;
+                                                    padding: 15px;
+                                                    background: #fefefe;
+                                                    font-size: .875em;
+                                                    border-radius: 5px;
+                                                    box-shadow: 0 1px 3px #ccc;
+                                                    border: 1px solid #ddd;
+                                                    margin-left: auto;
+                                                    margin-right: auto;
+                                                }
+
+                                                #pswd_info strong {
+                                                    margin: 0 0 10px 0;
+                                                    padding: 0;
+                                                    font-weight: normal;
+                                                }
+
+                                                #pswd_info::before {
+                                                    content: "\25B2";
+                                                    position: absolute;
+                                                    top: -12px;
+                                                    left: 45%;
+                                                    font-size: 14px;
+                                                    line-height: 14px;
+                                                    color: #ddd;
+                                                    text-shadow: none;
+                                                    display: block;
+                                                }
+
+                                                .invalid {
+                                                    background: url(images/unchecked.png) no-repeat 0 50%;
+                                                    padding-left: 22px;
+                                                    line-height: 24px;
+                                                    color: #ec3f41;
+                                                }
+
+                                                .valid {
+                                                    background: url(images/check.png) no-repeat 0 50%;
+                                                    padding-left: 22px;
+                                                    line-height: 24px;
+                                                    color: #B1DD3A;
+                                                }
+
+                                                #pswd_info {
+                                                    display:none;
+                                                }
+                                            </style>
                                         </div>
                                         <div class="form-group">
                                             <asp:TextBox ID="tbConfirmPassword" runat="server" TextMode="Password" placeholder="Confirm Password"></asp:TextBox>
@@ -77,7 +139,7 @@
                                             <asp:TextBox ID="tbDateOfBirth" runat="server" class="form-control" TextMode="DateTime" ClientIDMode="Static" placeholder="Date of birth"></asp:TextBox>
                                         </div>
                                         <div class="form-group">
-                                             <asp:TextBox ID="tbContactNumber" runat="server" placeholder="Contact Number"></asp:TextBox>
+                                            <asp:TextBox ID="tbContactNumber" runat="server" placeholder="Contact Number"></asp:TextBox>
                                         </div>
                                         <div class="form-group">
                                             <asp:CheckBox ID="cbReadAgreement" lass="form-check-input" runat="server" Text="I have read the agreement." />
@@ -91,18 +153,18 @@
 
                                     <p>
                                         <asp:Label ID="lblLogin" runat="server"><a href="/login.aspx">Sign in instead.</a></asp:Label>
-                                        <asp:Button ID="btnBack" class="btn btn-default float-left" runat="server" Text="Back" Visible="false" OnClick="btnBack_Click" />
+                                        <!--<asp:Button ID="btnBack" class="btn btn-default float-left" runat="server" Text="Back" Visible="false" OnClick="btnBack_Click" />-->
                                         <asp:Button ID="btnNext" class="btn btn-primary float-right" runat="server" Text="Next" OnClick="btnNext_Click" CausesValidation="False" />
-                                        <asp:Button ID="btnNext1" class="btn btn-primary float-right" runat="server" Text="Next" OnClick="btnNext1_Click" visible="false" CausesValidation="False"/>
+                                        <asp:Button ID="btnNext1" class="btn btn-primary float-right" runat="server" Text="Next" OnClick="btnNext1_Click" Visible="false" CausesValidation="False" />
                                         <asp:Button ID="btnBack1" class="btn btn-default float-left" runat="server" Text="Back" Visible="false" OnClick="btnBack1_Click" />
-                                        <asp:Button ID="btnRegister" class="btn btn-success float-right" runat="server" Text="Register" Visible="false" OnClick="btnRegister_Click"/>
+                                        <asp:Button ID="btnRegister" class="btn btn-success float-right" runat="server" Text="Register" Visible="false" OnClick="btnRegister_Click" />
                                     </p>
                                     <p>
                                         <asp:Label ID="lblError" runat="server"></asp:Label>
                                     </p>
                                 </form>
                                 <style>
-                                    #tbEmail, #tbPassword, #tbName, #tbContactNumber, #tbConfirmPassword, #tbDateOfBirth, #tbAdminNo{
+                                    #tbEmail, #tbPassword, #tbName, #tbContactNumber, #tbConfirmPassword, #tbDateOfBirth, #tbAdminNo {
                                         width: 100%;
                                         padding: 10px;
                                         box-sizing: border-box;
@@ -112,11 +174,11 @@
                                         border: 0;
                                         font-family: 'Montserrat',sans-serif;
                                         transition: all .3s;
-                                        border-bottom: 2px solid #bebed2
+                                        border-bottom: 2px solid #bebed2;
                                     }
 
                                         #tbEmail:focus, #tbPassword:focus, #tbName:focus, #tbContactNumber:focus, tbConfirmPassword:focus, tbDateOfBirth:focus, tbAdminNo:focus {
-                                            border-bottom: 2px solid #78788c
+                                            border-bottom: 2px solid #78788c;
                                         }
                                 </style>
                             </div>
@@ -138,7 +200,8 @@
         </style>
     </div>
     <!--Bootstrap core Javascript-->
-    <!--<script src="Scripts/jquery.min.js"></script>--> <!--Comment this bc it doesn't work well with datetime picker-->
+    <!--<script src="Scripts/jquery.min.js"></script>-->
+    <!--Comment this bc it doesn't work well with datetime picker-->
     <script src="Scripts/bootstrap.bundle.min.js"></script>
     <!--//Bootstrap core Javascript-->
     <!--Core plugin Javascript-->
@@ -200,7 +263,7 @@
     </script>
     <script>
         //temporary
-        $(document).ready(function () {
+        /*$(document).ready(function () {
 
             $('#tbPassword').keyup(function (e) {
                 var strongRegex = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
@@ -219,7 +282,8 @@
                     $('#passstrength').html('Weak!');
                 }
                 return true;
-            });
+            });*/
+
             /*$('#tbConfirmPassword').keyup(function (e) {
                 var password = $('#tbPassword');
                 var confirmPassword = $('#tbConfirmPassword');
@@ -231,7 +295,64 @@
                 }
                 
             });*/
+
+        //});
+        $(document).ready(function () {
+
+            //code here
+            $('#tbPassword').keyup(function () {
+                // keyup code here
+                // set password variable
+                var pswd = $(this).val();
+
+                //validate the length
+                if (pswd.length < 8) {
+                    $('#length').removeClass('valid').addClass('invalid');
+                } else {
+                    $('#length').removeClass('invalid').addClass('valid');
+                }
+
+                //validate letter
+                if (pswd.match(/[A-z]/)) {
+                    $('#letter').removeClass('invalid').addClass('valid');
+                } else {
+                    $('#letter').removeClass('valid').addClass('invalid');
+                }
+
+                //validate capital letter
+                if (pswd.match(/[A-Z]/)) {
+                    $('#capital').removeClass('invalid').addClass('valid');
+                } else {
+                    $('#capital').removeClass('valid').addClass('invalid');
+                }
+
+                //validate number
+                if (pswd.match(/\d/)) {
+                    $('#number').removeClass('invalid').addClass('valid');
+                } else {
+                    $('#number').removeClass('valid').addClass('invalid');
+                }
+
+                //validate symbols
+                if (pswd.match(/[@%+\\\/'!#$^?:.(){}\[\]~\-_.]/)) {
+                    $('#symbol').removeClass('invalid').addClass('valid');
+                } else {
+                    $('#symbol').removeClass('valid').addClass('invalid');
+                }
+            }).focus(function () {
+                $('#pswd_info').show();
+            }).blur(function () {
+                $('#pswd_info').hide();
+            });
+
+
         });
+
+    </script>
+    <script>
+    $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();   
+    });
     </script>
 </body>
 </html>

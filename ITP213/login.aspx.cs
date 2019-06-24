@@ -69,48 +69,73 @@ namespace ITP213
                 }
 
             }
-            if (Request.Cookies["authcookie"] != null) {
-                /*DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(Request.Cookies["authcookie"]["email"], Request.Cookies["authcookie"]["password"]);
-                if (loginObj != null) {
-                    // account Table
-                    Session["accountID"] = loginObj.accountID;
-                    Session["accountType"] = loginObj.accountType;
-                    Session["name"] = loginObj.name;
-                    Session["email"] = loginObj.email;
-                    Session["mobile"] = loginObj.mobile;
-                    Session["dateOfBirth"] = loginObj.dateOfBirth;
-                    
-                    //lblError.Text = "Yayy! Succeeded";
+            //if (Request.Cookies["authcookie"] != null) {
+                DAL.Login loginObj2 = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
+                if (loginObj2 != null)
+                {
+                    Session["UUID"] = loginObj2.UUID;
+                    Session["accountType"] = loginObj2.accountType;
+                    Session["name"] = loginObj2.name;
+                    Session["email"] = loginObj2.email;
+                    Session["mobile"] = loginObj2.mobile;
+                    Session["dateOfBirth"] = loginObj2.dateOfBirth;
+
                     if (Session["accountType"].ToString() == "student")
                     {
                         // student table
-                        DAL.Login studentObj = LoginDAO.getStudentTableByAccountID(loginObj.accountID);
+                        DAL.Login studentObj = LoginDAO.getStudentTableByAccountID(loginObj2.UUID);
                         Session["adminNo"] = studentObj.adminNo;
                         Session["school"] = studentObj.studentSchool;
                         Session["course"] = studentObj.course;
                         Session["allergies"] = studentObj.allergies;
                         Session["dietaryNeeds"] = studentObj.dietaryNeeds;
-                        Session["parentID"] = studentObj.parentID;
+                        //Session["parentID"] = studentObj.parentID;
 
-                    }
-                    else if (Session["accountType"].ToString() == "parent")
-                    {
-                        // parent table
-                        DAL.Login parentObj = LoginDAO.getParentTableByAccountID(loginObj.accountID);
-                        Session["parentID"] = parentObj.parentID;
-                        Session["adminNo"] = parentObj.adminNo;
                     }
                     else if (Session["accountType"].ToString() == "lecturer")
                     {
                         // lecturer table
-                        DAL.Login lecturerObj = LoginDAO.getLecturerTableByAccountID(loginObj.accountID);
+                        DAL.Login lecturerObj = LoginDAO.getLecturerTableByAccountID(loginObj2.UUID);
                         Session["staffID"] = lecturerObj.staffID;
                         Session["school"] = lecturerObj.lecturerSchool;
                         Session["staffRole"] = lecturerObj.staffRole;
                     }
-                    Response.Redirect("~/Default.aspx");
-                }*/
-            }
+                Response.Redirect("~/Default.aspx");
+                //}
+                    /*DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(Request.Cookies["authcookie"]["email"], Request.Cookies["authcookie"]["password"]);
+                    if (loginObj != null) {
+                        // account Table
+                        Session["accountID"] = loginObj.accountID;
+                        Session["accountType"] = loginObj.accountType;
+                        Session["name"] = loginObj.name;
+                        Session["email"] = loginObj.email;
+                        Session["mobile"] = loginObj.mobile;
+                        Session["dateOfBirth"] = loginObj.dateOfBirth;
+
+                        //lblError.Text = "Yayy! Succeeded";
+                        if (Session["accountType"].ToString() == "student")
+                        {
+                            // student table
+                            DAL.Login studentObj = LoginDAO.getStudentTableByAccountID(loginObj.accountID);
+                            Session["adminNo"] = studentObj.adminNo;
+                            Session["school"] = studentObj.studentSchool;
+                            Session["course"] = studentObj.course;
+                            Session["allergies"] = studentObj.allergies;
+                            Session["dietaryNeeds"] = studentObj.dietaryNeeds;
+                            Session["parentID"] = studentObj.parentID;
+
+                        }
+                        else if (Session["accountType"].ToString() == "parent")
+                        {
+                            // parent table
+                            DAL.Login parentObj = LoginDAO.getParentTableByAccountID(loginObj.accountID);
+                            Session["parentID"] = parentObj.parentID;
+                            Session["adminNo"] = parentObj.adminNo;
+                        }
+                        
+                        Response.Redirect("~/Default.aspx");
+                    }*/
+                }
         }
         protected void btnCheckFor2FA_Click(object sender, EventArgs e) // fix error exception msg!
         {
@@ -127,7 +152,7 @@ namespace ITP213
                     string pwdWithSalt = pwd + dbSalt;
                     byte[] hashWithSalt = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
                     string userHash = Convert.ToBase64String(hashWithSalt);
-
+                    
                     if (CheckBanAccount() == true) 
                     { }
                     else // if account is not ban, continue verifying the user
@@ -401,6 +426,7 @@ namespace ITP213
                     {
                         Response.Redirect("changePassword.aspx");
                     }
+                    
 
                     Response.Redirect("Default.aspx");
                 }
