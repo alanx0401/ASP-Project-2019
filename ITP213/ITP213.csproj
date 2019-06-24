@@ -212,6 +212,8 @@
     <Content Include="CreateTest.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="DefaultErrorPage.aspx" />
+    <Content Include="EventLogs.aspx" />
+    <Content Include="ForgetPassword.aspx" />
     <Content Include="GoogleAuth.aspx" />
     <Content Include="ImageGallery.aspx" />
     <Content Include="Images\check.png" />
@@ -389,6 +391,7 @@
     <Compile Include="DAL\CCARecordDAO.cs" />
     <Compile Include="DAL\Complain.cs" />
     <Compile Include="DAL\ComplainDAO.cs" />
+    <Compile Include="DAL\EventLog.cs" />
     <Compile Include="DAL\Feedback.cs" />
     <Compile Include="DAL\FeedbackDAO.cs" />
     <Compile Include="DAL\GeneralRecord.cs" />
@@ -432,6 +435,20 @@
     </Compile>
     <Compile Include="DefaultErrorPage.aspx.designer.cs">
       <DependentUpon>DefaultErrorPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EventLogs.aspx.cs">
+      <DependentUpon>EventLogs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EventLogs.aspx.designer.cs">
+      <DependentUpon>EventLogs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ForgetPassword.aspx.cs">
+      <DependentUpon>ForgetPassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ForgetPassword.aspx.designer.cs">
+      <DependentUpon>ForgetPassword.aspx</DependentUpon>
     </Compile>
     <Compile Include="Email\IEmailSender.cs" />
     <Compile Include="Email\SendEmailDetails.cs" />
