@@ -6,7 +6,6 @@ using System.Web;
 using System.Data.SqlClient;
 using System.Configuration;
 
-
 namespace ITP213.DAL
 {
     public class EventLog
@@ -16,6 +15,7 @@ namespace ITP213.DAL
         private string _eventDesc = "";
         private DateTime _dateTimeDetails; // this is another way to specify empty string
         private string _UUID = "";
+  
         // Default constructor
         public EventLog()
         {
@@ -28,6 +28,7 @@ namespace ITP213.DAL
             _eventDesc = eventDesc;
             _dateTimeDetails = dateTimeDetails;
             _UUID = UUID;
+        
         }
 
         // Get/Set the attributes of the EventLogs object.
@@ -46,42 +47,44 @@ namespace ITP213.DAL
             get { return _dateTimeDetails; }
             set { _dateTimeDetails = value; }
         }
+
         public string UUID
         {
             get { return _UUID; }
             set { _UUID = value; }
         }
 
+
         public List<EventLog> GetEvents()
-        {
-            List<EventLog> prodList = new List<EventLog>();
-            int eventID;
-            string eventDesc;
-            DateTime dateTimeDetails;
-            string UUID;
-            string query = "SELECT * FROM EventLogs Order By eventID DESC";
-            SqlConnection conn = new SqlConnection(_conn);
-            SqlCommand cmd = new SqlCommand(query, conn);
-            conn.Open();
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
-            {
-                eventID = int.Parse(dr["eventID"].ToString());
-                eventDesc = dr["eventDesc"].ToString();
-                dateTimeDetails = Convert.ToDateTime(dr["dateTimeDetails"].ToString());
-                UUID = dr["UUID"].ToString();
-                EventLog obj = new EventLog(eventID, eventDesc, dateTimeDetails, UUID);
-                prodList.Add(obj);
-            }
+         {
+             List<EventLog> prodList = new List<EventLog>();
+             int eventID;
+             string eventDesc;
+             DateTime dateTimeDetails;
+             string UUID;
+             string query = "SELECT * FROM EventLogs Order By eventID DESC";
+             SqlConnection conn = new SqlConnection(_conn);
+             SqlCommand cmd = new SqlCommand(query, conn);
+             conn.Open();
+             SqlDataReader dr = cmd.ExecuteReader();
+             while (dr.Read())
+             {
+                 eventID = int.Parse(dr["eventID"].ToString());
+                 eventDesc = dr["eventDesc"].ToString();
+                 dateTimeDetails = Convert.ToDateTime(dr["dateTimeDetails"].ToString());
+                 UUID = dr["UUID"].ToString();
+                 EventLog obj = new EventLog(eventID, eventDesc, dateTimeDetails, UUID);
+                 prodList.Add(obj);
+             }
 
-            conn.Close();
-            dr.Close();
-            dr.Dispose();
+             conn.Close();
+             dr.Close();
+             dr.Dispose();
 
-            return prodList;
-        }
+             return prodList;
+         }
 
-        //To display contents based on EventDesc 
+        //To display contents in GVEventLogs based on EventDesc 
         public List<EventLog> getEventDesc(string eventDesc)
         {
             List<EventLog> eventDescList = new List<EventLog>();

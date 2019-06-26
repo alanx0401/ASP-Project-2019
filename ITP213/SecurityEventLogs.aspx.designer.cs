@@ -31,22 +31,13 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceGVParticularEvent;
         
         /// <summary>
-        /// lb_title control.
+        /// DDLSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lb_title;
-        
-        /// <summary>
-        /// DDLEventDesc control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DDLEventDesc;
+        protected global::System.Web.UI.WebControls.DropDownList DDLSearch;
         
         /// <summary>
         /// btnReset control.
@@ -58,6 +49,15 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.Button btnReset;
         
         /// <summary>
+        /// PanelEvents control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel PanelEvents;
+        
+        /// <summary>
         /// GVEventLogs control.
         /// </summary>
         /// <remarks>
@@ -67,13 +67,22 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.GridView GVEventLogs;
         
         /// <summary>
-        /// lb_SearchFilter control.
+        /// PanelSearchFilter control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lb_SearchFilter;
+        protected global::System.Web.UI.WebControls.Panel PanelSearchFilter;
+        
+        /// <summary>
+        /// DDLEventDesc control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DDLEventDesc;
         
         /// <summary>
         /// GVParticularEvent control.
@@ -83,5 +92,14 @@ namespace ITP213 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView GVParticularEvent;
+        
+        /// <summary>
+        /// GVEventOccured control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GVEventOccured;
     }
 }

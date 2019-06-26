@@ -391,6 +391,7 @@
     <Compile Include="DAL\CCARecordDAO.cs" />
     <Compile Include="DAL\Complain.cs" />
     <Compile Include="DAL\ComplainDAO.cs" />
+    <Compile Include="DAL\EventCount.cs" />
     <Compile Include="DAL\EventLog.cs" />
     <Compile Include="DAL\Feedback.cs" />
     <Compile Include="DAL\FeedbackDAO.cs" />

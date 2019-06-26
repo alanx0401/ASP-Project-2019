@@ -17,30 +17,47 @@ namespace ITP213
             if (!IsPostBack)
             {
                 bind();
-                GVParticularEvent.Visible = false;
-                lb_SearchFilter.Visible = false;
+                PanelEvents.Visible = true;
+                PanelSearchFilter.Visible = false;
             }
         }
         protected void bind()
         {
+     
             List<EventLog> eventsList = new List<EventLog>();
             eventsList = obj.GetEvents();
             GVEventLogs.DataSource = eventsList;
-            GVEventLogs.DataBind();  
+            GVEventLogs.DataBind();
         }
 
         protected void btnReset_Click(object sender, EventArgs e)
         {
-            GVEventLogs.Visible = true;
-            GVParticularEvent.Visible = false;
-            lb_SearchFilter.Visible = false;
+            PanelEvents.Visible = true;
+            DDLSearch.SelectedValue = "Please Select";
+            PanelSearchFilter.Visible = false;
+        }
+
+        protected void DDLSearch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (DDLSearch.SelectedValue== "Please Select")
+            {
+                PanelEvents.Visible = true;
+                PanelSearchFilter.Visible = false;
+            }
+            else
+            {
+                PanelEvents.Visible = false;
+                PanelSearchFilter.Visible = true;
+            }
         }
 
         protected void DDLEventDesc_SelectedIndexChanged(object sender, EventArgs e)
         {
-            GVEventLogs.Visible = false;
-            GVParticularEvent.Visible = true;
-            lb_SearchFilter.Visible = true;
+            EventCount eventCountObj = new EventCount();
+            List<EventCount> eventCountList = new List<EventCount>();
+            eventCountList = eventCountObj.GetEventsCount(DDLEventDesc.SelectedValue);
+            GVEventOccured.DataSource = eventCountList;
+            GVEventOccured.DataBind();
         }
     }
 }

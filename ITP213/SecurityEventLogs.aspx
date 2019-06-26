@@ -40,11 +40,18 @@
         </SelectParameters>
      </asp:SqlDataSource>
     <div>
-          <asp:Label ID="lb_title" runat="server" Text="Search Filter: "></asp:Label>
-          <asp:DropDownList ID="DDLEventDesc" runat="server" DataSourceID="SqlDataSourceDDL" DataTextField="eventDesc" DataValueField="eventDesc" AutoPostBack="True" OnSelectedIndexChanged="DDLEventDesc_SelectedIndexChanged">
-          </asp:DropDownList>
-          &nbsp&nbsp <asp:Button ID="btnReset" runat="server" Text="Reset" OnClick="btnReset_Click" />
-          <asp:GridView ID="GVEventLogs" runat="server" AutoGenerateColumns="False" Height="217px" Width="747px">
+        <fieldset>
+            <legend>Search by dropdown list</legend>
+            <asp:DropDownList ID="DDLSearch" runat="server" AutoPostBack="True" OnSelectedIndexChanged="DDLSearch_SelectedIndexChanged">
+                <asp:ListItem>Please Select</asp:ListItem>
+                <asp:ListItem>Search By Event </asp:ListItem>
+            </asp:DropDownList>&nbsp <asp:Button ID="btnReset" runat="server" Text="Reset" OnClick="btnReset_Click" />
+        </fieldset>
+    </div>
+    <div>
+        <asp:Panel ID="PanelEvents" runat="server">
+          <p>All Security Events</p>
+          <asp:GridView ID="GVEventLogs" runat="server" AutoGenerateColumns="False" Height="217px" Width="747px" >
             <Columns>
                 <asp:BoundField DataField="eventID" HeaderText="Event ID" />
                 <asp:BoundField DataField="eventDesc" HeaderText="Event Description" />
@@ -52,9 +59,21 @@
                 <asp:BoundField DataField="UUID" HeaderText="UUID" />
             </Columns>
           </asp:GridView>
+        </asp:Panel>
     </div>
+    <br />
     <div>
-     <asp:Label ID="lb_SearchFilter" runat="server" Text="Search Based on Filter: "></asp:Label>
-     <asp:GridView ID="GVParticularEvent" runat="server" DataSourceID="SqlDataSourceGVParticularEvent"></asp:GridView>
+        <asp:Panel ID="PanelSearchFilter" runat="server">
+          Search Filter Based on particular event: &nbsp <asp:DropDownList ID="DDLEventDesc" runat="server" DataSourceID="SqlDataSourceDDL" DataTextField="eventDesc" DataValueField="eventDesc" AutoPostBack="True" OnSelectedIndexChanged="DDLEventDesc_SelectedIndexChanged" >
+          </asp:DropDownList>
+          <asp:GridView ID="GVParticularEvent" runat="server" DataSourceID="SqlDataSourceGVParticularEvent"></asp:GridView>
+          <br />
+          <asp:GridView ID="GVEventOccured" runat="server" AutoGenerateColumns="False">
+            <Columns>
+                <asp:BoundField DataField="UUID" HeaderText="UUID" />
+                <asp:BoundField DataField="NoOfOccurance" HeaderText="Event Occurance" />
+            </Columns>
+        </asp:GridView>
+        </asp:Panel>
     </div>
 </asp:Content>
