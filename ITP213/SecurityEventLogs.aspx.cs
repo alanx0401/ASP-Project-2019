@@ -19,6 +19,7 @@ namespace ITP213
                 bind();
                 PanelEvents.Visible = true;
                 PanelSearchFilter.Visible = false;
+                PanelEventDuration.Visible = false;
             }
         }
         protected void bind()
@@ -32,32 +33,54 @@ namespace ITP213
 
         protected void btnReset_Click(object sender, EventArgs e)
         {
+            DDLSearch.SelectedValue = "0";
             PanelEvents.Visible = true;
-            DDLSearch.SelectedValue = "Please Select";
             PanelSearchFilter.Visible = false;
+            PanelEventDuration.Visible = false;
+            PanelUUID.Visible = false;
         }
 
         protected void DDLSearch_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (DDLSearch.SelectedValue== "Please Select")
+            if (DDLSearch.SelectedValue== "0")
             {
                 PanelEvents.Visible = true;
                 PanelSearchFilter.Visible = false;
+                PanelEventDuration.Visible = false;
+                PanelUUID.Visible = false;
+            }
+            else if (DDLSearch.SelectedValue== "1")
+            {
+                PanelEvents.Visible = false;
+                PanelSearchFilter.Visible = true;
+                PanelEventDuration.Visible = false;
+                PanelUUID.Visible = false;
+            }
+            else if (DDLSearch.SelectedValue == "2")
+            {
+                PanelEvents.Visible = false;
+                PanelSearchFilter.Visible = false;
+                PanelEventDuration.Visible = true;
+                PanelUUID.Visible = false;
             }
             else
             {
                 PanelEvents.Visible = false;
-                PanelSearchFilter.Visible = true;
+                PanelSearchFilter.Visible = false;
+                PanelEventDuration.Visible = false;
+                PanelUUID.Visible = true;
             }
+
         }
 
         protected void DDLEventDesc_SelectedIndexChanged(object sender, EventArgs e)
         {
-            EventCount eventCountObj = new EventCount();
-            List<EventCount> eventCountList = new List<EventCount>();
-            eventCountList = eventCountObj.GetEventsCount(DDLEventDesc.SelectedValue);
-            GVEventOccured.DataSource = eventCountList;
-            GVEventOccured.DataBind();
+
+        }
+
+        protected void GVeventDuration_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

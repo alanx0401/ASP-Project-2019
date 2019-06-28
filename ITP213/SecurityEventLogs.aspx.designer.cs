@@ -22,6 +22,33 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceDDL;
         
         /// <summary>
+        /// SqlDataSourceDDLEventDuration control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceDDLEventDuration;
+        
+        /// <summary>
+        /// SqlDataSourceEventCount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceEventCount;
+        
+        /// <summary>
+        /// SqlDataSourceDDLUUID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceDDLUUID;
+        
+        /// <summary>
         /// SqlDataSourceGVParticularEvent control.
         /// </summary>
         /// <remarks>
@@ -29,6 +56,24 @@ namespace ITP213 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceGVParticularEvent;
+        
+        /// <summary>
+        /// SqlDataSourceGVEventDuration control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceGVEventDuration;
+        
+        /// <summary>
+        /// SqlDataSourceGVUUID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceGVUUID;
         
         /// <summary>
         /// DDLSearch control.
@@ -67,6 +112,15 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.GridView GVEventLogs;
         
         /// <summary>
+        /// chartEvent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.DataVisualization.Charting.Chart chartEvent;
+        
+        /// <summary>
         /// PanelSearchFilter control.
         /// </summary>
         /// <remarks>
@@ -94,12 +148,57 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.GridView GVParticularEvent;
         
         /// <summary>
-        /// GVEventOccured control.
+        /// PanelEventDuration control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GVEventOccured;
+        protected global::System.Web.UI.WebControls.Panel PanelEventDuration;
+        
+        /// <summary>
+        /// DDLEventPeriod control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DDLEventPeriod;
+        
+        /// <summary>
+        /// GVeventDuration control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GVeventDuration;
+        
+        /// <summary>
+        /// PanelUUID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel PanelUUID;
+        
+        /// <summary>
+        /// DDLUUID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DDLUUID;
+        
+        /// <summary>
+        /// GVUUID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GVUUID;
     }
 }
