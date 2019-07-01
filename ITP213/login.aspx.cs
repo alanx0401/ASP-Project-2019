@@ -304,6 +304,7 @@ namespace ITP213
                 }
                 else // if no 2FA
                 {
+                    Session["UUID"] = loginObj.UUID;
                     Session["accountID"] = loginObj.UUID;
                     Session["accountType"] = loginObj.accountType;
                     Session["name"] = loginObj.name;
