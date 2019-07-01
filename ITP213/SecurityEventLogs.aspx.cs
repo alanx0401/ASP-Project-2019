@@ -20,6 +20,7 @@ namespace ITP213
                 PanelEvents.Visible = true;
                 PanelSearchFilter.Visible = false;
                 PanelEventDuration.Visible = false;
+                PanelUUID.Visible = false;
             }
         }
         protected void bind()

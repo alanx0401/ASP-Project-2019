@@ -49,7 +49,12 @@
             <asp:ControlParameter ControlID="DDLEventPeriod" Name="dateTimeDetails" PropertyName="SelectedValue" Type="DateTime" />
         </SelectParameters>
      </asp:SqlDataSource>
-    <asp:SqlDataSource ID="SqlDataSourceGVUUID" runat="server" ConnectionString="<%$ ConnectionStrings:ConnStr %>" SelectCommand="SELECT [UUID], [eventDesc], [dateTimeDetails] FROM [Eventlogs] WHERE ([UUID] = @UUID) ORDER BY [eventID] DESC">
+    <asp:SqlDataSource ID="SqlDataSourceGVUUID" runat="server" ConnectionString="<%$ ConnectionStrings:ConnStr %>" SelectCommand="SELECT [Eventlogs].[UUID], [eventDesc], [dateTimeDetails], [name]
+FROM [Eventlogs] 
+INNER JOIN [account]
+ON [account].UUID = [Eventlogs].UUID
+WHERE ([Eventlogs].[UUID] = @UUID) 
+ORDER BY [eventID] DESC" ProviderName="System.Data.SqlClient">
         <SelectParameters>
             <asp:ControlParameter ControlID="DDLUUID" Name="UUID" PropertyName="SelectedValue" Type="String" />
         </SelectParameters>
@@ -124,6 +129,7 @@
                   <asp:BoundField DataField="UUID" HeaderText="UUID" SortExpression="UUID" />
                   <asp:BoundField DataField="eventDesc" HeaderText="eventDesc" SortExpression="eventDesc" />
                   <asp:BoundField DataField="dateTimeDetails" HeaderText="dateTimeDetails" SortExpression="dateTimeDetails" />
+                  <asp:BoundField DataField="name" HeaderText="name" SortExpression="name" />
               </Columns>
             </asp:GridView>
           <br />
