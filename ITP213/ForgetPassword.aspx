@@ -55,6 +55,24 @@
             width: 576px;
             text-align: center;
         }
+        .auto-style13 {
+            width: 662px;
+            height: 72px;
+            text-align: center;
+        }
+        .auto-style14 {
+            height: 72px;
+            width: 576px;
+        }
+        .auto-style15 {
+            width: 662px;
+            height: 81px;
+            text-align: center;
+        }
+        .auto-style16 {
+            height: 81px;
+            width: 576px;
+        }
     </style>
     <form id="form1" runat="server">
         <div class="auto-style1">
@@ -74,18 +92,18 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="auto-style11">
+                        <td class="auto-style15">
                             <asp:Label ID="lbAdminno" runat="server" Font-Size="X-Large" ForeColor="White" Text="Enter your Admin No."></asp:Label>
                         </td>
-                        <td class="auto-style8">
+                        <td class="auto-style16">
                             <asp:TextBox ID="tbAdminno" runat="server" Height="34px" Width="410px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
-                        <td class="auto-style11">
+                        <td class="auto-style13">
                             <asp:Label ID="lbNewpassword" runat="server" Font-Size="X-Large" ForeColor="White" Text="Enter your new password"></asp:Label>
                         </td>
-                        <td class="auto-style8">
+                        <td class="auto-style14">
                             <asp:TextBox ID="tbNewpassword" runat="server" Height="34px" Width="410px" TextMode="Password"></asp:TextBox>
                         </td>
                     </tr>

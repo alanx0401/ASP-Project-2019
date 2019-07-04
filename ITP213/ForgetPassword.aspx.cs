@@ -13,5 +13,12 @@ namespace ITP213
         {
 
         }
+        protected void btnReset_Click(object sender, EventArgs e)
+        {
+            string email, pw;
+            email = tbEmail.Text;
+            pw = tbNewpassword.Text;
+
+        }
     }
 }
