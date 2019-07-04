@@ -15,6 +15,7 @@ namespace ITP213
             //{
             if (Session["UUID"] != null)
             {
+                HyperLinkChangePassword.NavigateUrl = "/changePassword.aspx";
                 DAL.Settings obj = DAL.SettingsDAO.getAccountTableByUUID(Session["UUID"].ToString());
                 if (obj != null)
                 {

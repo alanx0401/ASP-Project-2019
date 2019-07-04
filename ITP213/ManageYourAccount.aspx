@@ -54,7 +54,9 @@
         Google Auth:
         <asp:Label ID="lblGoogleAuth" runat="server" Text=""></asp:Label>
         &nbsp;[<asp:HyperLink ID="HyperLinkGoogleAuth" runat="server">Enable</asp:HyperLink>
-        ]</p>
+        ]<br />
+    <asp:HyperLink ID="HyperLinkChangePassword" runat="server">Change Password</asp:HyperLink>
+    </p>
     <p>
         <asp:Label ID="lblResult" runat="server"></asp:Label>
     </p>
