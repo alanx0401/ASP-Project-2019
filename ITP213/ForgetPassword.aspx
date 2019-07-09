@@ -10,8 +10,9 @@
             text-align: center;
         }
         .auto-style2 {
-            width: 73%;
+            width: 78%;
             height: 413px;
+            margin-right: 252px;
         }
         .auto-style4 {
             width: 662px;
@@ -20,7 +21,7 @@
         }
         .auto-style5 {
             height: 66px;
-            width: 576px;
+            width: 1301px;
         }
         .auto-style6 {
             width: 662px;
@@ -29,10 +30,10 @@
         }
         .auto-style7 {
             height: 86px;
-            width: 576px;
+            width: 1301px;
         }
         .auto-style8 {
-            width: 576px;
+            width: 1301px;
         }
     </style>
 </head>
@@ -50,11 +51,6 @@
             width: 662px;
             text-align: center;
         }
-        .auto-style12 {
-            height: 66px;
-            width: 576px;
-            text-align: center;
-        }
         .auto-style13 {
             width: 662px;
             height: 72px;
@@ -62,16 +58,12 @@
         }
         .auto-style14 {
             height: 72px;
-            width: 576px;
+            width: 1301px;
         }
         .auto-style15 {
-            width: 662px;
-            height: 81px;
+            width: 1301px;
+            height: 66px;
             text-align: center;
-        }
-        .auto-style16 {
-            height: 81px;
-            width: 576px;
         }
     </style>
     <form id="form1" runat="server">
@@ -89,22 +81,17 @@
                         </td>
                         <td class="auto-style8">
                             <asp:TextBox ID="tbEmail" runat="server" Height="34px" Width="410px"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidatorEmail" runat="server" ControlToValidate="tbEmail" ErrorMessage="Email is Required" ForeColor="#CC3300"></asp:RequiredFieldValidator>
                         </td>
                     </tr>
-                    <tr>
-                        <td class="auto-style15">
-                            <asp:Label ID="lbAdminno" runat="server" Font-Size="X-Large" ForeColor="White" Text="Enter your Admin No."></asp:Label>
-                        </td>
-                        <td class="auto-style16">
-                            <asp:TextBox ID="tbAdminno" runat="server" Height="34px" Width="410px"></asp:TextBox>
-                        </td>
-                    </tr>
+                    
                     <tr>
                         <td class="auto-style13">
                             <asp:Label ID="lbNewpassword" runat="server" Font-Size="X-Large" ForeColor="White" Text="Enter your new password"></asp:Label>
                         </td>
                         <td class="auto-style14">
                             <asp:TextBox ID="tbNewpassword" runat="server" Height="34px" Width="410px" TextMode="Password"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidatorNewpw" runat="server" ControlToValidate="tbNewpassword" ErrorMessage="Password is required" ForeColor="#CC3300"></asp:RequiredFieldValidator>
                         </td>
                     </tr>
                     <tr>
@@ -113,6 +100,7 @@
                         </td>
                         <td class="auto-style7">
                             <asp:TextBox ID="tbConfirmpassword" runat="server" Height="34px" Width="410px" TextMode="Password"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidatorConfirmpw" runat="server" ControlToValidate="tbConfirmpassword" ErrorMessage="Enter password again" ForeColor="#CC3300"></asp:RequiredFieldValidator>
                         </td>
                     </tr>
                     <tr>
@@ -127,7 +115,7 @@
                         <td>
 
                         </td>
-                        <td class="auto-style12">
+                        <td class="auto-style15">
                             <asp:Button ID="btnReset" runat="server" Text="Reset Password" Font-Size="X-Large" Height="37px" Width="225px" />
                         </td>
                     </tr>
