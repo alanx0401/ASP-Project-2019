@@ -49,13 +49,22 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.TextBox tbEmail;
         
         /// <summary>
-        /// RequiredFieldValidatorEmail control.
+        /// lbAdminno control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidatorEmail;
+        protected global::System.Web.UI.WebControls.Label lbAdminno;
+        
+        /// <summary>
+        /// tbAdminno control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbAdminno;
         
         /// <summary>
         /// lbNewpassword control.
@@ -76,15 +85,6 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.TextBox tbNewpassword;
         
         /// <summary>
-        /// RequiredFieldValidatorNewpw control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidatorNewpw;
-        
-        /// <summary>
         /// lbConfirmpassword control.
         /// </summary>
         /// <remarks>
@@ -101,15 +101,6 @@ namespace ITP213 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbConfirmpassword;
-        
-        /// <summary>
-        /// RequiredFieldValidatorConfirmpw control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidatorConfirmpw;
         
         /// <summary>
         /// lbAdditional control.
