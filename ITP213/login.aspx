@@ -49,10 +49,6 @@
                                     <div class="form-group">
                                         <asp:CheckBox ID="cbRememberMe" lass="form-check-input" runat="server" text="Remember Me" Checked="True" />
                                     </div>
-                                    <div class="form-group">
-           
-                                        <asp:Label ID="lblForgetAccount" runat="server"><a href="#" onclick="window.open('ForgetPasswordWindow.aspx','FP','width=500,height=50,top=300,left=500,fullscreen=no,resizable=0');">Forget Account?</a></asp:Label>
-                                    </div>
                                     <p>
                                         <asp:Button ID="btnLogin" class="btn btn-success float-right" runat="server" Text="Login" OnClick="btnLogin_Click" />
                                     </p>
