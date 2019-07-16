@@ -116,22 +116,22 @@ namespace ITP213.DAL
 
             return eventDescList;
         }
-
+     
         // For Wycliff's Password Reset and Pei Shan's Login
-        public int EventInsert()
+        public int EventInsert(string eventDesc, DateTime dateTimeDetails, string UUID)
         {
 
             int result = 0;
-            string queryStr = "INSERT INTO EventLogs(eventID, eventDesc, dateTimeDetails, UUID)" +
-            "values(@eventID, @eventDesc, @dateTimeDetails, @UUID)";
+            string queryStr = "INSERT INTO EventLogs(eventDesc, dateTimeDetails, UUID)" +
+            "values(@eventDesc, @dateTimeDetails, @UUID)";
             try
             {
                 SqlConnection conn = new SqlConnection(_conn);
                 SqlCommand cmd = new SqlCommand(queryStr, conn);
-                cmd.Parameters.AddWithValue("@eventID", this.eventID);
-                cmd.Parameters.AddWithValue("@eventDesc", this.eventDesc);
-                cmd.Parameters.AddWithValue("@dateTimeDetails", DateTime.Now);
-                cmd.Parameters.AddWithValue("@UUID", this.UUID);
+                
+                cmd.Parameters.AddWithValue("@eventDesc", eventDesc);
+                cmd.Parameters.AddWithValue("@dateTimeDetails", dateTimeDetails);
+                cmd.Parameters.AddWithValue("@UUID", UUID);
                 conn.Open();
                 result += cmd.ExecuteNonQuery();
                 conn.Close();
