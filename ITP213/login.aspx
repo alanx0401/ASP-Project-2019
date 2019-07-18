@@ -28,7 +28,7 @@
     </style>
     <div class="container py-5">
         <div class="row">
-            <div class="auto-style1">
+            <div class="col-md-12">
                 <h4 class="text-center text-white mb-4">NYP Login</h4>
                 <div class="row">
                     <div class="col-md-4 mx-auto">
@@ -47,6 +47,7 @@
                                         <div class="form-group">
                                             <asp:TextBox ID="tbEmail" runat="server" placeholder="Email" TextMode="Email" oninput="checkPassword();" AutoCompleteType="Disabled"></asp:TextBox>
                                         </div>
+                                        <!--TextMode="Password"-->
                                         <div class="form-group">
                                             <asp:TextBox ID="tbPassword" runat="server" placeholder="Password" oninput="checkPassword();" AutoCompleteType="Disabled" TextMode="Password"></asp:TextBox>
                                         </div>
@@ -60,7 +61,7 @@
                                         
                                         <p>
                                             <asp:Label ID="lblCreateAccount" runat="server"><a href="register.aspx">Create Account</a></asp:Label>
-                                            <asp:Button ID="btnLogin" class="btn btn-success float-right" runat="server" Text="Login" OnClick="btnPanel1_Click"/>
+                                            <asp:Button ID="btnLogin" class="btn btn-success float-right" runat="server" Text="Login" OnClick="btnCheckFor2FA_Click"/>
                                         </p>
                                         
                                     </asp:Panel>
@@ -69,10 +70,12 @@
                                     <asp:Panel ID="PanelPart2" runat="server" Visible="false">
                                         <div class="form-group">
                                             <asp:RadioButtonList ID="rb2FATypes" runat="server">
+                                                <asp:ListItem>Google Authenticator</asp:ListItem>
+                                                <asp:ListItem>One Time Password</asp:ListItem>
                                             </asp:RadioButtonList>
                                         </div>
                                         <div class="form-group">
-                                            <asp:Button ID="btnSubmitChoice" class="btn btn-primary float-right" runat="server" Text="Next" OnClick="btnPanel2_Click"/>
+                                            <asp:Button ID="btnSubmitChoice" class="btn btn-primary float-right" runat="server" Text="Next" OnClick="btnSubmitChoice_Click"/>
                                         </div>
                                         <br />
                                     </asp:Panel>
@@ -84,7 +87,7 @@
                                         </div>
                                         <div class="form-group">
                                             <asp:Button ID="btnBack2" class="btn btn-default float-left" runat="server" Text="Back" OnClick="btnBack2_Click" CausesValidation="false"/>
-                                            <asp:Button ID="btnSubmitPassword" class="btn btn-success float-right" runat="server" Text="Submit" OnClick="btnPanel3_Click" />
+                                            <asp:Button ID="btnSubmitPassword" class="btn btn-success float-right" runat="server" Text="Submit" OnClick="btnLogin_Click" />
                                         </div>
                                     </asp:Panel>
                                     <!--2FA Password-->
@@ -126,18 +129,6 @@
                 height: 50px;
                 line-height: 50px;
             }
-            .auto-style1 {
-                position: relative;
-                width: 100%;
-                min-height: 1px;
-                -ms-flex: 0 0 100%;
-                flex: 0 0 100%;
-                max-width: 100%;
-                left: 0px;
-                top: 0px;
-                padding-left: 15px;
-                padding-right: 15px;
-            }
         </style>
     </div>
     <!--Bootstrap core Javascript-->
@@ -171,15 +162,16 @@
     <!--Refere reCaptcha API-->    
     <script src="https://www.google.com/recaptcha/api.js?onload=renderRecaptcha&render=explicit" async defer></script>  
     <script type="text/javascript">  
-        var your_site_key = '<%= ConfigurationManager.AppSettings["SiteKey"]%>';
-        var renderRecaptcha = function () {
-            grecaptcha.render('ReCaptchContainer', {
-                'sitekey': your_site_key,
-                theme: 'light', //light or dark    
-                type: 'image',// image or audio    
-                size: 'normal'//normal or compact    
-            });
-        };
-
+    var your_site_key = '<%= ConfigurationManager.AppSettings["SiteKey"]%>';  
+    var renderRecaptcha = function () {  
+        grecaptcha.render('ReCaptchContainer', {
+            'sitekey': your_site_key,
+            theme: 'light', //light or dark    
+            type: 'image',// image or audio    
+            size: 'normal'//normal or compact    
+        });  
+    };
+  
     </script>
 </body>
+</html>
