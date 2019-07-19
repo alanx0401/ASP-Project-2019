@@ -42,22 +42,41 @@ namespace ITP213
             tbDateOfBirth.Attributes.Add("autocomplete", "off");
             tbContactNumber.Attributes.Add("autocomplete", "off");
             tbVerifyPassword.Attributes.Add("autocomplete", "off");
-           
+
+            CVDateOfBirth1.ValueToCompare = DateTime.Now.ToShortDateString();
         }
         protected void btnNext_Click(object sender, EventArgs e) // Panel 1: Inserting data in account table
-        { 
-            // Disable Panel 1's Content
-            PanelPart1.Visible = false;
-            btnNext.Visible = false;
-            btnRegister.Visible = false;
-            lblLogin.Visible = false;
+        {
+            string adminNo = tbAdminNo.Text.Trim();
+            string email = tbEmail.Text.Trim();
+            string password = tbPassword.Text.Trim();
+            string realName = tbName.Text.Trim();
+            Boolean validateAdminNumberResult = DAL.Validation.RegisterValidation.checkIfAdminNumberExist(adminNo);
+            Boolean validateEmailResult = DAL.Validation.RegisterValidation.checkIfEmailExist(email);
 
-            // Enable Panel 2's Content
-            PanelPart2.Visible = true;
-            Label1.Text = "More information details";
-            btnNext1.Visible = true;
+            bool adminNoOk = !AllPartsOfLength(adminNo, 3)
+                .Any(part => password.Contains(part));
+            bool realNameOk = !AllPartsOfLength(realName, 3)
+                .Any(part => password.Contains(part));
 
-            registeringAccount(tbPassword.Text); // Inserting data in account table
+            Boolean validatePasswordInDictionary = checkPasswordFoundInDictionary(password);
+
+            if (validateAdminNumberResult != true && validateEmailResult != true && adminNoOk == true && realNameOk == true && validatePasswordInDictionary != true) // these validations needs be true such that user can move to the next panel.
+            {
+                // Disable Panel 1's Content
+                PanelPart1.Visible = false;
+                btnNext.Visible = false;
+                btnRegister.Visible = false;
+                lblLogin.Visible = false;
+
+                // Enable Panel 2's Content
+                PanelPart2.Visible = true;
+                Label1.Text = "More information details";
+                btnNext1.Visible = true;
+
+            
+                registeringAccount(tbPassword.Text); // Inserting data in account table
+            }
 
         }
         protected void btnNext1_Click(object sender, EventArgs e) // Panel 2: Update contact number, date of birth and adminNo
@@ -83,7 +102,7 @@ namespace ITP213
             {
                 int result = RegisterDAO.updateById(tbContactNumber.Text, tbDateOfBirth.Text, tbAdminNo.Text); // Based on admin no
                 if (result == 1) // contactNumber and dateOfBirth are successfully updated
-                {
+                { 
                     SendOTP();
                 }
                 else
@@ -94,7 +113,7 @@ namespace ITP213
             }
             catch (Exception)
             {
-
+                lblError.Text = "Sorry! An error has occurred!";
             }
         }
 
@@ -132,8 +151,137 @@ namespace ITP213
 
             // Verify phone code
             phoneVerification(tbVerifyPassword.Text);
-        }
 
+        }
+        // ===========================> Validations
+        // --> Panel 1
+        protected void CVAdminNo_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            args.IsValid = false;
+            string adminNo = tbAdminNo.Text.Trim();
+            Boolean result = DAL.Validation.RegisterValidation.checkIfAdminNumberExist(adminNo);
+            if (!Page.IsValid)
+            {
+
+                if (result != true) // admin number does not exists in db
+                {
+                    args.IsValid = true;
+                }
+            }
+            else
+            {
+
+                if (result != true) // admin number does not exists in db
+                {
+                    args.IsValid = true;
+                }
+            }
+        }
+        protected void CVEmail_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            args.IsValid = false;
+            string email = tbEmail.Text.Trim();
+            Boolean result = DAL.Validation.RegisterValidation.checkIfEmailExist(email);
+
+            if (!Page.IsValid)
+            {
+                if (result != true) // email does not exists in db
+                {
+                    args.IsValid = true;
+                }
+            }
+            else
+            {
+                if (result != true) // email does not exists in db
+                {
+                    args.IsValid = true;
+                }
+            }
+        }
+        protected void CVPassword_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            args.IsValid = false;
+
+            // Password should not contain user's name or admin number
+            string password = tbPassword.Text.Trim().ToLower();
+            string adminNo = tbAdminNo.Text.Trim().ToLower();
+
+            string realName = tbName.Text.Trim().ToLower();
+
+            bool adminNoOk = !AllPartsOfLength(adminNo, 3)
+                .Any(part => password.Contains(part));
+            bool realNameOk = !AllPartsOfLength(realName, 3)
+                .Any(part => password.Contains(part));
+            //lblError.Text = "username: " + adminNoOk + ", realName" + realNameOk; // for checking purposes
+
+            if (!Page.IsValid)
+            {
+                if (adminNoOk == true && realNameOk == true) // password does not contain adminNo(3 letters) & realName
+                {
+                    args.IsValid = true;
+                }
+            }
+            else
+            {
+                if (adminNoOk == true && realNameOk == true) // password does not contain adminNo(3 letters) & realName
+                {
+                    args.IsValid = true;
+                }
+            }
+        }
+        public IEnumerable<string> AllPartsOfLength(string value, int length)
+        {
+            for (int startPos = 0; startPos <= value.Length - length; startPos++)
+            {
+                yield return value.Substring(startPos, length);
+            }
+            yield break;
+        }
+        protected void CVPassword1_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            args.IsValid = false;
+
+            string password = tbPassword.Text.Trim();
+            Boolean result = checkPasswordFoundInDictionary(password);
+            if (!Page.IsValid)
+            {
+                if (result != true) // password does not exists in db
+                {
+                    args.IsValid = true;
+                }
+            }
+            else
+            {
+                if (result != true) // password does not exists in db
+                {
+                    args.IsValid = true;
+                }
+            }
+        }
+        private bool checkPasswordFoundInDictionary(string password)
+        {
+
+            Boolean result = false;
+
+            string filename = "DAL\\Validation\\Data\\dictionary.txt";
+            string FILEPATH = HttpRuntime.AppDomainAppPath + filename;
+            // temp
+            try
+            {   // Open the text file using a stream reader.
+
+                foreach (string line in System.IO.File.ReadAllLines(FILEPATH))
+                {
+                    if (line.Contains(password)) // password is found in the dictionary
+                        result = true;
+                }
+            }
+            catch (IOException ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+
+            return result;
+        }
         //=============================================================================================================================================================
         // Panel 1's stuff:
         private void registeringAccount(string pwd)
@@ -471,7 +619,6 @@ namespace ITP213
 
             return new SendEmailResponse();
         }
-
         public void sendingEmailVerification()
         {
             DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
@@ -480,13 +627,13 @@ namespace ITP213
             if (RegisterDAO.checkEmailVerificationTable(UUID) == null) // nth in the verification table
             {
                 string randomToken = Guid.NewGuid().ToString(); // email Token
-                string encodeRandomToken = Convert.ToBase64String(encryptData(randomToken)); // not used 
+                string encodeRandomToken = EncodeToken(randomToken); 
 
                 // insert
                 int result = RegisterDAO.insertIntoVerifyEmail(UUID, randomToken);
                 if (result == 1)
                 {
-                    Execute(tbName.Text, tbEmail.Text, randomToken);
+                    Execute(tbName.Text, tbEmail.Text, encodeRandomToken);
                 }
                 else
                 {
@@ -513,14 +660,14 @@ namespace ITP213
                     if (result == 1)
                     {
                         string randomToken = Guid.NewGuid().ToString(); // email Token
-                        string encodeRandomToken = Convert.ToBase64String(encryptData(randomToken)); // not used yet
+                        string encodeRandomToken = EncodeToken(randomToken); // not used yet
 
                         // insert
                         int result2 = RegisterDAO.insertIntoVerifyEmail(UUID, randomToken);
                         if (result2 == 1)
                         {
                             
-                            Execute(tbName.Text, tbEmail.Text, randomToken);
+                            Execute(tbName.Text, tbEmail.Text, encodeRandomToken);
                             lblError.Text = "We're sorry, the email address verification link you've submitted is invalid, expired, or has already been used.";
                             lblError.ForeColor = System.Drawing.Color.Red;
                         }
@@ -539,32 +686,11 @@ namespace ITP213
             }
         }
 
-        protected byte[] encryptData(string data)
+        
+        public static string EncodeToken(string serverName)
         {
-            RijndaelManaged cipher = new RijndaelManaged();
-            cipher.GenerateKey();
-            Key = cipher.Key;
-            IV = cipher.IV;
-
-            byte[] cipherText = null;
-            try
-            {
-                //RijndaelManaged cipher = new RijndaelManaged();
-                cipher.Key = Key;
-                cipher.IV = IV;
-                ICryptoTransform encryptTransform = cipher.CreateEncryptor();
-                byte[] plainText = Encoding.UTF8.GetBytes(data);
-                cipherText = encryptTransform.TransformFinalBlock(plainText, 0, plainText.Length);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.ToString());
-            }
-            finally { }
-
-            return cipherText;
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(serverName));
         }
-
         // Part 3: NewDeviceLogin
         public string GetMACAddress()
         {

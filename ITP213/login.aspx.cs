@@ -78,6 +78,33 @@ namespace ITP213
                     }
                 }
             }
+
+            // temporary
+            /*DAL.Login obj = LoginDAO.getLoginByEmailAndPassword("171846Z@mymail.nyp.edu.sg");
+
+            Session["UUID"] = obj.UUID;
+            // **** Find ways to remove the session below
+            Session["accountID"] = obj.UUID;
+            Session["accountType"] = obj.accountType;
+            Session["name"] = obj.name;
+            Session["email"] = "171846Z@mymail.nyp.edu.sg";
+            Session["mobile"] = obj.mobile;
+            Session["dateOfBirth"] = obj.dateOfBirth;
+
+            if (Session["accountType"].ToString() == "student")
+            {
+                // student table
+                DAL.Login studentObj = LoginDAO.getStudentTableByAccountID(obj.UUID);
+                Session["adminNo"] = studentObj.adminNo;
+                Session["school"] = studentObj.studentSchool;
+                Session["course"] = studentObj.course;
+                Session["allergies"] = studentObj.allergies;
+                Session["dietaryNeeds"] = studentObj.dietaryNeeds;
+
+            }
+
+            Response.Redirect("Default.aspx");*/
+            // ------ temp
         }
         protected void btnPanel1_Click(object sender, EventArgs e) // Submit login form and checks if pwd and email matches. 
         {
@@ -256,7 +283,12 @@ namespace ITP213
                                 if (failCount >= 9) // change account status from 'Not ban' to 'Ban' when fail count hits 10 in db ; #problem: doesn't update to 10
                                 {
                                     int result2 = LoginDAO.updateAccountStatusToBanByUUID(UUID);
-                                    if (result2 == 1) { }
+                                    if (result2 == 1)
+                                    {
+                                        // Kai Ming's function
+                                        EventLog eventObj = new EventLog();
+                                        int result3 = eventObj.EventInsert("Failed Login", DateTime.Now, UUID);
+                                    }
                                     else
                                     {
                                         lblError.Text = "An error has occured. Please try again.";
@@ -268,7 +300,12 @@ namespace ITP213
                                     failCount += 1;
 
                                     int result2 = LoginDAO.updateAccountFailedAttemptTableByUUID(UUID, failCount);
-                                    if (result2 == 1) { }
+                                    if (result2 == 1)
+                                    {
+                                        // Kai Ming's function
+                                        EventLog eventObj = new EventLog();
+                                        int result3 = eventObj.EventInsert("Failed Login", DateTime.Now, UUID);
+                                    }
                                     else
                                     {
                                         lblError.Text = "An error has occured. Please try again.";
@@ -279,7 +316,12 @@ namespace ITP213
                             else // insert failed attempt
                             {
                                 int result2 = LoginDAO.insertAccountFailedAttemptTable(UUID);
-                                if (result2 == 1) { }
+                                if (result2 == 1)
+                                {
+                                    // Kai Ming's function
+                                    EventLog eventObj = new EventLog();
+                                    int result3 = eventObj.EventInsert("Failed Login", DateTime.Now, UUID);
+                                }
                                 else
                                 {
                                     lblError.Text = "An error has occured. Please try again.";
@@ -407,7 +449,7 @@ namespace ITP213
                 int result = LoginDAO.deleteAccountFailedAttemptTableByUUID(loginObj.UUID);
                 if (result == 1)
                 {
-
+                    
                 }
                 else
                 {
@@ -415,6 +457,10 @@ namespace ITP213
                 }
 
             }
+
+            // Kai Ming's function
+            EventLog eventObj = new EventLog();
+            int result3 = eventObj.EventInsert("Successful Login", DateTime.Now, loginObj.UUID);
 
             if (Session["accountType"].ToString() == "student")
             {
@@ -701,8 +747,10 @@ namespace ITP213
             {
                 if (obj.secretKey != null)
                 {
+
                     string user_enter = tb2FAPin.Text; // store this password in db when it loads
-                    string secretKey = obj.secretKey;
+                    byte[] secretKeyByte = Convert.FromBase64String(obj.secretKey);
+                    string secretKey = decryptData(secretKeyByte);
 
                     TwoFactorAuthenticator tfa = new TwoFactorAuthenticator();
                     bool isCorrectPIN = tfa.ValidateTwoFactorPIN(secretKey, user_enter);
@@ -769,6 +817,48 @@ namespace ITP213
                 lblError.Text = "Sorry! An error has occurred!";
                 lblError.ForeColor = System.Drawing.Color.Red;
             }
+        }
+        protected string decryptData(byte[] cipherText)
+        {
+            string plainText = null;
+
+            try
+            {
+                RijndaelManaged cipher = new RijndaelManaged();
+                DAL.Login obj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
+                if (obj != null)
+                {
+                    cipher.IV = Convert.FromBase64String(obj.IV);
+                    cipher.Key = Convert.FromBase64String(obj.Key);
+
+                    // Create a decryptor to perform the stream transform
+                    ICryptoTransform decryptTransform = cipher.CreateDecryptor();
+
+                    // Create the streams used for decryption.
+                    using (MemoryStream msDecrypt = new MemoryStream(cipherText))
+                    {
+                        using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptTransform, CryptoStreamMode.Read))
+                        {
+                            using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                            {
+                                // Read the decrypted bytes from the decrypting stream and place them in a string
+                                plainText = srDecrypt.ReadToEnd();
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    lblError.Text = "Sorry! An error has occurred!";
+                    lblError.ForeColor = System.Drawing.Color.Red;
+                }
+                
+            }
+            catch (Exception ex) { throw new Exception(ex.ToString()); }
+            finally
+            { }
+
+            return plainText;
         }
         private void VerifyOTP(string userpassword)
         {

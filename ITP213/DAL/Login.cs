@@ -21,6 +21,8 @@ namespace ITP213.DAL
         public string accountStatus { set; get; }
         public DateTime banAccountDateTime { set; get; }
         public string secretKey { set; get; }
+        public string IV { set; get; }
+        public string Key { set; get; }
         // student table
         public string adminNo { set; get; }
         public string studentSchool { set; get; }

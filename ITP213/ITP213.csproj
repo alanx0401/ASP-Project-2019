@@ -210,8 +210,10 @@
     <Content Include="CreateReflection.aspx" />
     <Content Include="CreateRemarks.aspx" />
     <Content Include="CreateTest.aspx" />
+    <Content Include="DAL\Validation\Data\dictionary.txt" />
     <Content Include="Default.aspx" />
     <Content Include="DefaultErrorPage.aspx" />
+    <Content Include="EditAccount.aspx" />
     <Content Include="EventLogs.aspx" />
     <Content Include="ForgetPassword.aspx" />
     <Content Include="GoogleAuth.aspx" />
@@ -226,7 +228,6 @@
     <Content Include="Logout.aspx" />
     <Content Include="ManageImageGallery.aspx" />
     <Content Include="ManageYourAccount.aspx" />
-    <Content Include="OneTimePassword.aspx" />
     <Content Include="OverseasInternMain.aspx" />
     <Content Include="Format.aspx" />
     <Content Include="Images\favicon.png" />
@@ -250,6 +251,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="SecurityEventLogs.aspx" />
     <Content Include="Service References\SMSSvrRef\ITP213.SMSSvrRef.SMSData.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -389,8 +391,10 @@
     <Compile Include="DAL\BlogDAO.cs" />
     <Compile Include="DAL\CCARecord.cs" />
     <Compile Include="DAL\CCARecordDAO.cs" />
+    <Compile Include="DAL\ChangePassword.cs" />
     <Compile Include="DAL\Complain.cs" />
     <Compile Include="DAL\ComplainDAO.cs" />
+    <Compile Include="DAL\EditAccountDAO.cs" />
     <Compile Include="DAL\EventLog.cs" />
     <Compile Include="DAL\Feedback.cs" />
     <Compile Include="DAL\FeedbackDAO.cs" />
@@ -403,6 +407,7 @@
     <Compile Include="DAL\MedicalRecordDAO.cs" />
     <Compile Include="DAL\OverallReport.cs" />
     <Compile Include="DAL\OverallReportDAO.cs" />
+    <Compile Include="DAL\Peishan-Function\EmailAndPhoneValidation.cs" />
     <Compile Include="DAL\Question.cs" />
     <Compile Include="DAL\QuestionDAO.cs" />
     <Compile Include="DAL\Register.cs" />
@@ -420,6 +425,7 @@
     <Compile Include="DAL\TripAllocation.cs" />
     <Compile Include="DAL\TripAllocationDAO.cs" />
     <Compile Include="DAL\UploadedImage.cs" />
+    <Compile Include="DAL\Validation\RegisterValidation.cs" />
     <Compile Include="DAL\WithdrawalRequest.cs" />
     <Compile Include="DAL\WithdrawalRequestDAO.cs" />
     <Compile Include="Default.aspx.cs">
@@ -435,6 +441,13 @@
     </Compile>
     <Compile Include="DefaultErrorPage.aspx.designer.cs">
       <DependentUpon>DefaultErrorPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EditAccount.aspx.cs">
+      <DependentUpon>EditAccount.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditAccount.aspx.designer.cs">
+      <DependentUpon>EditAccount.aspx</DependentUpon>
     </Compile>
     <Compile Include="EventLogs.aspx.cs">
       <DependentUpon>EventLogs.aspx</DependentUpon>
@@ -516,13 +529,6 @@
     <Compile Include="ManageYourAccount.aspx.designer.cs">
       <DependentUpon>ManageYourAccount.aspx</DependentUpon>
     </Compile>
-    <Compile Include="OneTimePassword.aspx.cs">
-      <DependentUpon>OneTimePassword.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="OneTimePassword.aspx.designer.cs">
-      <DependentUpon>OneTimePassword.aspx</DependentUpon>
-    </Compile>
     <Compile Include="OverseasInternMain.aspx.cs">
       <DependentUpon>OverseasInternMain.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -558,6 +564,13 @@
     </Compile>
     <Compile Include="ReportInjury.aspx.designer.cs">
       <DependentUpon>ReportInjury.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SecurityEventLogs.aspx.cs">
+      <DependentUpon>SecurityEventLogs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SecurityEventLogs.aspx.designer.cs">
+      <DependentUpon>SecurityEventLogs.aspx</DependentUpon>
     </Compile>
     <Compile Include="Service References\SMSSvrRef\Reference.cs">
       <AutoGen>True</AutoGen>

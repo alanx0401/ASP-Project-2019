@@ -17,6 +17,22 @@
 
     <!--Custom styles for this template-->
     <link rel="stylesheet" href="Content/style.css" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $('#show_password').hover(function show() {
+                //Change the attribute to text  
+                $('#tbPassword').attr('type', 'text');
+                $('.icon_password').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+            },
+            function () {
+                //Change the attribute back to password  
+                $('#tbPassword').attr('type', 'password');
+                $('.icon_password').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+            });
+        });
+    </script>
 </head>
 <body>
     <style>
@@ -45,10 +61,18 @@
                                     <!--NormalLogin-->
                                     <asp:Panel ID="PanelPart1" runat="server" Visible="true">
                                         <div class="form-group">
-                                            <asp:TextBox ID="tbEmail" runat="server" placeholder="Email" TextMode="Email" oninput="checkPassword();" AutoCompleteType="Disabled"></asp:TextBox>
+                                            <asp:TextBox ID="tbEmail" runat="server" placeholder="Email" TextMode="Email" AutoCompleteType="Disabled"></asp:TextBox>
+                                            <asp:RequiredFieldValidator ID="RFVEmail" runat="server" ErrorMessage="Please enter your email." ControlToValidate="tbEmail" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
+                                            <asp:RegularExpressionValidator ID="REVEmail" runat="server" ErrorMessage="Please enter a valid email format" ForeColor="Red" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" ControlToValidate="tbEmail" Display="Dynamic">*</asp:RegularExpressionValidator>
                                         </div>
-                                        <div class="form-group">
-                                            <asp:TextBox ID="tbPassword" runat="server" placeholder="Password" oninput="checkPassword();" AutoCompleteType="Disabled" TextMode="Password"></asp:TextBox>
+                                        <div class="form-group input-group">
+                                            <asp:TextBox ID="tbPassword" runat="server" placeholder="Password" AutoCompleteType="Disabled" TextMode="Password"></asp:TextBox>
+                                            <div class="input-group-append">  
+                                                <button id="show_password" type="button" style="padding: 0; border: none; background: none;">  
+                                                    <span class="fa fa-eye-slash icon_password"></span>  
+                                                </button> 
+                                            </div>
+                                            <asp:RequiredFieldValidator ID="RFVPassword" runat="server" ErrorMessage="Please enter your password." ControlToValidate="tbPassword" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
                                         </div>
                                         <div class="form-group">
                                             <div id="ReCaptchContainer" runat="server" visible="false"></div>
@@ -68,12 +92,16 @@
                                     <!--2FA Choice-->
                                     <asp:Panel ID="PanelPart2" runat="server" Visible="false">
                                         <div class="form-group">
+                                            <asp:RequiredFieldValidator ID="RRVrb2FATypes" runat="server" ErrorMessage="Please pick one." ControlToValidate="rb2FATypes" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
                                             <asp:RadioButtonList ID="rb2FATypes" runat="server">
                                             </asp:RadioButtonList>
+                                            
                                         </div>
-                                        <div class="form-group">
-                                            <asp:Button ID="btnSubmitChoice" class="btn btn-primary float-right" runat="server" Text="Next" OnClick="btnPanel2_Click"/>
-                                        </div>
+                                        <p>
+                                            <div class="form-group">
+                                                <asp:Button ID="btnSubmitChoice" class="btn btn-primary float-right" runat="server" Text="Next" OnClick="btnPanel2_Click"/>
+                                            </div>
+                                        </p>
                                         <br />
                                     </asp:Panel>
                                     <!--2FA Choice-->
@@ -81,20 +109,26 @@
                                     <asp:Panel ID="PanelPart3" runat="server" Visible="false">
                                         <div class="form-group">
                                             <asp:TextBox ID="tb2FAPin" runat="server" placeholder="Enter the password"></asp:TextBox>
+                                            <asp:RequiredFieldValidator ID="RFVVerifyPassword" runat="server" ErrorMessage="Please enter your password" ControlToValidate="tb2FAPin" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
+                                            <asp:RegularExpressionValidator ID="REVVerifyPassword" runat="server" ErrorMessage="Please enter the password in a correct format" ControlToValidate="tb2FAPin" Display="Dynamic" ForeColor="Red" ValidationExpression="^\d{6}$">*</asp:RegularExpressionValidator>
                                         </div>
-                                        <div class="form-group">
-                                            <asp:Button ID="btnBack2" class="btn btn-default float-left" runat="server" Text="Back" OnClick="btnBack2_Click" CausesValidation="false"/>
-                                            <asp:Button ID="btnSubmitPassword" class="btn btn-success float-right" runat="server" Text="Submit" OnClick="btnPanel3_Click" />
-                                        </div>
+                                        <p>
+                                            <div class="form-group">
+                                                <asp:Button ID="btnBack2" class="btn btn-default float-left" runat="server" Text="Back" OnClick="btnBack2_Click" CausesValidation="false"/>
+                                                <asp:Button ID="btnSubmitPassword" class="btn btn-success float-right" runat="server" Text="Submit" OnClick="btnPanel3_Click" />
+                                            </div>
+                                        </p>
                                     </asp:Panel>
                                     <!--2FA Password-->
                                     <p>
+                                        <asp:ValidationSummary ID="ValidationSummary1" runat="server" ForeColor="Red" />
+                                        <p>
                                         <asp:Label ID="lblError" runat="server"></asp:Label>
                                     </p>
                                 </form>
                                 <style>
                                     #tbEmail, #tbPassword, #tb2FAPin {
-                                        width: 100%;
+                                        width: 87%;
                                         padding: 10px;
                                         box-sizing: border-box;
                                         background: none;
@@ -150,24 +184,6 @@
     <!--Custom scripts for all pages-->
     <script src="Scripts/script.min.js"></script>
     <!--//Custom scripts for all pages-->
-
-    <script>
-        function checkPassword() {
-            var password = document.getElementById("tbPassword")
-            var email = document.getElementById("tbEmail")
-            if (password.value == "") {
-                password.setCustomValidity("Field cannot be empty!");
-            } else {
-                password.setCustomValidity('');
-            }
-
-            if (email.value == "") {
-                email.setCustomValidity("Field cannot be empty!");
-            } else {
-                email.setCustomValidity('');
-            }
-        }
-    </script>
     <!--Refere reCaptcha API-->    
     <script src="https://www.google.com/recaptcha/api.js?onload=renderRecaptcha&render=explicit" async defer></script>  
     <script type="text/javascript">  

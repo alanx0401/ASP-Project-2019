@@ -329,7 +329,6 @@ C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\Microsoft.Applica
 C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\obj\Debug\ITP213.dll
 C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\obj\Debug\ITP213.pdb
-C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\obj\Debug\ITP213.csprojResolveAssemblyReference.cache
 C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\Newtonsoft.Json.dll
 C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\SendGrid.dll
 C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\Newtonsoft.Json.xml
@@ -369,3 +368,4 @@ C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\Microsoft.Owin.Se
 C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\Microsoft.Owin.Security.Cookies.xml
 C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\Microsoft.Owin.Security.OAuth.xml
 C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\bin\OtpSharp.xml
+C:\Users\linpe\Desktop\ASP-Project\ASP-Project-2019\ITP213\obj\Debug\ITP213.csprojResolveAssemblyReference.cache

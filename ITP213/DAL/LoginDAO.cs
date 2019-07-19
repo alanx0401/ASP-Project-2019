@@ -51,6 +51,8 @@ namespace ITP213.DAL
                 obj.accountStatus = row["accountStatus"].ToString();
                 obj.banAccountDateTime = Convert.ToDateTime(row["banAccountDateTime"].ToString());
                 obj.secretKey = row["secretKey"].ToString();
+                obj.Key = row["Key"].ToString();
+                obj.IV = row["IV"].ToString();
             }
             else
             {

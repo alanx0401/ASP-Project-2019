@@ -49,6 +49,15 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.TextBox tbName;
         
         /// <summary>
+        /// RFVName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RFVName;
+        
+        /// <summary>
         /// tbAdminNo control.
         /// </summary>
         /// <remarks>
@@ -56,6 +65,33 @@ namespace ITP213 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbAdminNo;
+        
+        /// <summary>
+        /// RFVAdminNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RFVAdminNo;
+        
+        /// <summary>
+        /// REVAdminNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator REVAdminNo;
+        
+        /// <summary>
+        /// CVAdminNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator CVAdminNo;
         
         /// <summary>
         /// tbEmail control.
@@ -67,6 +103,33 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.TextBox tbEmail;
         
         /// <summary>
+        /// RFVEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RFVEmail;
+        
+        /// <summary>
+        /// REVEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator REVEmail;
+        
+        /// <summary>
+        /// CVEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator CVEmail;
+        
+        /// <summary>
         /// tbPassword control.
         /// </summary>
         /// <remarks>
@@ -76,13 +139,40 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.TextBox tbPassword;
         
         /// <summary>
-        /// passstrength control.
+        /// RFVPassword control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label passstrength;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RFVPassword;
+        
+        /// <summary>
+        /// CVPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator CVPassword;
+        
+        /// <summary>
+        /// CVPassword1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator CVPassword1;
+        
+        /// <summary>
+        /// REVPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator REVPassword;
         
         /// <summary>
         /// tbConfirmPassword control.
@@ -94,13 +184,22 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.TextBox tbConfirmPassword;
         
         /// <summary>
-        /// matchpassword control.
+        /// RFVConfirmPassword control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label matchpassword;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RFVConfirmPassword;
+        
+        /// <summary>
+        /// CVConfirmPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CompareValidator CVConfirmPassword;
         
         /// <summary>
         /// PanelPart2 control.
@@ -121,6 +220,33 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.TextBox tbDateOfBirth;
         
         /// <summary>
+        /// RFVDateOfBirth control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RFVDateOfBirth;
+        
+        /// <summary>
+        /// CVDateOfBirth control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CompareValidator CVDateOfBirth;
+        
+        /// <summary>
+        /// CVDateOfBirth1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CompareValidator CVDateOfBirth1;
+        
+        /// <summary>
         /// tbContactNumber control.
         /// </summary>
         /// <remarks>
@@ -130,6 +256,15 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.TextBox tbContactNumber;
         
         /// <summary>
+        /// RFVContactNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RFVContactNumber;
+        
+        /// <summary>
         /// cbReadAgreement control.
         /// </summary>
         /// <remarks>
@@ -137,6 +272,15 @@ namespace ITP213 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbReadAgreement;
+        
+        /// <summary>
+        /// cvReadAgreement control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator cvReadAgreement;
         
         /// <summary>
         /// PanelPart3 control.
@@ -155,6 +299,24 @@ namespace ITP213 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbVerifyPassword;
+        
+        /// <summary>
+        /// RFVVerifyPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RFVVerifyPassword;
+        
+        /// <summary>
+        /// REVVerifyPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator REVVerifyPassword;
         
         /// <summary>
         /// lblLogin control.
@@ -218,5 +380,14 @@ namespace ITP213 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblError0;
+        
+        /// <summary>
+        /// ValidationSummary1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ValidationSummary ValidationSummary1;
     }
 }

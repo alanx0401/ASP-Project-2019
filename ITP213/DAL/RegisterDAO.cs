@@ -129,7 +129,7 @@ namespace ITP213.DAL
             myConn.Open();
             SqlCommand cmd = new SqlCommand(sqlStr.ToString(), myConn);
             cmd.Parameters.AddWithValue("@mobile", mobile);
-            cmd.Parameters.AddWithValue("@dateOfBirth", DateTime.ParseExact(dateOfBirth, "MM/dd/yyyy", null));
+            cmd.Parameters.AddWithValue("@dateOfBirth", DateTime.Parse(dateOfBirth));
             cmd.Parameters.AddWithValue("@adminNo", adminNo);
             int result = cmd.ExecuteNonQuery();
             return result;

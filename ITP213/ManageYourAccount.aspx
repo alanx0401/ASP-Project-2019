@@ -42,6 +42,11 @@
         &nbsp;[<asp:HyperLink ID="HyperLinkPhoneNum" runat="server">Change</asp:HyperLink>
         ]
     </p>
+    <p>
+        Email:
+        <asp:Label ID="lblEmail" runat="server"></asp:Label>
+        (<asp:Label ID="lblVerifiedEmailStatus" runat="server"></asp:Label>) [<asp:HyperLink ID="HyperLinkEmail" runat="server">Change</asp:HyperLink>
+        ]</p>
 
     <asp:Panel ID="Panel1" runat="server" Visible="false">
         <p>
@@ -53,8 +58,7 @@
     </asp:Panel>
         Google Auth:
         <asp:Label ID="lblGoogleAuth" runat="server" Text=""></asp:Label>
-        &nbsp;[<asp:HyperLink ID="HyperLinkGoogleAuth" runat="server">Enable</asp:HyperLink>
-        ]<br />
+        &nbsp;[<asp:LinkButton ID="LinkButtonGoogleAuth" runat="server" OnClick="LinkButtonGoogleAuth_Click">Enable</asp:LinkButton>]<br />
     <asp:HyperLink ID="HyperLinkChangePassword" runat="server">Change Password</asp:HyperLink>
     </p>
     <p>
