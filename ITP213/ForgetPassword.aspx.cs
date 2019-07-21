@@ -21,22 +21,23 @@ namespace ITP213
 
         protected void btnResetpw_Click(object sender, EventArgs e)
         {
-            string mainconn = ConfigurationManager.ConnectionString["ConnStr"].ConnectionString;
-            SqlConnection sqlconn = new SqlConnection(mainconn);
-            string sqlquery = "select email,password from account where email=@email";
-            SqlCommand sqlcomm = new SqlCommand(sqlquery, sqlconn);
-            sqlcomm.Parameters.AddWithValue("@email", tbEmail.Text);
-            sqlconn.Open();
-            SqlDataReader sdr = sqlcomm.ExecuteReader();
-
-            if (sdr.Read())
-            {
-                string useremail = sdr["email"].ToString();
-                string userpassword = sdr["password"].ToString();
-
-                MailMessage mm = new MailMessage("example@gmail.com", tbEmail.Text);
-                
-            }
+         //   string mainconn = ConfigurationManager.ConnectionString["ConnStr"].ConnectionString;
+         //   SqlConnection sqlconn = new SqlConnection(mainconn);
+         //   string sqlquery = "select email,password from account where email=@email";
+         //   SqlCommand sqlcomm = new SqlCommand(sqlquery, sqlconn);
+         //   sqlcomm.Parameters.AddWithValue("@email", tbEmail.Text);
+         //   sqlconn.Open();
+         //   SqlDataReader sdr = sqlcomm.ExecuteReader();
+         //
+         //   if (sdr.Read())
+         //   {
+         //       string useremail = sdr["email"].ToString();
+         //       string userpassword = sdr["password"].ToString();
+         //
+         //       MailMessage mm = new MailMessage("example@gmail.com", tbEmail.Text);
+         //       
+         //   } this part of the code causes crashes + System.Data not working
+         
         }
     }
 }

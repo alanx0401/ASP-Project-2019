@@ -56,7 +56,7 @@
                                         </div>
                                         <div class="form-group">
                                             <!--<asp:CheckBox ID="cbRememberMe" lass="form-check-input" runat="server" text="Remember Me" Checked="True" />-->
-                                            <asp:Label ID="lblForgetAccount" runat="server"><a href="#" onclick="window.open('ForgetPasswordWindow.aspx','FP','width=500,height=50,top=300,left=500,fullscreen=no,resizable=0');">Forget Account?</a></asp:Label>
+                                            <asp:Label ID="lblForgetAccount" runat="server"><a href="#" onclick="window.open('ForgetPasswordWindow1.aspx','FP','width=500,height=50,top=300,left=500,fullscreen=no,resizable=0');">Forget Account?</a></asp:Label>
                                         </div>
                                         
                                         <p>
