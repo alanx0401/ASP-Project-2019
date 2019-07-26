@@ -283,6 +283,20 @@
                             </div>
                         </li>
                         <% } %>
+
+                        <% if (currentAccountType == "admin")
+                            {%>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-address-card"></i>
+                            <span>Admin Controls</span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+                            <a class="dropdown-item" href="/ListUser.aspx">User Management</a>
+                            
+                            </div>
+                        </li>
+                        <% } %>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-cog"></i>
