@@ -5,6 +5,7 @@ using System.Web;
 
 using System.Data.SqlClient;
 using System.Configuration;
+
 namespace ITP213.DAL
 {
     public class EventLog
@@ -14,6 +15,7 @@ namespace ITP213.DAL
         private string _eventDesc = "";
         private DateTime _dateTimeDetails; // this is another way to specify empty string
         private string _UUID = "";
+  
         // Default constructor
         public EventLog()
         {
@@ -26,6 +28,7 @@ namespace ITP213.DAL
             _eventDesc = eventDesc;
             _dateTimeDetails = dateTimeDetails;
             _UUID = UUID;
+        
         }
 
         // Get/Set the attributes of the EventLogs object.
@@ -44,57 +47,91 @@ namespace ITP213.DAL
             get { return _dateTimeDetails; }
             set { _dateTimeDetails = value; }
         }
+
         public string UUID
         {
             get { return _UUID; }
             set { _UUID = value; }
         }
 
+
         public List<EventLog> GetEvents()
+         {
+             List<EventLog> prodList = new List<EventLog>();
+             int eventID;
+             string eventDesc;
+             DateTime dateTimeDetails;
+             string UUID;
+             string query = "SELECT * FROM EventLogs Order By eventID DESC";
+             SqlConnection conn = new SqlConnection(_conn);
+             SqlCommand cmd = new SqlCommand(query, conn);
+             conn.Open();
+             SqlDataReader dr = cmd.ExecuteReader();
+             while (dr.Read())
+             {
+                 eventID = int.Parse(dr["eventID"].ToString());
+                 eventDesc = dr["eventDesc"].ToString();
+                 dateTimeDetails = Convert.ToDateTime(dr["dateTimeDetails"].ToString());
+                 UUID = dr["UUID"].ToString();
+                 EventLog obj = new EventLog(eventID, eventDesc, dateTimeDetails, UUID);
+                 prodList.Add(obj);
+             }
+
+             conn.Close();
+             dr.Close();
+             dr.Dispose();
+
+             return prodList;
+         }
+
+        //To display contents in GVEventLogs based on EventDesc 
+        public List<EventLog> getEventDesc(string eventDesc)
         {
-            List<EventLog> prodList = new List<EventLog>();
+            List<EventLog> eventDescList = new List<EventLog>();
             int eventID;
-            string eventDesc;
             DateTime dateTimeDetails;
             string UUID;
-            string query = "SELECT * FROM EventLogs Order By eventID DESC";
+            string queryStr = "SELECT * FROM Eventlogs WHERE eventDesc = @eventDesc";
             SqlConnection conn = new SqlConnection(_conn);
-            SqlCommand cmd = new SqlCommand(query, conn);
+            SqlCommand cmd = new SqlCommand(queryStr, conn);
+            cmd.Parameters.AddWithValue("@eventDesc", eventDesc);
             conn.Open();
             SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
+            if (dr.Read())
             {
                 eventID = int.Parse(dr["eventID"].ToString());
-                eventDesc = dr["eventDesc"].ToString();
                 dateTimeDetails = Convert.ToDateTime(dr["dateTimeDetails"].ToString());
                 UUID = dr["UUID"].ToString();
-                EventLog obj = new EventLog(eventID, eventDesc, dateTimeDetails, UUID);
-                prodList.Add(obj);
+                EventLog eventDescObj = new EventLog(eventID, eventDesc, dateTimeDetails, UUID);
+                eventDescList.Add(eventDescObj);
+            }
+            else
+            {
+                eventDescList = null;
             }
 
             conn.Close();
             dr.Close();
             dr.Dispose();
 
-            return prodList;
+            return eventDescList;
         }
-
-        /*public int ProductInsert()
+     
+        // For Wycliff's Password Reset and Pei Shan's Login
+        public int EventInsert(string eventDesc, DateTime dateTimeDetails, string UUID)
         {
-            string msg = null;
+
             int result = 0;
-            string queryStr = "INSERT INTO Products(Product_ID, Product_Name, Product_Desc, Unit_Price, Product_Image, Stock_Level)" +
-            "values(@Product_ID, @Product_Name, @Product_Desc, @Unit_Price, @Product_Image, @Stock_Level)";
+            string queryStr = "INSERT INTO EventLogs(eventDesc, dateTimeDetails, UUID)" +
+            "values(@eventDesc, @dateTimeDetails, @UUID)";
             try
             {
-                SqlConnection conn = new SqlConnection(_connStr);
+                SqlConnection conn = new SqlConnection(_conn);
                 SqlCommand cmd = new SqlCommand(queryStr, conn);
-                cmd.Parameters.AddWithValue("@Product_ID", this.Product_ID);
-                cmd.Parameters.AddWithValue("@Product_Name", this.Product_Name);
-                cmd.Parameters.AddWithValue("@Product_Desc", this.Product_Desc);
-                cmd.Parameters.AddWithValue("@Unit_Price", this.Unit_Price);
-                cmd.Parameters.AddWithValue("@Product_Image", this.Product_Image);
-                cmd.Parameters.AddWithValue("@Stock_Level", this.Stock_Level);
+                
+                cmd.Parameters.AddWithValue("@eventDesc", eventDesc);
+                cmd.Parameters.AddWithValue("@dateTimeDetails", dateTimeDetails);
+                cmd.Parameters.AddWithValue("@UUID", UUID);
                 conn.Open();
                 result += cmd.ExecuteNonQuery();
                 conn.Close();
@@ -105,7 +142,8 @@ namespace ITP213.DAL
             {
                 return 0;
             }
-        }*/
+        }
         //end Insert
+
     }
 }
