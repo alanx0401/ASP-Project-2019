@@ -138,6 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AddRemarks.aspx" />
+    <Content Include="Admin\ListUser.aspx" />
     <Content Include="App_Data\ITP213.mdf" />
     <Content Include="App_Data\ITP213_log.ldf">
       <DependentUpon>ITP213.mdf</DependentUpon>
@@ -159,6 +160,7 @@
     <Content Include="CreateTest.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="DefaultErrorPage.aspx" />
+    <Content Include="Error403.aspx" />
     <Content Include="EventLogs.aspx" />
     <Content Include="ForgetPassword.aspx" />
     <Content Include="ImageGallery.aspx" />
@@ -247,6 +249,13 @@
     </Compile>
     <Compile Include="AddRemarks.aspx.designer.cs">
       <DependentUpon>AddRemarks.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ListUser.aspx.cs">
+      <DependentUpon>ListUser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ListUser.aspx.designer.cs">
+      <DependentUpon>ListUser.aspx</DependentUpon>
     </Compile>
     <Compile Include="BlogDetails.aspx.cs">
       <DependentUpon>BlogDetails.aspx</DependentUpon>
@@ -341,6 +350,10 @@
     <Compile Include="DAL\LoginDAO.cs" />
     <Compile Include="DAL\ReportInjury.cs" />
     <Compile Include="DAL\ReportInjuryDAO.cs" />
+    <Compile Include="DAL\Security.cs" />
+    <Compile Include="DAL\SecurityDAO.cs" />
+    <Compile Include="DAL\SessionManager.cs" />
+    <Compile Include="DAL\SessionManagerDAO.cs" />
     <Compile Include="DAL\Test.cs" />
     <Compile Include="DAL\TestDAO.cs" />
     <Compile Include="DAL\TripAllocation.cs" />
@@ -361,6 +374,13 @@
     </Compile>
     <Compile Include="DefaultErrorPage.aspx.designer.cs">
       <DependentUpon>DefaultErrorPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Error403.aspx.cs">
+      <DependentUpon>Error403.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Error403.aspx.designer.cs">
+      <DependentUpon>Error403.aspx</DependentUpon>
     </Compile>
     <Compile Include="EventLogs.aspx.cs">
       <DependentUpon>EventLogs.aspx</DependentUpon>
