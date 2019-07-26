@@ -185,7 +185,7 @@
     <script src="Scripts/script.min.js"></script>
     <!--//Custom scripts for all pages-->
     <!--Refere reCaptcha API-->    
-    <script src="https://www.google.com/recaptcha/api.js?onload=renderRecaptcha&render=explicit" async defer></script>  
+    <script src="https://www.google.com/recaptcha/api.js?onload=renderRecaptcha&render=explicit&fallback=true?" async defer></script>  
     <script type="text/javascript">  
     var your_site_key = '<%= ConfigurationManager.AppSettings["SiteKey"]%>';  
     var renderRecaptcha = function () {  
