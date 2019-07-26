@@ -64,6 +64,42 @@
       <HintPath>..\packages\FleekDeveloper.GoogleAuthenticator.1.0.1\lib\FleekDeveloper.GoogleAuthenticator.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FusionCharts.DataEngine, Version=1.0.1.0, Culture=neutral, PublicKeyToken=e6b8110d59760a80, processorArchitecture=MSIL">
+      <HintPath>..\packages\FusionCharts.Visualization.1.0.4\lib\net45\FusionCharts.DataEngine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FusionCharts.SharpVectors.Converters, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b532964b8548be77, processorArchitecture=MSIL">
+      <HintPath>..\packages\FusionCharts.Visualization.1.0.4\lib\net45\FusionCharts.SharpVectors.Converters.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FusionCharts.SharpVectors.Core, Version=0.3.1.29789, Culture=neutral, PublicKeyToken=7407205e337c98ef, processorArchitecture=MSIL">
+      <HintPath>..\packages\FusionCharts.Visualization.1.0.4\lib\net45\FusionCharts.SharpVectors.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FusionCharts.SharpVectors.Css, Version=0.3.1.29790, Culture=neutral, PublicKeyToken=7a46e3f532fdb787, processorArchitecture=MSIL">
+      <HintPath>..\packages\FusionCharts.Visualization.1.0.4\lib\net45\FusionCharts.SharpVectors.Css.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FusionCharts.SharpVectors.Dom, Version=0.3.1.29789, Culture=neutral, PublicKeyToken=517340b6277b1a7a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FusionCharts.Visualization.1.0.4\lib\net45\FusionCharts.SharpVectors.Dom.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FusionCharts.SharpVectors.Model, Version=0.3.1.29790, Culture=neutral, PublicKeyToken=2236cfc76b505845, processorArchitecture=MSIL">
+      <HintPath>..\packages\FusionCharts.Visualization.1.0.4\lib\net45\FusionCharts.SharpVectors.Model.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FusionCharts.SharpVectors.Rendering.Wpf, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d0902381100df30e, processorArchitecture=MSIL">
+      <HintPath>..\packages\FusionCharts.Visualization.1.0.4\lib\net45\FusionCharts.SharpVectors.Rendering.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FusionCharts.SharpVectors.Runtime, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d16e717f0a981fb9, processorArchitecture=MSIL">
+      <HintPath>..\packages\FusionCharts.Visualization.1.0.4\lib\net45\FusionCharts.SharpVectors.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FusionCharts.Visualization, Version=1.0.1.0, Culture=neutral, PublicKeyToken=e6b8110d59760a80, processorArchitecture=MSIL">
+      <HintPath>..\packages\FusionCharts.Visualization.1.0.4\lib\net45\FusionCharts.Visualization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Google.Authenticator, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\GoogleAuthenticator.1.2.1\lib\net45\Google.Authenticator.dll</HintPath>
       <Private>True</Private>
@@ -141,8 +177,8 @@
       <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OtpSharp, Version=1.3.0.4, Culture=neutral, PublicKeyToken=1ec2a4a54aeffc1e, processorArchitecture=MSIL">
@@ -218,6 +254,7 @@
     <Content Include="Error403.aspx" />
     <Content Include="EventLogs.aspx" />
     <Content Include="ForgetPassword.aspx" />
+    <Content Include="FusionChartsExportHandler\FCExporter.aspx" />
     <Content Include="GoogleAuth.aspx" />
     <Content Include="ImageGallery.aspx" />
     <Content Include="Images\check.png" />
@@ -242,6 +279,28 @@
     <Content Include="ReportInjury.aspx" />
     <Content Include="Content\jquery-steps.css" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\FusionCharts\fusioncharts.charts.js" />
+    <Content Include="Scripts\FusionCharts\fusioncharts.excelexport.js" />
+    <Content Include="Scripts\FusionCharts\fusioncharts.gantt.js" />
+    <Content Include="Scripts\FusionCharts\fusioncharts.js" />
+    <Content Include="Scripts\FusionCharts\fusioncharts.maps.js" />
+    <Content Include="Scripts\FusionCharts\fusioncharts.overlappedbar2d.js" />
+    <Content Include="Scripts\FusionCharts\fusioncharts.overlappedcolumn2d.js" />
+    <Content Include="Scripts\FusionCharts\fusioncharts.powercharts.js" />
+    <Content Include="Scripts\FusionCharts\fusioncharts.timeseries.js" />
+    <Content Include="Scripts\FusionCharts\fusioncharts.treemap.js" />
+    <Content Include="Scripts\FusionCharts\fusioncharts.vml.js" />
+    <Content Include="Scripts\FusionCharts\fusioncharts.widgets.js" />
+    <Content Include="Scripts\FusionCharts\fusioncharts.zoomline.js" />
+    <Content Include="Scripts\FusionCharts\fusioncharts.zoomscatter.js" />
+    <Content Include="Scripts\FusionCharts\themes\fusioncharts.theme.candy.js" />
+    <Content Include="Scripts\FusionCharts\themes\fusioncharts.theme.carbon.js" />
+    <Content Include="Scripts\FusionCharts\themes\fusioncharts.theme.fint.js" />
+    <Content Include="Scripts\FusionCharts\themes\fusioncharts.theme.fusion.js" />
+    <Content Include="Scripts\FusionCharts\themes\fusioncharts.theme.gammel.js" />
+    <Content Include="Scripts\FusionCharts\themes\fusioncharts.theme.ocean.js" />
+    <Content Include="Scripts\FusionCharts\themes\fusioncharts.theme.umber.js" />
+    <Content Include="Scripts\FusionCharts\themes\fusioncharts.theme.zune.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-steps.js" />
@@ -486,6 +545,10 @@
     <Compile Include="Email\IEmailSender.cs" />
     <Compile Include="Email\SendEmailDetails.cs" />
     <Compile Include="Email\SendEmailResponse.cs" />
+    <Compile Include="FusionChartsExportHandler\FCExporter.aspx.cs">
+      <DependentUpon>FCExporter.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="GoogleAuth.aspx.cs">
       <DependentUpon>GoogleAuth.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
