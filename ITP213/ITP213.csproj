@@ -218,6 +218,7 @@
     <Content Include="Images\check.png" />
     <Content Include="Images\trip_background.jpg" />
     <Content Include="Images\unchecked.png" />
+    <Content Include="UserSecurityEventLogs.aspx" />
     <Content Include="InformationSummary.aspx" />
     <Content Include="InternalServerErrorPage.aspx" />
     <Content Include="LecturerWithdrawalRequest.aspx" />
@@ -288,6 +289,7 @@
     <Content Include="UnauthorizedErrorPage.aspx" />
     <Content Include="UploadedImages.aspx" />
     <Content Include="UploadReport.aspx" />
+    <Content Include="UserEventLogs.aspx" />
     <Content Include="ViewAllocatedTrip.aspx" />
     <Content Include="ViewAnnouncement.aspx" />
     <Content Include="ViewBlog.aspx" />
@@ -420,6 +422,7 @@
     <Compile Include="DAL\TripAllocation.cs" />
     <Compile Include="DAL\TripAllocationDAO.cs" />
     <Compile Include="DAL\UploadedImage.cs" />
+    <Compile Include="DAL\userEventLog.cs" />
     <Compile Include="DAL\WithdrawalRequest.cs" />
     <Compile Include="DAL\WithdrawalRequestDAO.cs" />
     <Compile Include="Default.aspx.cs">
@@ -459,6 +462,13 @@
     </Compile>
     <Compile Include="ImageGallery.aspx.designer.cs">
       <DependentUpon>ImageGallery.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserSecurityEventLogs.aspx.cs">
+      <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserSecurityEventLogs.aspx.designer.cs">
+      <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>
     </Compile>
     <Compile Include="InformationSummary.aspx.cs">
       <DependentUpon>InformationSummary.aspx</DependentUpon>
@@ -640,6 +650,13 @@
     </Compile>
     <Compile Include="UploadReport.aspx.designer.cs">
       <DependentUpon>UploadReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserEventLogs.aspx.cs">
+      <DependentUpon>UserEventLogs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserEventLogs.aspx.designer.cs">
+      <DependentUpon>UserEventLogs.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewAllocatedTrip.aspx.cs">
       <DependentUpon>ViewAllocatedTrip.aspx</DependentUpon>
