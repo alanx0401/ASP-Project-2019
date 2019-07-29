@@ -217,13 +217,11 @@
     <Content Include="EditAccount.aspx" />
     <Content Include="Error403.aspx" />
     <Content Include="EventLogs.aspx" />
-    <Content Include="ForgetPassword.aspx" />
     <Content Include="GoogleAuth.aspx" />
     <Content Include="ImageGallery.aspx" />
     <Content Include="Images\check.png" />
     <Content Include="Images\trip_background.jpg" />
     <Content Include="Images\unchecked.png" />
-    <Content Include="UserSecurityEventLogs.aspx" />
     <Content Include="InformationSummary.aspx" />
     <Content Include="InternalServerErrorPage.aspx" />
     <Content Include="LecturerWithdrawalRequest.aspx" />
@@ -294,6 +292,7 @@
     <Content Include="UploadedImages.aspx" />
     <Content Include="UploadReport.aspx" />
     <Content Include="UserEventLogs.aspx" />
+    <Content Include="UserSecurityEventLogs.aspx" />
     <Content Include="ViewAllocatedTrip.aspx" />
     <Content Include="ViewAnnouncement.aspx" />
     <Content Include="ViewBlog.aspx" />
@@ -440,6 +439,7 @@
     <Compile Include="DAL\TripAllocation.cs" />
     <Compile Include="DAL\TripAllocationDAO.cs" />
     <Compile Include="DAL\UploadedImage.cs" />
+    <Compile Include="DAL\userEventLog.cs" />
     <Compile Include="DAL\Validation\RegisterValidation.cs" />
     <Compile Include="DAL\WithdrawalRequest.cs" />
     <Compile Include="DAL\WithdrawalRequestDAO.cs" />
@@ -478,23 +478,9 @@
     <Compile Include="EventLogs.aspx.designer.cs">
       <DependentUpon>EventLogs.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ForgetPassword.aspx.cs">
-      <DependentUpon>ForgetPassword.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ForgetPassword.aspx.designer.cs">
-      <DependentUpon>ForgetPassword.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Email\IEmailSender.cs" />
     <Compile Include="Email\SendEmailDetails.cs" />
     <Compile Include="Email\SendEmailResponse.cs" />
-    <Compile Include="ForgetPassword.aspx.cs">
-      <DependentUpon>ForgetPassword.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ForgetPassword.aspx.designer.cs">
-      <DependentUpon>ForgetPassword.aspx</DependentUpon>
-    </Compile>
     <Compile Include="GoogleAuth.aspx.cs">
       <DependentUpon>GoogleAuth.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -508,13 +494,6 @@
     </Compile>
     <Compile Include="ImageGallery.aspx.designer.cs">
       <DependentUpon>ImageGallery.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UserSecurityEventLogs.aspx.cs">
-      <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserSecurityEventLogs.aspx.designer.cs">
-      <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>
     </Compile>
     <Compile Include="InformationSummary.aspx.cs">
       <DependentUpon>InformationSummary.aspx</DependentUpon>
@@ -692,10 +671,15 @@
     </Compile>
     <Compile Include="UserEventLogs.aspx.cs">
       <DependentUpon>UserEventLogs.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UserEventLogs.aspx.designer.cs">
       <DependentUpon>UserEventLogs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserSecurityEventLogs.aspx.cs">
+      <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserSecurityEventLogs.aspx.designer.cs">
+      <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewAllocatedTrip.aspx.cs">
       <DependentUpon>ViewAllocatedTrip.aspx</DependentUpon>
