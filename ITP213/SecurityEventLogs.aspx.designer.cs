@@ -112,13 +112,13 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.GridView GVParticularEvent;
         
         /// <summary>
-        /// PanelEventDuration control.
+        /// PanelEventDateRange control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel PanelEventDuration;
+        protected global::System.Web.UI.WebControls.Panel PanelEventDateRange;
         
         /// <summary>
         /// tbStartDate control.
@@ -148,22 +148,13 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.Button btnSearch;
         
         /// <summary>
-        /// btnResetDate control.
+        /// GVEventDateRange control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnResetDate;
-        
-        /// <summary>
-        /// GVeventDuration control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GVeventDuration;
+        protected global::System.Web.UI.WebControls.GridView GVEventDateRange;
         
         /// <summary>
         /// chartEvent control.

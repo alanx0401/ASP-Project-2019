@@ -41,25 +41,9 @@
                     dateFormat: 'yy/mm/dd'
                 });
             });
-        });
-        $(document).ready(function () {
-            
-            $(".createBtn").hide();
-            $("#ContentPlaceHolder1_step1").click(function () {
-                $(".createBtn").hide();
-                var iSelectedTab = $(document).find("input[id*='tab_index']").val();
-                console.log("hi :" + iSelectedTab);
-            });
-            $("#ContentPlaceHolder1_step2").click(function () {
-                $(".createBtn").hide();
-            });
-            $("#ContentPlaceHolder1_step3").click(function () {
-                $(".createBtn").show();
-            });
         })
     </script>
     <!-- Page Content -->
-    <h1>Event Logs</h1>
      <!--2. Change the title!--> 
     <hr />
     <asp:SqlDataSource ID="SqlDataSourceDDL" runat="server" ConnectionString="<%$ ConnectionStrings: ConnStr %>" SelectCommand="SELECT DISTINCT [eventDesc] FROM [Eventlogs]"></asp:SqlDataSource>  
@@ -70,26 +54,22 @@
             <asp:ControlParameter ControlID="DDLEventDesc" Name="eventDesc" PropertyName="SelectedValue" Type="String" />
         </SelectParameters>
      </asp:SqlDataSource>
-    <asp:SqlDataSource ID="SqlDataSourceGVUUID" runat="server" ConnectionString="<%$ ConnectionStrings:ConnStr %>" SelectCommand="SELECT [Eventlogs].[UUID], [eventDesc], [dateTimeDetails], [name]
-FROM [Eventlogs] 
-INNER JOIN [account]
-ON [account].UUID = [Eventlogs].UUID
-WHERE ([Eventlogs].[UUID] = @UUID) 
-ORDER BY [eventID] DESC" ProviderName="System.Data.SqlClient">
+    <asp:SqlDataSource ID="SqlDataSourceGVUUID" runat="server" ConnectionString="<%$ ConnectionStrings:ConnStr %>" SelectCommand="SELECT [Eventlogs].[UUID], [eventDesc], [dateTimeDetails], [name] FROM [Eventlogs] 
+        INNER JOIN [account] ON [account].UUID = [Eventlogs].UUID WHERE ([Eventlogs].[UUID] = @UUID) ORDER BY [eventID] DESC" ProviderName="System.Data.SqlClient">
         <SelectParameters>
             <asp:ControlParameter ControlID="DDLUUID" Name="UUID" PropertyName="SelectedValue" Type="String" />
         </SelectParameters>
      </asp:SqlDataSource>
-    <div>
+    <div>     
         <fieldset>
-            <legend>Search by dropdown list</legend>
-            <asp:DropDownList ID="DDLSearch" runat="server" AutoPostBack="True" OnSelectedIndexChanged="DDLSearch_SelectedIndexChanged">
+            <legend>Security Event Logs of all users</legend>
+        </fieldset>
+        <p>Search by dropdown list: &nbsp<asp:DropDownList ID="DDLSearch" runat="server" AutoPostBack="True" OnSelectedIndexChanged="DDLSearch_SelectedIndexChanged">
                 <asp:ListItem Value="0">Please Select</asp:ListItem>
                 <asp:ListItem Value="1">Search by Event Description</asp:ListItem>
-                <asp:ListItem Value="2">Search by Date</asp:ListItem>
+                <asp:ListItem Value="2">Search by Date Range</asp:ListItem>
                 <asp:ListItem Value="3">Search by UUID</asp:ListItem>
-            </asp:DropDownList>&nbsp <asp:Button ID="btnReset" runat="server" Text="Reset" OnClick="btnReset_Click" />
-        </fieldset>
+            </asp:DropDownList>&nbsp <asp:Button ID="btnReset" runat="server" Text="Reset" OnClick="btnReset_Click" /></p>
     </div>
     <div>
         <asp:Panel ID="PanelEvents" runat="server">
@@ -107,9 +87,9 @@ ORDER BY [eventID] DESC" ProviderName="System.Data.SqlClient">
     <br />
     <div>
         <asp:Panel ID="PanelSearchFilter" runat="server">
-          <p>Search Filter based on particular event:<asp:DropDownList ID="DDLEventDesc" runat="server" AutoPostBack="True" DataSourceID="SqlDataSourceDDL" DataTextField="eventDesc" DataValueField="eventDesc">
+          <p>Search Security Event based on security event description:<asp:DropDownList ID="DDLEventDesc" runat="server" AutoPostBack="True" DataSourceID="SqlDataSourceDDL" DataTextField="eventDesc" DataValueField="eventDesc">
               </asp:DropDownList>
-            </p> &nbsp<asp:GridView ID="GVParticularEvent" runat="server" DataSourceID="SqlDataSourceGVParticularEvent" AutoGenerateColumns="False">
+            </p> &nbsp<asp:GridView ID="GVParticularEvent" runat="server" DataSourceID="SqlDataSourceGVParticularEvent" AutoGenerateColumns="False" Height="155px" Width="749px">
               <Columns>
                   <asp:BoundField DataField="eventDesc" HeaderText="eventDesc" SortExpression="eventDesc" />
                   <asp:BoundField DataField="dateTimeDetails" HeaderText="dateTimeDetails" SortExpression="dateTimeDetails" />
@@ -120,17 +100,16 @@ ORDER BY [eventID] DESC" ProviderName="System.Data.SqlClient">
         </asp:Panel>
     </div>
     <div>
-        <asp:Panel ID="PanelEventDuration" runat="server">
-          <p>Search filter based on when the event occured:&nbsp</p>
+        <asp:Panel ID="PanelEventDateRange" runat="server">
+          <p>Search Security Event based on range of dates:&nbsp</p>
         <table>  
             <tr>
                 <td>Start Date<asp:TextBox ID="tbStartDate" runat="server" class="form-control" TextMode="DateTime" ClientIDMode="Static"></asp:TextBox></td>
                 <td>End Date<asp:TextBox ID="tbEndDate" runat="server" class="form-control" TextMode="DateTime" ClientIDMode="Static"></asp:TextBox></td>
-                <td><asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" /> <asp:Button ID="btnResetDate" runat="server" Text="Reset Dates" OnClick="btnResetDate_Click" /> </td>
+                <td><asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" /></td>
             </tr>
-            
         </table>
-          <asp:GridView ID="GVeventDuration" runat="server" AutoGenerateColumns="False">
+          <asp:GridView ID="GVEventDateRange" runat="server" AutoGenerateColumns="False" Height="199px" Width="737px">
               <Columns>
                   <asp:BoundField DataField="dateTimeDetails" HeaderText="dateTimeDetails"/>
                   <asp:BoundField DataField="eventID" HeaderText="eventID" />
@@ -140,13 +119,12 @@ ORDER BY [eventID] DESC" ProviderName="System.Data.SqlClient">
             </asp:GridView>
             <asp:Chart ID="chartEvent" runat="server" Height="318px" Palette="Fire" Width="607px">
                 <Series>
-                    <asp:Series ChartType="Bar" Name="Series1">
-                    </asp:Series>
+                    <asp:Series ChartType="Bar" Name="Series1" XValueMember="eventDesc" YValueMembers="CountEvent"></asp:Series>
                 </Series>
                 <ChartAreas>
                     <asp:ChartArea Name="ChartArea1">
-                        <AxisX Title ="Number of Events"></AxisX>
-                        <AxisY Title="Event Description"></AxisY>
+                        <AxisX Title ="Event Description"></AxisX>
+                        <AxisY Title="Number of Events"></AxisY>
                     </asp:ChartArea>
                 </ChartAreas>
             </asp:Chart>
@@ -155,7 +133,7 @@ ORDER BY [eventID] DESC" ProviderName="System.Data.SqlClient">
     </div>
     <div>
         <asp:Panel ID="PanelUUID" runat="server">
-          <p>Search filter of event based on UUID:&nbsp<asp:DropDownList ID="DDLUUID" runat="server" DataSourceID="SqlDataSourceDDLUUID" DataTextField="UUID" DataValueField="UUID" AutoPostBack="True" OnSelectedIndexChanged="DDLEventDesc_SelectedIndexChanged" >
+          <p>Search Security Event based on UUID:&nbsp<asp:DropDownList ID="DDLUUID" runat="server" DataSourceID="SqlDataSourceDDLUUID" DataTextField="UUID" DataValueField="UUID" AutoPostBack="True" OnSelectedIndexChanged="DDLEventDesc_SelectedIndexChanged" >
           </asp:DropDownList></p>
           <asp:GridView ID="GVUUID" runat="server" AutoGenerateColumns="False" DataSourceID="SqlDataSourceGVUUID">
               <Columns>

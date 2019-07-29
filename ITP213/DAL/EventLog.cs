@@ -130,7 +130,7 @@ namespace ITP213.DAL
             DataSet ds = new DataSet();
 
             StringBuilder sqlStr = new StringBuilder();
-            sqlStr.AppendLine("SELECT * FROM EventLogs WHERE dateTimeDetails >= @startDate AND  dateTimeDetails <=@endDate Order By dateTimeDetails DESC");
+            sqlStr.AppendLine("SELECT * FROM EventLogs WHERE dateTimeDetails BETWEEN @startDate AND @endDate Order By dateTimeDetails DESC");
             //Create Adapter
 
             SqlConnection myConn = new SqlConnection(DBConnect);
@@ -150,7 +150,6 @@ namespace ITP213.DAL
                     obj.dateTimeDetails = Convert.ToDateTime(row["dateTimeDetails"].ToString());
                     obj.eventDesc = row["eventDesc"].ToString();
                     obj.UUID = row["UUID"].ToString();
-                    //EventLog eventDescObj = new EventLog(eventID, eventDesc, dateTimeDetails, UUID);
                     resultList.Add(obj);
                 }
             }
