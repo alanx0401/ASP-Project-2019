@@ -49,6 +49,24 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.TextBox tbEmail;
         
         /// <summary>
+        /// RFVEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RFVEmail;
+        
+        /// <summary>
+        /// REVEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator REVEmail;
+        
+        /// <summary>
         /// tbPassword control.
         /// </summary>
         /// <remarks>
@@ -56,6 +74,15 @@ namespace ITP213 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbPassword;
+        
+        /// <summary>
+        /// RFVPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RFVPassword;
         
         /// <summary>
         /// ReCaptchContainer control.
@@ -112,6 +139,15 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.Panel PanelPart2;
         
         /// <summary>
+        /// RRVrb2FATypes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RRVrb2FATypes;
+        
+        /// <summary>
         /// rb2FATypes control.
         /// </summary>
         /// <remarks>
@@ -148,6 +184,24 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.TextBox tb2FAPin;
         
         /// <summary>
+        /// RFVVerifyPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RFVVerifyPassword;
+        
+        /// <summary>
+        /// REVVerifyPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator REVVerifyPassword;
+        
+        /// <summary>
         /// btnBack2 control.
         /// </summary>
         /// <remarks>
@@ -164,6 +218,15 @@ namespace ITP213 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSubmitPassword;
+        
+        /// <summary>
+        /// ValidationSummary1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ValidationSummary ValidationSummary1;
         
         /// <summary>
         /// lblError control.

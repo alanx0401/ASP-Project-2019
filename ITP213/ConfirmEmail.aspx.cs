@@ -5,7 +5,10 @@ using SendGrid.Helpers.Mail;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
@@ -15,14 +18,20 @@ namespace ITP213
 {
     public partial class ConfirmEmail : System.Web.UI.Page
     {
+        // for encryption & decryption
         protected void Page_Load(object sender, EventArgs e)
         {
+            // 2 things: retrieve the token from QUERY STRING & token from db
+            // both needs to be decrypted
             if (!IsPostBack) // first load
             {
                 string emailToken = Request.QueryString["x"];
 
                 if (emailToken != null)
                 {
+                    // decryting 
+                    emailToken = Request.QueryString["x"].ToString();
+                    emailToken = DecodeToken(emailToken);
                     // SELECT
                     Register obj = RegisterDAO.checkTokenInEmailVerificationTable(emailToken); // if emailToken exist
                     if (obj != null) // token exists
@@ -56,6 +65,7 @@ namespace ITP213
                             if (result == 1)
                             {
                                 string randomToken = Guid.NewGuid().ToString(); // email Token
+                                string encodeRandomToken = EncodeToken(randomToken);
 
                                 // insert
                                 int result2 = RegisterDAO.insertIntoVerifyEmail(UUID, randomToken);
@@ -64,7 +74,7 @@ namespace ITP213
                                     // get account Table
                                     DAL.Login LoginObj = RegisterDAO.getLoginByUUID(UUID);
 
-                                    Execute(LoginObj.name, LoginObj.email, randomToken);
+                                    Execute(LoginObj.name, LoginObj.email, encodeRandomToken);
                                     lblResult.Text = "We're sorry, the email address verification link you've submitted is invalid, expired, or has already been used.";
                                 }
                                 else
@@ -112,6 +122,16 @@ namespace ITP213
 
 
             return new SendEmailResponse();
+        }
+        
+        public static string EncodeToken(string serverName)
+        {
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(serverName));
+        }
+
+        public static string DecodeToken(string encodedServername)
+        {
+            return Encoding.UTF8.GetString(Convert.FromBase64String(encodedServername));
         }
     }
 }

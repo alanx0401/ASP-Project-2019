@@ -48,6 +48,7 @@ namespace ITP213.DAL
                 obj.banAccountDateTime = Convert.ToDateTime(row["banAccountDateTime"].ToString());
                 obj.secretKey = row["secretKey"].ToString();
                 obj.phoneVerified = row["phoneVerified"].ToString();
+                obj.emailVerified = row["emailVerified"].ToString();
             }
             else
             {
@@ -55,7 +56,7 @@ namespace ITP213.DAL
             }
             return obj;
         }
-        public static int updateGoogleAuthEnabledAndSecretKeyInAccount(string UUID, string secretKey) // change status from 'Not ban' to 'Ban'
+        public static int updateGoogleAuthEnabledAndSecretKeyInAccount(string UUID, string secretKey, string googleAuthEnabled, string IV, string Key)
         {
             string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
             /*
@@ -66,7 +67,7 @@ namespace ITP213.DAL
              */
             StringBuilder sqlStr = new StringBuilder();
             sqlStr.AppendLine("UPDATE account");
-            sqlStr.AppendLine("SET secretKey = @secretKey, googleAuthEnabled='Yes'");
+            sqlStr.AppendLine("SET secretKey = @secretKey, googleAuthEnabled=@googleAuthEnabled, IV=@IV, [Key]=@Key");
             sqlStr.AppendLine("WHERE UUID = @UUID;");
 
             SqlConnection myConn = new SqlConnection(DBConnect);
@@ -74,6 +75,9 @@ namespace ITP213.DAL
             SqlCommand cmd = new SqlCommand(sqlStr.ToString(), myConn);
             cmd.Parameters.AddWithValue("@UUID", UUID);
             cmd.Parameters.AddWithValue("@secretKey", secretKey);
+            cmd.Parameters.AddWithValue("@googleAuthEnabled", googleAuthEnabled);
+            cmd.Parameters.AddWithValue("@IV", IV);
+            cmd.Parameters.AddWithValue("@Key", Key);
             int result = cmd.ExecuteNonQuery();
 
             return result;
@@ -101,6 +105,82 @@ namespace ITP213.DAL
             int result = cmd.ExecuteNonQuery();
 
             return result;
+        }
+
+        // temp: have not choose whether to keep it
+        public static string getDBHash(string UUID)
+        {
+            //Get connection string from web.config
+            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+
+            string h = null;
+            SqlConnection connection = new SqlConnection(DBConnect);
+            string sql = "SELECT passwordHash from account where UUID=@UUID";
+            SqlCommand command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@UUID", UUID);
+
+            try
+            {
+                connection.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader["passwordHash"] != null)
+                        {
+                            if (reader["passwordHash"] != DBNull.Value)
+                            {
+                                h = reader["passwordHash"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+
+            finally { connection.Close(); }
+            return h;
+        }
+        public static string getDBSalt(string UUID)
+        {
+            //Get connection string from web.config
+            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+
+            string s = null;
+            SqlConnection connection = new SqlConnection(DBConnect);
+            string sql = "SELECT passwordSalt from account where UUID=@UUID";
+            SqlCommand command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@UUID", UUID);
+
+            try
+            {
+                connection.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader["passwordSalt"] != null)
+                        {
+                            if (reader["passwordSalt"] != DBNull.Value)
+                            {
+                                s = reader["passwordSalt"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+
+            finally { connection.Close(); }
+            return s;
         }
     }
 }
