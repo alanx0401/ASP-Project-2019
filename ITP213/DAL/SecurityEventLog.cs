@@ -10,27 +10,27 @@ using System.Text;
 
 namespace ITP213.DAL
 {
-    public class EventLog
+    public class SecurityEventLog
     {
         string _conn = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
         private int _eventID;
         private string _eventDesc = "";
         private DateTime _dateTimeDetails; // this is another way to specify empty string
         private string _UUID = "";
-  
-        // Default constructor
-        public EventLog()
+
+        //Default Constructor
+        public SecurityEventLog()
         {
+
         }
 
         // Constructor that take in all data required to build a EventLogs object
-        public EventLog(int eventID, string eventDesc, DateTime dateTimeDetails, string UUID)
+        public SecurityEventLog(int eventID, string eventDesc, DateTime dateTimeDetails, string UUID)
         {
             _eventID = eventID;
             _eventDesc = eventDesc;
             _dateTimeDetails = dateTimeDetails;
             _UUID = UUID;
-        
         }
 
         // Get/Set the attributes of the EventLogs object.
@@ -56,40 +56,39 @@ namespace ITP213.DAL
             set { _UUID = value; }
         }
 
+        public List<SecurityEventLog> GetEvents()
+        {
+            List<SecurityEventLog> prodList = new List<SecurityEventLog>();
+            int eventID;
+            string eventDesc;
+            DateTime dateTimeDetails;
+            string UUID;
+            string query = "SELECT * FROM EventLogs Order By eventID DESC";
+            SqlConnection conn = new SqlConnection(_conn);
+            SqlCommand cmd = new SqlCommand(query, conn);
+            conn.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                eventID = int.Parse(dr["eventID"].ToString());
+                eventDesc = dr["eventDesc"].ToString();
+                dateTimeDetails = Convert.ToDateTime(dr["dateTimeDetails"].ToString());
+                UUID = dr["UUID"].ToString();
+                SecurityEventLog obj = new SecurityEventLog(eventID, eventDesc, dateTimeDetails, UUID);
+                prodList.Add(obj);
+            }
 
-        public List<EventLog> GetEvents()
-         {
-             List<EventLog> prodList = new List<EventLog>();
-             int eventID;
-             string eventDesc;
-             DateTime dateTimeDetails;
-             string UUID;
-             string query = "SELECT * FROM EventLogs Order By eventID DESC";
-             SqlConnection conn = new SqlConnection(_conn);
-             SqlCommand cmd = new SqlCommand(query, conn);
-             conn.Open();
-             SqlDataReader dr = cmd.ExecuteReader();
-             while (dr.Read())
-             {
-                 eventID = int.Parse(dr["eventID"].ToString());
-                 eventDesc = dr["eventDesc"].ToString();
-                 dateTimeDetails = Convert.ToDateTime(dr["dateTimeDetails"].ToString());
-                 UUID = dr["UUID"].ToString();
-                 EventLog obj = new EventLog(eventID, eventDesc, dateTimeDetails, UUID);
-                 prodList.Add(obj);
-             }
+            conn.Close();
+            dr.Close();
+            dr.Dispose();
 
-             conn.Close();
-             dr.Close();
-             dr.Dispose();
-
-             return prodList;
-         }
+            return prodList;
+        }
 
         //To display contents in GVEventLogs based on EventDesc 
-        public List<EventLog> getEventDesc(string eventDesc)
+        public List<SecurityEventLog> getEventDesc(string eventDesc)
         {
-            List<EventLog> eventDescList = new List<EventLog>();
+            List<SecurityEventLog> eventDescList = new List<SecurityEventLog>();
             int eventID;
             DateTime dateTimeDetails;
             string UUID;
@@ -104,7 +103,7 @@ namespace ITP213.DAL
                 eventID = int.Parse(dr["eventID"].ToString());
                 dateTimeDetails = Convert.ToDateTime(dr["dateTimeDetails"].ToString());
                 UUID = dr["UUID"].ToString();
-                EventLog eventDescObj = new EventLog(eventID, eventDesc, dateTimeDetails, UUID);
+                SecurityEventLog eventDescObj = new SecurityEventLog(eventID, eventDesc, dateTimeDetails, UUID);
                 eventDescList.Add(eventDescObj);
             }
             else
@@ -120,11 +119,11 @@ namespace ITP213.DAL
         }
 
         //To display contents in GVEventLogs based on start date an end date 
-        public List<EventLog> searchEventLogDate(DateTime startDate, DateTime endDate)
+        public List<SecurityEventLog> searchEventLogDate(DateTime startDate, DateTime endDate)
         {
-            List<EventLog> resultList = new List<EventLog>();
+            List<SecurityEventLog> resultList = new List<SecurityEventLog>();
             //Get connection string from web.config
-            //string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
 
             SqlDataAdapter da;
             DataSet ds = new DataSet();
@@ -133,7 +132,7 @@ namespace ITP213.DAL
             sqlStr.AppendLine("SELECT * FROM EventLogs WHERE dateTimeDetails BETWEEN @startDate AND @endDate Order By dateTimeDetails DESC");
             //Create Adapter
 
-            SqlConnection myConn = new SqlConnection(_conn);
+            SqlConnection myConn = new SqlConnection(DBConnect);
             da = new SqlDataAdapter(sqlStr.ToString(), myConn);
             da.SelectCommand.Parameters.AddWithValue("@startDate", startDate);
             da.SelectCommand.Parameters.AddWithValue("@endDate", endDate);
@@ -144,7 +143,7 @@ namespace ITP213.DAL
             {
                 foreach (DataRow row in ds.Tables["resultTable"].Rows)
                 {
-                    EventLog obj = new EventLog();
+                    SecurityEventLog obj = new SecurityEventLog();
 
                     obj.eventID = Convert.ToInt32(row["eventID"].ToString());
                     obj.dateTimeDetails = Convert.ToDateTime(row["dateTimeDetails"].ToString());
@@ -170,7 +169,7 @@ namespace ITP213.DAL
             {
                 SqlConnection conn = new SqlConnection(_conn);
                 SqlCommand cmd = new SqlCommand(queryStr, conn);
-                
+
                 cmd.Parameters.AddWithValue("@eventDesc", eventDesc);
                 cmd.Parameters.AddWithValue("@dateTimeDetails", dateTimeDetails);
                 cmd.Parameters.AddWithValue("@UUID", UUID);

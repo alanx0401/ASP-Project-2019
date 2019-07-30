@@ -403,7 +403,6 @@
     <Compile Include="DAL\Complain.cs" />
     <Compile Include="DAL\ComplainDAO.cs" />
     <Compile Include="DAL\EditAccountDAO.cs" />
-    <Compile Include="DAL\EventLog.cs" />
     <Compile Include="DAL\Feedback.cs" />
     <Compile Include="DAL\FeedbackDAO.cs" />
     <Compile Include="DAL\GeneralRecord.cs" />
@@ -426,6 +425,7 @@
     <Compile Include="DAL\LoginDAO.cs" />
     <Compile Include="DAL\ReportInjury.cs" />
     <Compile Include="DAL\ReportInjuryDAO.cs" />
+    <Compile Include="DAL\SecurityEventLog.cs" />
     <Compile Include="DAL\Settings.cs" />
     <Compile Include="DAL\SettingsDAO.cs" />
     <Compile Include="DAL\Security.cs" />

@@ -18,13 +18,13 @@ namespace ITP213
        
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["accountID"] != null && Session["name"] != null)
+            if (Session["UUID"] != null && Session["name"] != null)
             {
                 if (!IsPostBack)
                 {
                     lbUser.Text = Session["name"].ToString();
-                    lbUUID.Text = Session["accountID"].ToString();
-                    //lbUser.Text = Session["name"].ToString() + Session["accountID"].ToString();
+                    lbUUID.Text = Session["UUID"].ToString();
+                    //lbUser.Text = Session["name"].ToString() + Session["UUID"].ToString();
                     bind();
                     PanelEvents.Visible = true;
                     PanelSearchFilter.Visible = false;
@@ -38,7 +38,7 @@ namespace ITP213
         protected void bind()
         {
             string UUID;
-            UUID = Session["accountID"].ToString();
+            UUID = Session["UUID"].ToString();
             List<userSecurityEventLog> eventsList = new List<userSecurityEventLog>();
             eventsList = obj.getEventDesc(UUID);
             GVEventLogs.DataSource = eventsList;

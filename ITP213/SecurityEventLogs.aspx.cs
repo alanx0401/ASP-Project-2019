@@ -14,7 +14,7 @@ namespace ITP213
 {
     public partial class SecurityEventLogs : System.Web.UI.Page
     {
-        EventLog obj = new EventLog();
+        SecurityEventLog obj = new SecurityEventLog();
         string _conn = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -30,7 +30,7 @@ namespace ITP213
         }
         protected void bind()
         {
-            List<EventLog> eventsList = new List<EventLog>();
+            List<SecurityEventLog> eventsList = new List<SecurityEventLog>();
             eventsList = obj.GetEvents();
             GVEventLogs.DataSource = eventsList;
             GVEventLogs.DataBind();
@@ -90,8 +90,7 @@ namespace ITP213
         {
             DateTime startDate = Convert.ToDateTime(tbStartDate.Text);
             DateTime endDate = Convert.ToDateTime(tbEndDate.Text);
-            List<EventLog> eventsList = new List<EventLog>();
-            //eventsList = obj.searchEventLogDate(startDate, endDate);
+            List<SecurityEventLog> eventsList = new List<SecurityEventLog>();
             eventsList = obj.searchEventLogDate(startDate, endDate);
             GVEventDateRange.DataSource = eventsList;
             GVEventDateRange.DataBind();
