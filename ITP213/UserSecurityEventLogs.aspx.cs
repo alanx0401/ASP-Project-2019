@@ -4,6 +4,22 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+<<<<<<< HEAD
+using ITP213.DAL;
+namespace ITP213
+{
+    public partial class UserSecurityEventLogs : System.Web.UI.Page
+    {
+        userSecurityEventLog obj = new userSecurityEventLog();
+        string UUID;
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (Session["UUID"] != null && Session["name"] != null && !IsPostBack)
+            {
+                lbUser.Text = Session["name"].ToString();
+                UUID = Session["UUID"].ToString();
+                bind();
+=======
 
 using ITP213.DAL;
 
@@ -27,6 +43,7 @@ namespace ITP213
                    Response.Redirect("login.aspx", false);
                 }
           
+>>>>>>> TechnicalReview2
             }
             else
             {
@@ -35,6 +52,13 @@ namespace ITP213
         }
         protected void bind()
         {
+<<<<<<< HEAD
+            UUID = Session["UUID"].ToString();
+            List<userSecurityEventLog> eventsList = new List<userSecurityEventLog>();
+            eventsList = obj.getEventDesc(UUID);
+            GVUserSecurityEventLogs.DataSource = eventsList;
+            GVUserSecurityEventLogs.DataBind();
+=======
             name = Session["name"].ToString();
             UUID = Session["accountID"].ToString();
             lblUser.Text = name + " with AccountID of " + UUID;
@@ -42,6 +66,7 @@ namespace ITP213
             userEventList = userEventLog.getIndividualUserLog(UUID);
             GVEventLogs.DataSource = userEventList;
             GVEventLogs.DataBind();
+>>>>>>> TechnicalReview2
 
         }
     }

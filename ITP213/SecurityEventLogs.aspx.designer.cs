@@ -22,24 +22,6 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceDDL;
         
         /// <summary>
-        /// SqlDataSourceDDLEventDuration control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceDDLEventDuration;
-        
-        /// <summary>
-        /// SqlDataSourceEventCount control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceEventCount;
-        
-        /// <summary>
         /// SqlDataSourceDDLUUID control.
         /// </summary>
         /// <remarks>
@@ -56,15 +38,6 @@ namespace ITP213 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceGVParticularEvent;
-        
-        /// <summary>
-        /// SqlDataSourceGVEventDuration control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceGVEventDuration;
         
         /// <summary>
         /// SqlDataSourceGVUUID control.
@@ -113,6 +86,7 @@ namespace ITP213 {
         
         /// <summary>
         /// PanelSearchFilter control.
+<<<<<<< HEAD
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
@@ -122,6 +96,8 @@ namespace ITP213 {
         
         /// <summary>
         /// DDLEventDesc control.
+=======
+>>>>>>> TechnicalReview2
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
@@ -139,31 +115,58 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.GridView GVParticularEvent;
         
         /// <summary>
-        /// PanelEventDuration control.
+        /// PanelEventDateRange control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel PanelEventDuration;
+        protected global::System.Web.UI.WebControls.Panel PanelEventDateRange;
         
         /// <summary>
-        /// DDLEventPeriod control.
+        /// tbStartDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DDLEventPeriod;
+        protected global::System.Web.UI.WebControls.TextBox tbStartDate;
         
         /// <summary>
-        /// GVeventDuration control.
+        /// tbEndDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GVeventDuration;
+        protected global::System.Web.UI.WebControls.TextBox tbEndDate;
+        
+        /// <summary>
+        /// btnSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSearch;
+        
+        /// <summary>
+        /// GVEventDateRange control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GVEventDateRange;
+        
+        /// <summary>
+        /// chartEvent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.DataVisualization.Charting.Chart chartEvent;
         
         /// <summary>
         /// chartEvent control.
