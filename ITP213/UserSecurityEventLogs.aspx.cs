@@ -4,46 +4,31 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-<<<<<<< HEAD
+
+using System.Data.SqlClient;
+using System.Configuration;
 using ITP213.DAL;
+using System.Web.UI.DataVisualization.Charting;
+
 namespace ITP213
 {
     public partial class UserSecurityEventLogs : System.Web.UI.Page
     {
         userSecurityEventLog obj = new userSecurityEventLog();
-        string UUID;
+       
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["UUID"] != null && Session["name"] != null && !IsPostBack)
+            if (Session["accountID"] != null && Session["name"] != null)
             {
-                lbUser.Text = Session["name"].ToString();
-                UUID = Session["UUID"].ToString();
-                bind();
-=======
-
-using ITP213.DAL;
-
-namespace ITP213
-{
-    public partial class IndividualUserEventLog : System.Web.UI.Page
-    {
-        string UUID;
-        string name;
-        userEventLog userEventLog = new userEventLog();
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            if (Session["accountID"]!= null && !IsPostBack)
-            {
-                if (Session["name"] !=null && !IsPostBack)
+                if (!IsPostBack)
                 {
+                    lbUser.Text = Session["name"].ToString();
+                    lbUUID.Text = Session["accountID"].ToString();
+                    //lbUser.Text = Session["name"].ToString() + Session["accountID"].ToString();
                     bind();
-                }
-                else
-                {
-                   Response.Redirect("login.aspx", false);
-                }
-          
->>>>>>> TechnicalReview2
+                    PanelEvents.Visible = true;
+                    PanelSearchFilter.Visible = false;
+                }  
             }
             else
             {
@@ -52,22 +37,34 @@ namespace ITP213
         }
         protected void bind()
         {
-<<<<<<< HEAD
-            UUID = Session["UUID"].ToString();
+            string UUID;
+            UUID = Session["accountID"].ToString();
             List<userSecurityEventLog> eventsList = new List<userSecurityEventLog>();
             eventsList = obj.getEventDesc(UUID);
-            GVUserSecurityEventLogs.DataSource = eventsList;
-            GVUserSecurityEventLogs.DataBind();
-=======
-            name = Session["name"].ToString();
-            UUID = Session["accountID"].ToString();
-            lblUser.Text = name + " with AccountID of " + UUID;
-            List<userEventLog> userEventList = new List<userEventLog>();
-            userEventList = userEventLog.getIndividualUserLog(UUID);
-            GVEventLogs.DataSource = userEventList;
+            GVEventLogs.DataSource = eventsList;
             GVEventLogs.DataBind();
->>>>>>> TechnicalReview2
 
+        }
+
+        protected void btnReset_Click(object sender, EventArgs e)
+        {
+            DDLSearch.SelectedValue = "0";
+            PanelEvents.Visible = true;
+            PanelSearchFilter.Visible = false;
+        }
+
+        protected void DDLSearch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (DDLSearch.SelectedValue == "0") //Please Select
+            {
+                PanelEvents.Visible = true;
+                PanelSearchFilter.Visible = false;
+            }
+            else//Search by Event Description
+            {
+                PanelEvents.Visible = false;
+                PanelSearchFilter.Visible = true;
+            }
         }
     }
 }
