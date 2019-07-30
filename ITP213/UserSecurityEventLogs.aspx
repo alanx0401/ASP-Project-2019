@@ -26,10 +26,7 @@
             color: #D6D6D6;
         }
     </style>
-    <!-- //Breadcrumbs end-->
-
-<<<<<<< HEAD
-      <script type="text/javascript">
+     <script type="text/javascript">
         $(document).ready(function () {
             $(function () {
                 $("#tbStartDate").datepicker({
@@ -41,60 +38,50 @@
                     dateFormat: 'yy/mm/dd'
                 });
             });
-        });
-        $(document).ready(function () {
-            
-            $(".createBtn").hide();
-            $("#ContentPlaceHolder1_step1").click(function () {
-                $(".createBtn").hide();
-                var iSelectedTab = $(document).find("input[id*='tab_index']").val();
-                console.log("hi :" + iSelectedTab);
-            });
-            $("#ContentPlaceHolder1_step2").click(function () {
-                $(".createBtn").hide();
-            });
-            $("#ContentPlaceHolder1_step3").click(function () {
-                $(".createBtn").show();
-            });
         })
     </script>
+    <!-- //Breadcrumbs end-->
     <!-- Page Content -->
-    <h1>Event Logs</h1>
      <!--2. Change the title!--> 
     <hr />
-    <asp:SqlDataSource ID="SqlDataSourceDDL" runat="server" ConnectionString="<%$ ConnectionStrings: ConnStr %>" SelectCommand="SELECT DISTINCT [eventDesc] FROM [Eventlogs]"></asp:SqlDataSource>  
-     <asp:SqlDataSource ID="SqlDataSourceDDLUUID" runat="server" ConnectionString="<%$ ConnectionStrings:ConnStr %>" SelectCommand="SELECT DISTINCT [UUID] FROM [Eventlogs]">
-    </asp:SqlDataSource>
-    <asp:SqlDataSource ID="SqlDataSourceGVParticularEvent" runat="server" ConnectionString="<%$ ConnectionStrings:ConnStr %>" SelectCommand="SELECT [eventDesc], [dateTimeDetails], [UUID] FROM [Eventlogs] WHERE ([eventDesc] = @eventDesc)" ProviderName="System.Data.SqlClient">
-        <SelectParameters>
+     <asp:SqlDataSource ID="SqlDataSourceDDL" runat="server" ConnectionString="<%$ ConnectionStrings: ConnStr %>" SelectCommand="SELECT DISTINCT [eventDesc] FROM [Eventlogs]"></asp:SqlDataSource>
+     <asp:SqlDataSource ID="SqlDataSourceGVUserParticularEvent" runat="server" ConnectionString="<%$ ConnectionStrings:ConnStr %>" SelectCommand="SELECT [eventDesc], [dateTimeDetails] FROM [Eventlogs] WHERE (([eventDesc] = @eventDesc) AND ([UUID] = @UUID))" ProviderName="System.Data.SqlClient">
+         <SelectParameters>
             <asp:ControlParameter ControlID="DDLEventDesc" Name="eventDesc" PropertyName="SelectedValue" Type="String" />
-        </SelectParameters>
+             <asp:ControlParameter ControlID="lbUUID" Name="UUID" PropertyName="Text" Type="String" />
+         </SelectParameters>
      </asp:SqlDataSource>
-    <asp:SqlDataSource ID="SqlDataSourceGVUUID" runat="server" ConnectionString="<%$ ConnectionStrings:ConnStr %>" SelectCommand="SELECT [Eventlogs].[UUID], [eventDesc], [dateTimeDetails], [name]
-    FROM [Eventlogs] INNER JOIN [account] ON [account].UUID = [Eventlogs].UUID WHERE ([Eventlogs].[UUID] = @UUID) ORDER BY [eventID] DESC" ProviderName="System.Data.SqlClient">
-        <SelectParameters>
-            <asp:ControlParameter ControlID="DDLUUID" Name="UUID" PropertyName="SelectedValue" Type="String" />
-        </SelectParameters>
-     </asp:SqlDataSource>
-    <div>
-         <fieldset>
-            <legend>Security Events of <asp:Label ID="lbUser" runat="server" Text=""></asp:Label></legend>
+     <div>     
+        <fieldset>
+            <legend>Security Events for: <asp:Label ID="lbUser"  runat="server" Text="Label"></asp:Label></legend>
         </fieldset>
-       <asp:GridView ID="GVUserSecurityEventLogs" runat="server" AutoGenerateColumns="False" Height="217px" Width="747px" >
-=======
-    <!-- Page Content -->
-    <h1>Event Logs</h1>
-     <!--2. Change the title!--> <asp:Label ID="lblUser"  runat="server" Text="Label"></asp:Label>
-    <hr />
+         <asp:Label ID="lbUUID" runat="server" Visible="False"></asp:Label>
+        <p>Search by dropdown list: &nbsp<asp:DropDownList ID="DDLSearch" runat="server" AutoPostBack="True" OnSelectedIndexChanged="DDLSearch_SelectedIndexChanged">
+                <asp:ListItem Value="0">Please Select</asp:ListItem>
+                <asp:ListItem Value="1">Search by Event Description</asp:ListItem>
+            </asp:DropDownList>&nbsp <asp:Button ID="btnReset" runat="server" Text="Reset" OnClick="btnReset_Click" /></p>
+    </div>
       <div>
         <asp:Panel ID="PanelEvents" runat="server">
-          <p>Security Web events for <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
           <asp:GridView ID="GVEventLogs" runat="server" AutoGenerateColumns="False" Height="217px" Width="747px" >
->>>>>>> Kaiming
             <Columns>
                 <asp:BoundField DataField="eventDesc" HeaderText="Event Description" />
                 <asp:BoundField DataField="dateTimeDetails" HeaderText="Date Time Occured" />
             </Columns>
           </asp:GridView>
+        </asp:Panel>
+    </div>
+    <div>
+        <asp:Panel ID="PanelSearchFilter" runat="server">
+          <p>Search Security Event based on security event description:<asp:DropDownList ID="DDLEventDesc" runat="server" AutoPostBack="True" DataSourceID="SqlDataSourceDDL" DataTextField="eventDesc" DataValueField="eventDesc">
+              </asp:DropDownList>
+            </p> <asp:GridView ID="GVParticularEvent" runat="server" DataSourceID="SqlDataSourceGVUserParticularEvent" AutoGenerateColumns="False" Height="155px" Width="749px">
+              <Columns>
+                  <asp:BoundField DataField="eventDesc" HeaderText="eventDesc" SortExpression="eventDesc" />
+                  <asp:BoundField DataField="dateTimeDetails" HeaderText="dateTimeDetails" SortExpression="dateTimeDetails" />
+              </Columns>
+            </asp:GridView>
+          <br />
+        </asp:Panel>
     </div>
 </asp:Content>

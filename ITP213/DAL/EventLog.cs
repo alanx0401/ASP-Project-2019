@@ -124,7 +124,7 @@ namespace ITP213.DAL
         {
             List<EventLog> resultList = new List<EventLog>();
             //Get connection string from web.config
-            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+            //string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
 
             SqlDataAdapter da;
             DataSet ds = new DataSet();
@@ -133,7 +133,7 @@ namespace ITP213.DAL
             sqlStr.AppendLine("SELECT * FROM EventLogs WHERE dateTimeDetails BETWEEN @startDate AND @endDate Order By dateTimeDetails DESC");
             //Create Adapter
 
-            SqlConnection myConn = new SqlConnection(DBConnect);
+            SqlConnection myConn = new SqlConnection(_conn);
             da = new SqlDataAdapter(sqlStr.ToString(), myConn);
             da.SelectCommand.Parameters.AddWithValue("@startDate", startDate);
             da.SelectCommand.Parameters.AddWithValue("@endDate", endDate);
