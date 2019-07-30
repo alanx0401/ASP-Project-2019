@@ -47,6 +47,15 @@
      <!--2. Change the title!--> 
     <hr />
     <asp:SqlDataSource ID="SqlDataSourceDDL" runat="server" ConnectionString="<%$ ConnectionStrings: ConnStr %>" SelectCommand="SELECT DISTINCT [eventDesc] FROM [Eventlogs]"></asp:SqlDataSource>  
+<<<<<<< HEAD
+=======
+    <asp:SqlDataSource ID="SqlDataSourceDDLEventDuration" runat="server" ConnectionString="<%$ ConnectionStrings:ConnStr %>" SelectCommand="SELECT DISTINCT [dateTimeDetails] FROM [Eventlogs]"></asp:SqlDataSource>  
+    <asp:SqlDataSource ID="SqlDataSourceEventCount" runat="server" ConnectionString="<%$ ConnectionStrings:ConnStr %>" SelectCommand="SELECT eventDesc, COUNT(*) AS CountEvent FROM Eventlogs  WHERE ([dateTimeDetails] = @dateTimeDetails) GROUP BY eventDesc" ProviderName="System.Data.SqlClient">
+        <SelectParameters>
+            <asp:ControlParameter ControlID="DDLEventPeriod" Name="dateTimeDetails" PropertyName="SelectedValue" Type="DateTime" />
+        </SelectParameters>
+    </asp:SqlDataSource>
+>>>>>>> TechnicalReview2
      <asp:SqlDataSource ID="SqlDataSourceDDLUUID" runat="server" ConnectionString="<%$ ConnectionStrings:ConnStr %>" SelectCommand="SELECT DISTINCT [UUID] FROM [Eventlogs]">
     </asp:SqlDataSource>
     <asp:SqlDataSource ID="SqlDataSourceGVParticularEvent" runat="server" ConnectionString="<%$ ConnectionStrings:ConnStr %>" SelectCommand="SELECT [eventDesc], [dateTimeDetails], [UUID] FROM [Eventlogs] WHERE ([eventDesc] = @eventDesc)" ProviderName="System.Data.SqlClient">
@@ -117,6 +126,7 @@
                   <asp:BoundField DataField="UUID" HeaderText="UUID"/>
               </Columns>
             </asp:GridView>
+<<<<<<< HEAD
             <asp:Chart ID="chartEvent" runat="server" Height="318px" Palette="Fire" Width="607px">
                 <Series>
                     <asp:Series ChartType="Bar" Name="Series1" XValueMember="eventDesc" YValueMembers="CountEvent"></asp:Series>
@@ -125,6 +135,15 @@
                     <asp:ChartArea Name="ChartArea1">
                         <AxisX Title ="Event Description"></AxisX>
                         <AxisY Title="Number of Events"></AxisY>
+=======
+            <asp:Chart ID="chartEvent" runat="server" DataSourceID="SqlDataSourceEventCount" Height="318px" Palette="Fire" Width="607px">
+                <Series>
+                    <asp:Series ChartType="Bar" Name="Series1" XValueMember="eventDesc" YValueMembers="CountEvent">
+                    </asp:Series>
+                </Series>
+                <ChartAreas>
+                    <asp:ChartArea Name="ChartArea1">
+>>>>>>> TechnicalReview2
                     </asp:ChartArea>
                 </ChartAreas>
             </asp:Chart>

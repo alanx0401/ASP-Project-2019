@@ -303,18 +303,7 @@
                             <span>Settings</span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-                                 <% if (currentAccountType == "admin")
-                                    {%>
-                                        <a class="dropdown-item" href="SecurityEventLogs.aspx">Security Events</a>
-                                 <% } %>
-                                  <% if (currentAccountType == "student")
-                                    {%>
-                                        <a class="dropdown-item" href="UserSecurityEventLogs.aspx">Security Events</a>
-                                 <% } %>
-                                <% if (currentAccountType == "lecturer")
-                                    {%>
-                                        <a class="dropdown-item" href="UserSecurityEventLogs.aspx">Security Events</a>
-                                 <% } %>
+                                <a class="dropdown-item" href="SecurityEventLogs.aspx">Event Log</a>
                                 <a class="dropdown-item" href="/ManageYourAccount.aspx">Manage Account</a>
                             </div>
                         </li>
