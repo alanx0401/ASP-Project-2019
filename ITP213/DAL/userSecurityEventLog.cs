@@ -5,6 +5,8 @@ using System.Web;
 
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Data;
+using System.Text;
 
 namespace ITP213.DAL
 {
@@ -35,33 +37,79 @@ namespace ITP213.DAL
             _dateTimeDetails = dateTimeDetails;
         }
         //To display contents in GVEventLogs based on EventDesc 
-
         public List<userSecurityEventLog> getEventDesc(string UUID)
         {
-            List<userSecurityEventLog> eventDescList = new List<userSecurityEventLog>();
-            string queryStr = "SELECT eventDesc, dateTimeDetails FROM Eventlogs WHERE UUID = @UUID";
-            SqlConnection conn = new SqlConnection(_conn);
-            SqlCommand cmd = new SqlCommand(queryStr, conn);
-            cmd.Parameters.AddWithValue("@UUID", UUID);
-            conn.Open();
-            SqlDataReader dr = cmd.ExecuteReader();
-            if (dr.Read())
+            List<userSecurityEventLog> resultList = new List<userSecurityEventLog>();
+
+            //string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+            SqlDataAdapter da;
+            DataSet ds = new DataSet();
+
+            StringBuilder sqlStr = new StringBuilder();
+            sqlStr.AppendLine("SELECT eventDesc, dateTimeDetails FROM Eventlogs WHERE UUID = @UUID");
+            //Create Adapter
+
+            SqlConnection myConn = new SqlConnection(_conn);
+            da = new SqlDataAdapter(sqlStr.ToString(), myConn);
+            da.SelectCommand.Parameters.AddWithValue("@UUID", UUID);
+            // fill dataset
+            da.Fill(ds, "resultTable");
+            int rec_cnt = ds.Tables["resultTable"].Rows.Count;
+            if (rec_cnt > 0)
             {
-                eventDesc = dr["eventDesc"].ToString();
-                dateTimeDetails = Convert.ToDateTime(dr["dateTimeDetails"].ToString());
-                userSecurityEventLog eventDescObj = new userSecurityEventLog(eventDesc, dateTimeDetails);
-                eventDescList.Add(eventDescObj);
+                foreach (DataRow row in ds.Tables["resultTable"].Rows)
+                {
+                    userSecurityEventLog obj = new userSecurityEventLog();
+                    obj.eventDesc = row["eventDesc"].ToString();
+                    obj.dateTimeDetails = Convert.ToDateTime(row["dateTimeDetails"].ToString());
+                    resultList.Add(obj);
+                }
             }
             else
             {
-                eventDescList = null;
+                resultList = null;
             }
-
-            conn.Close();
-            dr.Close();
-            dr.Dispose();
-
-            return eventDescList;
+            return resultList;
         }
+
+        //To display contents in GVEventLogs based on start date, end date and UUID 
+        /*public List<userSecurityEventLog> searchEventLogDate(DateTime startDate, DateTime endDate, string UUID)
+        {
+            List<userSecurityEventLog> resultList = new List<userSecurityEventLog>();
+            //Get connection string from web.config
+            //string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+
+            SqlDataAdapter da;
+            DataSet ds = new DataSet();
+
+            StringBuilder sqlStr = new StringBuilder();
+            sqlStr.AppendLine("SELECT eventDesc,dateTimeDetails FROM EventLogs WHERE dateTimeDetails BETWEEN @startDate AND @endDate AND UUID = @UUID Order By dateTimeDetails DESC");
+            //Create Adapter
+
+            SqlConnection myConn = new SqlConnection(_conn);
+            da = new SqlDataAdapter(sqlStr.ToString(), myConn);
+            da.SelectCommand.Parameters.AddWithValue("@startDate", startDate);
+            da.SelectCommand.Parameters.AddWithValue("@endDate", endDate);
+            da.SelectCommand.Parameters.AddWithValue("@UUID", UUID);
+            // fill dataset
+            da.Fill(ds, "resultTable");
+            int rec_cnt = ds.Tables["resultTable"].Rows.Count;
+            if (rec_cnt > 0)
+            {
+                foreach (DataRow row in ds.Tables["resultTable"].Rows)
+                {
+                    userSecurityEventLog obj = new userSecurityEventLog();
+                    obj.eventDesc = row["eventDesc"].ToString();
+                    obj.dateTimeDetails = Convert.ToDateTime(row["dateTimeDetails"].ToString());
+                    resultList.Add(obj);
+                }
+            }
+            else
+            {
+                resultList = null;
+            }
+            return resultList;
+        }*/
+
     }
 }

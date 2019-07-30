@@ -432,7 +432,6 @@ namespace ITP213
         {
             DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
 
-            Session["UUID"] = loginObj.UUID;
             // **** Find ways to remove the session below
             Session["accountID"] = loginObj.UUID;
             Session["accountType"] = loginObj.accountType;
