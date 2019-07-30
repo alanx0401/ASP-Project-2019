@@ -35,7 +35,10 @@
     <hr />
     <asp:SqlDataSource ID="SqlDataSourceDDL" runat="server" ConnectionString="<%$ ConnectionStrings: ConnStr %>" SelectCommand="SELECT DISTINCT [eventDesc] FROM [Eventlogs]"></asp:SqlDataSource>  
     <asp:SqlDataSource ID="SqlDataSourceDDLEventDuration" runat="server" ConnectionString="<%$ ConnectionStrings:ConnStr %>" SelectCommand="SELECT DISTINCT [dateTimeDetails] FROM [Eventlogs]"></asp:SqlDataSource>  
-    <asp:SqlDataSource ID="SqlDataSourceEventCount" runat="server" ConnectionString="<%$ ConnectionStrings:ConnStr %>" SelectCommand="SELECT eventDesc, COUNT(*) AS CountEvent FROM Eventlogs GROUP BY eventDesc">
+    <asp:SqlDataSource ID="SqlDataSourceEventCount" runat="server" ConnectionString="<%$ ConnectionStrings:ConnStr %>" SelectCommand="SELECT eventDesc, COUNT(*) AS CountEvent FROM Eventlogs  WHERE ([dateTimeDetails] = @dateTimeDetails) GROUP BY eventDesc" ProviderName="System.Data.SqlClient">
+        <SelectParameters>
+            <asp:ControlParameter ControlID="DDLEventPeriod" Name="dateTimeDetails" PropertyName="SelectedValue" Type="DateTime" />
+        </SelectParameters>
     </asp:SqlDataSource>
      <asp:SqlDataSource ID="SqlDataSourceDDLUUID" runat="server" ConnectionString="<%$ ConnectionStrings:ConnStr %>" SelectCommand="SELECT DISTINCT [UUID] FROM [Eventlogs]">
     </asp:SqlDataSource>
@@ -81,14 +84,6 @@ ORDER BY [eventID] DESC" ProviderName="System.Data.SqlClient">
                 <asp:BoundField DataField="UUID" HeaderText="UUID" />
             </Columns>
           </asp:GridView>
-            <asp:Chart ID="chartEvent" runat="server" DataSourceID="SqlDataSourceEventCount" Height="318px" Width="607px">
-                <Series>
-                    <asp:Series Name="Series1" ChartType="Bar" XValueMember="eventDesc" YValueMembers="CountEvent"></asp:Series>
-                </Series>
-                <ChartAreas>
-                    <asp:ChartArea Name="ChartArea1"></asp:ChartArea>
-                </ChartAreas>
-            </asp:Chart>
         </asp:Panel>
     </div>
     <br />
@@ -117,6 +112,16 @@ ORDER BY [eventID] DESC" ProviderName="System.Data.SqlClient">
                   <asp:BoundField DataField="UUID" HeaderText="UUID" SortExpression="UUID" />
               </Columns>
             </asp:GridView>
+            <asp:Chart ID="chartEvent" runat="server" DataSourceID="SqlDataSourceEventCount" Height="318px" Palette="Fire" Width="607px">
+                <Series>
+                    <asp:Series ChartType="Bar" Name="Series1" XValueMember="eventDesc" YValueMembers="CountEvent">
+                    </asp:Series>
+                </Series>
+                <ChartAreas>
+                    <asp:ChartArea Name="ChartArea1">
+                    </asp:ChartArea>
+                </ChartAreas>
+            </asp:Chart>
           <br />
         </asp:Panel>
     </div>

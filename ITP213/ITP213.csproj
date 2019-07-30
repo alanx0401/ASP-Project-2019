@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
@@ -141,8 +141,8 @@
       <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OtpSharp, Version=1.3.0.4, Culture=neutral, PublicKeyToken=1ec2a4a54aeffc1e, processorArchitecture=MSIL">
@@ -190,6 +190,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AddRemarks.aspx" />
+    <Content Include="Admin\ListUser.aspx" />
     <Content Include="App_Data\ITP213.mdf" />
     <Content Include="App_Data\ITP213_log.ldf">
       <DependentUpon>ITP213.mdf</DependentUpon>
@@ -210,9 +211,12 @@
     <Content Include="CreateReflection.aspx" />
     <Content Include="CreateRemarks.aspx" />
     <Content Include="CreateTest.aspx" />
+    <Content Include="DAL\Validation\Data\dictionary.txt" />
     <Content Include="Default.aspx" />
     <Content Include="DefaultErrorPage.aspx" />
-    <Content Include="ForgetPassword.aspx" />
+    <Content Include="EditAccount.aspx" />
+    <Content Include="Error403.aspx" />
+    <Content Include="EventLogs.aspx" />
     <Content Include="GoogleAuth.aspx" />
     <Content Include="ImageGallery.aspx" />
     <Content Include="Images\check.png" />
@@ -225,7 +229,6 @@
     <Content Include="Logout.aspx" />
     <Content Include="ManageImageGallery.aspx" />
     <Content Include="ManageYourAccount.aspx" />
-    <Content Include="OneTimePassword.aspx" />
     <Content Include="OverseasInternMain.aspx" />
     <Content Include="Format.aspx" />
     <Content Include="Images\favicon.png" />
@@ -288,6 +291,8 @@
     <Content Include="UnauthorizedErrorPage.aspx" />
     <Content Include="UploadedImages.aspx" />
     <Content Include="UploadReport.aspx" />
+    <Content Include="UserEventLogs.aspx" />
+    <Content Include="UserSecurityEventLogs.aspx" />
     <Content Include="ViewAllocatedTrip.aspx" />
     <Content Include="ViewAnnouncement.aspx" />
     <Content Include="ViewBlog.aspx" />
@@ -310,6 +315,13 @@
     </Compile>
     <Compile Include="AddRemarks.aspx.designer.cs">
       <DependentUpon>AddRemarks.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ListUser.aspx.cs">
+      <DependentUpon>ListUser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ListUser.aspx.designer.cs">
+      <DependentUpon>ListUser.aspx</DependentUpon>
     </Compile>
     <Compile Include="BlogDetails.aspx.cs">
       <DependentUpon>BlogDetails.aspx</DependentUpon>
@@ -389,8 +401,10 @@
     <Compile Include="DAL\BlogDAO.cs" />
     <Compile Include="DAL\CCARecord.cs" />
     <Compile Include="DAL\CCARecordDAO.cs" />
+    <Compile Include="DAL\ChangePassword.cs" />
     <Compile Include="DAL\Complain.cs" />
     <Compile Include="DAL\ComplainDAO.cs" />
+    <Compile Include="DAL\EditAccountDAO.cs" />
     <Compile Include="DAL\EventLog.cs" />
     <Compile Include="DAL\Feedback.cs" />
     <Compile Include="DAL\FeedbackDAO.cs" />
@@ -403,6 +417,7 @@
     <Compile Include="DAL\MedicalRecordDAO.cs" />
     <Compile Include="DAL\OverallReport.cs" />
     <Compile Include="DAL\OverallReportDAO.cs" />
+    <Compile Include="DAL\Peishan-Function\EmailAndPhoneValidation.cs" />
     <Compile Include="DAL\Question.cs" />
     <Compile Include="DAL\QuestionDAO.cs" />
     <Compile Include="DAL\Register.cs" />
@@ -415,11 +430,17 @@
     <Compile Include="DAL\ReportInjuryDAO.cs" />
     <Compile Include="DAL\Settings.cs" />
     <Compile Include="DAL\SettingsDAO.cs" />
+    <Compile Include="DAL\Security.cs" />
+    <Compile Include="DAL\SecurityDAO.cs" />
+    <Compile Include="DAL\SessionManager.cs" />
+    <Compile Include="DAL\SessionManagerDAO.cs" />
     <Compile Include="DAL\Test.cs" />
     <Compile Include="DAL\TestDAO.cs" />
     <Compile Include="DAL\TripAllocation.cs" />
     <Compile Include="DAL\TripAllocationDAO.cs" />
     <Compile Include="DAL\UploadedImage.cs" />
+    <Compile Include="DAL\userEventLog.cs" />
+    <Compile Include="DAL\Validation\RegisterValidation.cs" />
     <Compile Include="DAL\WithdrawalRequest.cs" />
     <Compile Include="DAL\WithdrawalRequestDAO.cs" />
     <Compile Include="Default.aspx.cs">
@@ -436,16 +457,30 @@
     <Compile Include="DefaultErrorPage.aspx.designer.cs">
       <DependentUpon>DefaultErrorPage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="EditAccount.aspx.cs">
+      <DependentUpon>EditAccount.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditAccount.aspx.designer.cs">
+      <DependentUpon>EditAccount.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Error403.aspx.cs">
+      <DependentUpon>Error403.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Error403.aspx.designer.cs">
+      <DependentUpon>Error403.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EventLogs.aspx.cs">
+      <DependentUpon>EventLogs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EventLogs.aspx.designer.cs">
+      <DependentUpon>EventLogs.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Email\IEmailSender.cs" />
     <Compile Include="Email\SendEmailDetails.cs" />
     <Compile Include="Email\SendEmailResponse.cs" />
-    <Compile Include="ForgetPassword.aspx.cs">
-      <DependentUpon>ForgetPassword.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ForgetPassword.aspx.designer.cs">
-      <DependentUpon>ForgetPassword.aspx</DependentUpon>
-    </Compile>
     <Compile Include="GoogleAuth.aspx.cs">
       <DependentUpon>GoogleAuth.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -508,13 +543,6 @@
     </Compile>
     <Compile Include="ManageYourAccount.aspx.designer.cs">
       <DependentUpon>ManageYourAccount.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="OneTimePassword.aspx.cs">
-      <DependentUpon>OneTimePassword.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="OneTimePassword.aspx.designer.cs">
-      <DependentUpon>OneTimePassword.aspx</DependentUpon>
     </Compile>
     <Compile Include="OverseasInternMain.aspx.cs">
       <DependentUpon>OverseasInternMain.aspx</DependentUpon>
@@ -640,6 +668,18 @@
     </Compile>
     <Compile Include="UploadReport.aspx.designer.cs">
       <DependentUpon>UploadReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserEventLogs.aspx.cs">
+      <DependentUpon>UserEventLogs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserEventLogs.aspx.designer.cs">
+      <DependentUpon>UserEventLogs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserSecurityEventLogs.aspx.cs">
+      <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserSecurityEventLogs.aspx.designer.cs">
+      <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewAllocatedTrip.aspx.cs">
       <DependentUpon>ViewAllocatedTrip.aspx</DependentUpon>

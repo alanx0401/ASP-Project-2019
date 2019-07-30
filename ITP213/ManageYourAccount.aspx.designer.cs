@@ -40,6 +40,33 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.HyperLink HyperLinkPhoneNum;
         
         /// <summary>
+        /// lblEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblEmail;
+        
+        /// <summary>
+        /// lblVerifiedEmailStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblVerifiedEmailStatus;
+        
+        /// <summary>
+        /// HyperLinkEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink HyperLinkEmail;
+        
+        /// <summary>
         /// Panel1 control.
         /// </summary>
         /// <remarks>
@@ -76,13 +103,22 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.Label lblGoogleAuth;
         
         /// <summary>
-        /// HyperLinkGoogleAuth control.
+        /// LinkButtonGoogleAuth control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink HyperLinkGoogleAuth;
+        protected global::System.Web.UI.WebControls.LinkButton LinkButtonGoogleAuth;
+        
+        /// <summary>
+        /// HyperLinkChangePassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink HyperLinkChangePassword;
         
         /// <summary>
         /// lblResult control.

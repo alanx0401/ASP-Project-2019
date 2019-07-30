@@ -15,13 +15,15 @@ namespace ITP213
             //{
             if (Session["UUID"] != null)
             {
+                HyperLinkChangePassword.NavigateUrl = "/changePassword.aspx";
                 DAL.Settings obj = DAL.SettingsDAO.getAccountTableByUUID(Session["UUID"].ToString());
                 if (obj != null)
                 {
 
                     lblPhoneNumber.Text = obj.mobile;
-                    HyperLinkPhoneNum.NavigateUrl = "/OneTimePassword.aspx";
+                    HyperLinkPhoneNum.NavigateUrl = "/EditAccount.aspx";
                     lblVerifiedPhoneStatus.Text = obj.phoneVerified;
+                    
                     if (obj.phoneVerified == "Yes") 
                     {
                         lblVerifiedPhoneStatus.ForeColor = System.Drawing.Color.Green;
@@ -31,17 +33,31 @@ namespace ITP213
                         lblVerifiedPhoneStatus.ForeColor = System.Drawing.Color.Red;
                     }
 
+                    lblEmail.Text = obj.email;
+                    HyperLinkEmail.NavigateUrl = "/EditAccount.aspx";
+                    lblVerifiedEmailStatus.Text = obj.emailVerified;
+                    if (obj.emailVerified == "Yes")
+                    {
+                        lblVerifiedEmailStatus.ForeColor = System.Drawing.Color.Green;
+                    }
+                    else
+                    {
+                        lblVerifiedEmailStatus.ForeColor = System.Drawing.Color.Red;
+                    }
+
                     if (obj.googleAuthEnabled == "Yes")
                     {
                         lblGoogleAuth.Text = "Enabled";
-                        HyperLinkGoogleAuth.Text = "Change phone";
-                        HyperLinkGoogleAuth.NavigateUrl = "/GoogleAuth.aspx";
+                        LinkButtonGoogleAuth.Text = "Disable"; // if user clicks on it, it'll update the account table for googleAuth to No and secretKey will be empty
+                        
+
+                        //LinkButtonGoogleAuthh.NavigateUrl = "/GoogleAuth.aspx";
                     }
                     else
                     {
                         lblGoogleAuth.Text = "Not enabled";
-                        HyperLinkGoogleAuth.Text = "Add phone";
-                        HyperLinkGoogleAuth.NavigateUrl = "/GoogleAuth.aspx";
+                        LinkButtonGoogleAuth.Text = "Add phone";
+                        LinkButtonGoogleAuth.Attributes.Add("href", "/GoogleAuth.aspx");
                     }
                     if (obj.phoneVerified == "Yes") // only allow user to enable OTP 2FA when the phone has been verified
                     {
@@ -53,7 +69,7 @@ namespace ITP213
                         }
                         else
                         {
-                            lblOTP.Text = "Disabled";
+                            lblOTP.Text = "Not enabled";
                             LinkButtonOTP.Text = "Enable"; // use the database's number and add it.
                         }
                     
@@ -111,6 +127,32 @@ namespace ITP213
             {
                 lblResult.Text = "Sorry! An error has ocurred. Please try again later.";
             }
+        }
+
+        protected void LinkButtonGoogleAuth_Click(object sender, EventArgs e)
+        {
+            DAL.Settings obj = DAL.SettingsDAO.getAccountTableByUUID(Session["UUID"].ToString());
+            if (lblGoogleAuth.Text == "Not enabled")
+            {
+                Response.Redirect("/GoogleAuth.aspx");
+            }
+            else if (lblGoogleAuth.Text == "Enabled") // must remove googleAuthEnabled
+            {
+
+                int result = DAL.SettingsDAO.updateGoogleAuthEnabledAndSecretKeyInAccount(Session["UUID"].ToString(), "", "No", "", "");
+
+                if (result == 1)
+                {
+                    lblResult.Text = "You have successfully disabled OTP";
+                    lblGoogleAuth.Text = "Not enabled";
+                    LinkButtonGoogleAuth.Text = "Add phone";
+                }
+                else
+                {
+                    lblResult.Text = "Sorry! An error has ocurred. Please try again later.";
+                }
+            }
+            
         }
     }
 }

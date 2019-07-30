@@ -112,15 +112,6 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.GridView GVEventLogs;
         
         /// <summary>
-        /// chartEvent control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.DataVisualization.Charting.Chart chartEvent;
-        
-        /// <summary>
         /// PanelSearchFilter control.
         /// </summary>
         /// <remarks>
@@ -173,6 +164,15 @@ namespace ITP213 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView GVeventDuration;
+        
+        /// <summary>
+        /// chartEvent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.DataVisualization.Charting.Chart chartEvent;
         
         /// <summary>
         /// PanelUUID control.

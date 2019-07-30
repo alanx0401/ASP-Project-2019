@@ -1,4 +1,5 @@
-﻿using ITP213.DAL;
+﻿using Google.Authenticator;
+using ITP213.DAL;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Twilio.Rest.Api.V2010.Account;
+using Twilio.Types;
 
 namespace ITP213
 {
@@ -20,10 +23,6 @@ namespace ITP213
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // disable autocomplete form        
-            tbEmail.Attributes.Add("autocomplete", "off");
-            tbPassword.Attributes.Add("autocomplete", "off");
-            tb2FAPin.Attributes.Add("autocomplete", "off"); 
 
             if (!IsPostBack) // First Load of the page
             {
@@ -52,15 +51,26 @@ namespace ITP213
                 
             }
 
+            // added in Year 3 Sem 1
+            // disable autocomplete form        
+            tbEmail.Attributes.Add("autocomplete", "off");
+            tbPassword.Attributes.Add("autocomplete", "off");
+            tb2FAPin.Attributes.Add("autocomplete", "off");
+
             // check recaptcha verification if fail count is more than or equal to 6
             DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
-            if (loginObj != null)
+            if (loginObj != null) // check if user has alr inputted their email in the textbox.
             {
-                DAL.Login AccountFailedAttemptObj = getAccountFailedAttemptByUUID(loginObj.UUID);
-                if (AccountFailedAttemptObj != null)
+                DAL.Login AccountFailedAttemptObj = LoginDAO.getAccountFailedAttemptByUUID(loginObj.UUID);
+                if (AccountFailedAttemptObj != null) 
                 {
                     int failCount = AccountFailedAttemptObj.AccountFailedAttemptCounter;
-                    if (failCount >= 5) // implement reCAPTCHA
+                    if (failCount >= 9) // ban account if failCount is more than or equals to 9.
+                    {
+                        lblError.Text = "Sorry! Your account is temporarily ban. Please try again later.";
+                        lblError.ForeColor = System.Drawing.Color.Red;
+                    }
+                    else if (failCount >= 5) // implement reCAPTCHA
                     {
                         ReCaptchContainer.Visible = true;
                     }
@@ -69,138 +79,71 @@ namespace ITP213
                         ReCaptchContainer.Visible = false;
                     }
                 }
-
             }
-        }
-        protected void btnCheckFor2FA_Click(object sender, EventArgs e) // fix error exception msg!
-        {
-            string pwd = tbPassword.Text.ToString().Trim();
-            string email = tbEmail.Text.Trim().ToString();
-            SHA512Managed hashing = new SHA512Managed();
-            string dbHash = getDBHash(email);
-            string dbSalt = getDBSalt(email);
 
-            /*try
-            {*/
-                if (dbSalt != null && dbSalt.Length > 0 && dbHash != null && dbHash.Length > 0)
-                {
-                    string pwdWithSalt = pwd + dbSalt;
-                    byte[] hashWithSalt = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
-                    string userHash = Convert.ToBase64String(hashWithSalt);
-                    
-                    if (CheckBanAccount() == true) 
-                    { }
-                    else // if account is not ban, continue verifying the user
-                    {
-                        DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
-                        string UUID = loginObj.UUID;
+            // temporary
+            /*DAL.Login obj = LoginDAO.getLoginByEmailAndPassword("171846Z@mymail.nyp.edu.sg");
 
-                        int result = updateAccountStatusToNotBanByUUID(UUID); // change from 'Ban' to 'Not ban'
-                        if (result == 1) { }
-                        else
-                        {
-                            lblError.Text = "An error has occured. Please try again.";
-                        }
+            Session["UUID"] = obj.UUID;
+            // **** Find ways to remove the session below
+            Session["accountID"] = obj.UUID;
+            Session["accountType"] = obj.accountType;
+            Session["name"] = obj.name;
+            Session["email"] = "171846Z@mymail.nyp.edu.sg";
+            Session["mobile"] = obj.mobile;
+            Session["dateOfBirth"] = obj.dateOfBirth;
 
-
-                        if (userHash == dbHash) // password matches
-                        {
-                            if (ReCaptchContainer.Visible == true) // accountFailedAttempt is equal or more than 6 times
-                            {
-                                if (IsReCaptchValid() == true) // CAPTCHA is crt
-                                {
-                                    LoginAuthentication();
-                                }
-                                else
-                                {
-                                    lblError.Text = "Please check your email or password!";
-                                    lblError.ForeColor = System.Drawing.Color.Red;
-                                }
-                            }
-                            else // accountFailedAttempt is less than 6 times
-                            {
-                                LoginAuthentication();
-                            }
-                        }
-                        else // if login fails
-                        {
-                            DAL.Login AccountFailedAttemptObj = getAccountFailedAttemptByUUID(UUID);
-
-                            if (AccountFailedAttemptObj != null) // update failed attempt
-                            {
-                                int failCount = AccountFailedAttemptObj.AccountFailedAttemptCounter;
-                                if (failCount >= 9) // change account status from 'Not ban' to 'Ban' when fail count hits 10 in db ; #problem: doesn't update to 10
-                                {
-                                    int result2 = updateAccountStatusToBanByUUID(UUID);
-                                    if (result2 == 1) { }
-                                    else
-                                    {
-                                        lblError.Text = "An error has occured. Please try again.";
-                                    }
-
-                                }
-                                else
-                                {
-                                    failCount += 1;
-
-                                    int result2 = updateAccountFailedAttemptTableByUUID(UUID, failCount);
-                                    if (result2 == 1) { }
-                                    else
-                                    {
-                                        lblError.Text = "An error has occured. Please try again.";
-                                    }
-                                }
-
-                            }
-                            else // insert failed attempt
-                            {
-                                int result2 = insertAccountFailedAttemptTable(UUID);
-                                if (result2 == 1) { }
-                                else
-                                {
-                                    lblError.Text = "An error has occured. Please try again.";
-                                }
-                            }
-
-
-                            lblError.Text = "Please check your email or password!";
-                            lblError.ForeColor = System.Drawing.Color.Red;
-                        }
-                    }
-                }
-                else
-                {
-                    lblError.Text = "Please check your email or password!";
-                    lblError.ForeColor = System.Drawing.Color.Red;
-                }
-            /*}
-            catch (Exception ex)
+            if (Session["accountType"].ToString() == "student")
             {
-                lblError.Text = ex.ToString();
-                //throw new Exception(ex.ToString());
-            }
-            finally { }*/
+                // student table
+                DAL.Login studentObj = LoginDAO.getStudentTableByAccountID(obj.UUID);
+                Session["adminNo"] = studentObj.adminNo;
+                Session["school"] = studentObj.studentSchool;
+                Session["course"] = studentObj.course;
+                Session["allergies"] = studentObj.allergies;
+                Session["dietaryNeeds"] = studentObj.dietaryNeeds;
 
+            }
+
+            Response.Redirect("Default.aspx");*/
+            // ------ temp
         }
-        protected void btnSubmitChoice_Click(object sender, EventArgs e)
+        protected void btnPanel1_Click(object sender, EventArgs e) // Submit login form and checks if pwd and email matches. 
+        {
+            // If it matches, check if 2FA is enabled.
+            // --> If 2FA is enabled, check what is enabled - googleAuth || OTP
+            // --> If 2FA is not enabled, just login.
+            // If it doesn't, check for numberOfFailedAttempts. 
+            // --> If attempt is more than/ equal to 6, CAPTCHA. 
+            // --> If attempt is more than 10, ban account msg
+
+            // fix error exception msg!
+            Panel1();
+        }
+        protected void btnPanel2_Click(object sender, EventArgs e) // Part 2 --> Part 3
         {
             PanelPart2.Visible = false;
             PanelPart3.Visible = true;
+
             lblTitle.Text = "Enter verification code";
-            // Google Auth and 2FA feature here
+
+            Panel2();
         }
 
-        protected void btnBack2_Click(object sender, EventArgs e)
-        {
-            PanelPart3.Visible = false;
-            PanelPart2.Visible = true;
-            lblTitle.Text = "Send verification code";
-        }
-        protected void btnLogin_Click(object sender, EventArgs e)
+        protected void btnPanel3_Click(object sender, EventArgs e) // Part 3 --> Part 2
         {
             //-- Check if the password is crt, if it is, then find the UUID to retrieve personal datas
 
-
+            // Assumming password is checked/verified in Part 1, now, you have to verify if 2FA value is correct.
+            // If user selects googleAuth
+            // --> check if the code is valid
+            // ----> if it is valid, allow user to access /default.aspx
+            // ----> If it is not valid, failedAttemptCounter gets increased by 1
+            // Else if user selects 2FA --> check if the password expires
+            // ---> If it did, send a password
+            // ---> If it didn't, validate if it matches the one in the database
+            // ------> If it did, allow user to access /default.aspx
+            // ------> Else, failedAttemptCounter gets increased by 1.
             // delete account failed attempts
             /*DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
             string UUID = loginObj.UUID;
@@ -220,16 +163,17 @@ namespace ITP213
             //-- If password is wrong,
             /*else // if login fails
             {*/
-            DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
+            Panel3();
+            /*DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
             string UUID = loginObj.UUID;
-            DAL.Login AccountFailedAttemptObj = getAccountFailedAttemptByUUID(UUID);
+            DAL.Login AccountFailedAttemptObj = LoginDAO.getAccountFailedAttemptByUUID(UUID);
 
             if (AccountFailedAttemptObj != null) // update
             {
                 int failCount = AccountFailedAttemptObj.AccountFailedAttemptCounter;
                 if (failCount == 10)
                 {
-                    int result = updateAccountStatusToBanByUUID(UUID);
+                    int result = LoginDAO.updateAccountStatusToBanByUUID(UUID);
                     if (result == 1) { }
                     else
                     {
@@ -240,7 +184,7 @@ namespace ITP213
                 {
                     failCount += 1;
 
-                    int result = updateAccountFailedAttemptTableByUUID(UUID, failCount);
+                    int result = LoginDAO.updateAccountFailedAttemptTableByUUID(UUID, failCount);
                     if (result == 1) { }
                     else
                     {
@@ -251,7 +195,7 @@ namespace ITP213
             }
             else // insert
             {
-                int result = insertAccountFailedAttemptTable(UUID);
+                int result = LoginDAO.insertAccountFailedAttemptTable(UUID);
                 if (result == 1) { }
                 else
                 {
@@ -264,7 +208,7 @@ namespace ITP213
             lblError.ForeColor = System.Drawing.Color.Red;
             //}
             // Password Expiration: cannot be more than a year --> Based on UUID
-            DAL.Login p = getChangePasswordDateByEmailAndPasswordHash("{0x39d609a5,0x10eb,0x40a8,{0x86,0xf1,0x06,0x0b,0xfe,0xe7,0xc1,0x82}}");
+            DAL.Login p = LoginDAO.getChangePasswordDateByEmailAndPasswordHash("{0x39d609a5,0x10eb,0x40a8,{0x86,0xf1,0x06,0x0b,0xfe,0xe7,0xc1,0x82}}");
 
             DateTime changePasswordDate = Convert.ToDateTime(p.changePasswordDate.ToString());
 
@@ -274,13 +218,191 @@ namespace ITP213
             }
             string PCName = Dns.GetHostEntry(Request.ServerVariables["REMOTE_ADDR"]).HostName;
 
-            Response.Redirect("Default.aspx");
+            Response.Redirect("Default.aspx");*/
+        }
+
+        protected void btnBack2_Click(object sender, EventArgs e) 
+        {
+            PanelPart2.Visible = true;
+            PanelPart3.Visible = false;
+
+            lblTitle.Text = "Send verification code";
+        }
+        // =================================================================================================================
+        // Summary for Panel 1
+        private void Panel1()
+        {
+            string pwd = tbPassword.Text.ToString().Trim();
+            string email = tbEmail.Text.Trim().ToString();
+            SHA512Managed hashing = new SHA512Managed();
+            string dbHash = LoginDAO.getDBHash(email);
+            string dbSalt = LoginDAO.getDBSalt(email);
+
+            try
+            {
+                if (dbSalt != null && dbSalt.Length > 0 && dbHash != null && dbHash.Length > 0)
+                {
+                    string pwdWithSalt = pwd + dbSalt;
+                    byte[] hashWithSalt = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
+                    string userHash = Convert.ToBase64String(hashWithSalt);
+
+                    if (CheckBanAccount() == true) // check ban account
+                    {
+                        lblError.Text = "Sorry! Your account is temporarily ban. Please try again later.";
+                        lblError.ForeColor = System.Drawing.Color.Red;
+                    }
+                    else // if account is not ban, continue verifying the user
+                    {
+                        DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
+                        string UUID = loginObj.UUID;
+
+                        if (userHash == dbHash) // password matches
+                        {
+                            if (ReCaptchContainer.Visible == true) // accountFailedAttempt is equal or more than 6 times --> To check the CAPTCHA value
+                            {
+                                if (IsReCaptchValid() == true) // CAPTCHA is correct
+                                {
+                                    moveToPanel2();
+                                }
+                                else
+                                {
+                                    lblError.Text = "Please check your email or password or CAPTCHA value!";
+                                    lblError.ForeColor = System.Drawing.Color.Red;
+                                }
+                            }
+                            else // accountFailedAttempt is less than 6 times
+                            {
+                                moveToPanel2();
+                            }
+                        }
+                        else // if login fails *****problem with counting
+                        {
+                            DAL.Login AccountFailedAttemptObj = LoginDAO.getAccountFailedAttemptByUUID(UUID);
+
+                            if (AccountFailedAttemptObj != null) // update failed attempt
+                            {
+                                int failCount = AccountFailedAttemptObj.AccountFailedAttemptCounter;
+                                if (failCount >= 9) // change account status from 'Not ban' to 'Ban' when fail count hits 10 in db ; #problem: doesn't update to 10
+                                {
+                                    int result2 = LoginDAO.updateAccountStatusToBanByUUID(UUID);
+                                    if (result2 == 1)
+                                    {
+                                        // Kai Ming's function
+                                        EventLog eventObj = new EventLog();
+                                        int result3 = eventObj.EventInsert("Failed Login", DateTime.Now, UUID);
+                                    }
+                                    else
+                                    {
+                                        lblError.Text = "An error has occured. Please try again.";
+                                    }
+
+                                }
+                                else
+                                {
+                                    failCount += 1;
+
+                                    int result2 = LoginDAO.updateAccountFailedAttemptTableByUUID(UUID, failCount);
+                                    if (result2 == 1)
+                                    {
+                                        // Kai Ming's function
+                                        EventLog eventObj = new EventLog();
+                                        int result3 = eventObj.EventInsert("Failed Login", DateTime.Now, UUID);
+                                    }
+                                    else
+                                    {
+                                        lblError.Text = "An error has occured. Please try again.";
+                                    }
+                                }
+
+                            }
+                            else // insert failed attempt
+                            {
+                                int result2 = LoginDAO.insertAccountFailedAttemptTable(UUID);
+                                if (result2 == 1)
+                                {
+                                    // Kai Ming's function
+                                    EventLog eventObj = new EventLog();
+                                    int result3 = eventObj.EventInsert("Failed Login", DateTime.Now, UUID);
+                                }
+                                else
+                                {
+                                    lblError.Text = "An error has occured. Please try again.";
+                                }
+                            }
+
+
+                            lblError.Text = "Please check your email or password!";
+                            lblError.ForeColor = System.Drawing.Color.Red;
+                        }
+                    }
+                }
+                else
+                {
+                    lblError.Text = "Please check your email or password!";
+                    lblError.ForeColor = System.Drawing.Color.Red;
+                }
+            }
+            catch (Exception ex)
+            {
+                //lblError.Text = ex.ToString();
+                //throw new Exception(ex.ToString());
+                lblError.Text = "An error has occured. Please try again.";
+            }
+            finally { }
+        }
+        // send 2FA stuffs
+        private void Panel2()
+        {
+            DAL.Login obj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
+
+            if (obj != null)
+            {
+                // Google Auth and 2FA feature here
+                if (rb2FATypes.SelectedItem.Text == "Google Authenticator")
+                {
+                    // lblError.Text = "You clicked Google Authenticator";
+                }
+                else if (rb2FATypes.SelectedItem.Text == "OTP")
+                {
+                    // send the otp()
+                    SendOTP();
+                    //lblError.Text = "You clicked One Time Password";
+                }
+            }
+            else // It meant that user has not entered an email and somehow it managed to bypass to this portion.
+            {
+                lblError.Text = "Sorry, an error has occurred. Please try again later.";
+            }
+        }
+        // verify 2FA stuffs; then login;
+        private void Panel3()
+        {
+            DAL.Login obj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
+
+            if (obj != null)
+            {
+                // Google Auth and 2FA feature here
+                if (rb2FATypes.SelectedItem.Text == "Google Authenticator")
+                {
+                    // verify google auth
+                    VerifyGoogleAuth();
+                }
+                else if (rb2FATypes.SelectedItem.Text == "OTP")
+                {
+                    // verify OTP password
+                    VerifyOTP(tb2FAPin.Text.Trim());
+                }
+            }
+            else // It meant that user has not entered an email and somehow it managed to bypass to this portion.
+            {
+                lblError.Text = "Sorry, an error has occurred. Please try again later.";
+            }
         }
         // =================================================================================================================
         /// <summary>
-        /// Verify authentic user
+        /// Check if user enabled google auth or otp
         /// </summary>
-        protected void LoginAuthentication()
+        protected void moveToPanel2()
         {
             DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
             if (loginObj != null)
@@ -304,362 +426,128 @@ namespace ITP213
                 }
                 else // if no 2FA
                 {
-                    Session["UUID"] = loginObj.UUID;
-                    Session["accountID"] = loginObj.UUID;
-                    Session["accountType"] = loginObj.accountType;
-                    Session["name"] = loginObj.name;
-                    Session["email"] = tbEmail.Text;
-                    Session["mobile"] = loginObj.mobile;
-                    Session["dateOfBirth"] = loginObj.dateOfBirth;
-
-                    DAL.Login AccountFailedAttemptObj = getAccountFailedAttemptByUUID(loginObj.UUID);
-
-                    if (AccountFailedAttemptObj != null) // Delete failed attempt(s)
-                    {
-
-                        int result = deleteAccountFailedAttemptTableByUUID(loginObj.UUID);
-                        if (result == 1) { }
-                        else
-                        {
-                            lblError.Text = "An error has occured. Please try again.";
-                        }
-
-                    }
-
-                    if (Session["accountType"].ToString() == "student")
-                    {
-                        // student table
-                        DAL.Login studentObj = LoginDAO.getStudentTableByAccountID(loginObj.UUID);
-                        Session["adminNo"] = studentObj.adminNo;
-                        Session["school"] = studentObj.studentSchool;
-                        Session["course"] = studentObj.course;
-                        Session["allergies"] = studentObj.allergies;
-                        Session["dietaryNeeds"] = studentObj.dietaryNeeds;
-                        //Session["parentID"] = studentObj.parentID;
-
-                    }
-                    /*else if (Session["accountType"].ToString() == "parent")
-                    {
-                        // parent table
-                        DAL.Login parentObj = LoginDAO.getParentTableByAccountID(loginObj.accountID);
-                        Session["parentID"] = parentObj.parentID;
-                        Session["adminNo"] = parentObj.adminNo;
-                    }*/
-                    else if (Session["accountType"].ToString() == "lecturer")
-                    {
-                        // lecturer table
-                        DAL.Login lecturerObj = LoginDAO.getLecturerTableByAccountID(loginObj.UUID);
-                        Session["staffID"] = lecturerObj.staffID;
-                        Session["school"] = lecturerObj.lecturerSchool;
-                        Session["staffRole"] = lecturerObj.staffRole;
-                    }
-
-                    // Password Expiration: cannot be more than a year
-
-                    DateTime changePasswordDate = Convert.ToDateTime(loginObj.changePasswordDate.ToString());
-
-                    if ((DateTime.Now - changePasswordDate).TotalDays > 365)// if bigger than one year
-                    {
-                        Response.Redirect("changePassword.aspx");
-                    }
-                    
-
-                    Response.Redirect("Default.aspx");
+                    LogIn();
                 }
             }
+        }
+        protected void LogIn() // creating Session & deleteFailedAttempt
+        {
+            DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
+
+            Session["UUID"] = loginObj.UUID;
+            // **** Find ways to remove the session below
+            Session["accountID"] = loginObj.UUID;
+            Session["accountType"] = loginObj.accountType;
+            Session["name"] = loginObj.name;
+            Session["email"] = tbEmail.Text;
+            Session["mobile"] = loginObj.mobile;
+            Session["dateOfBirth"] = loginObj.dateOfBirth;
+
+            DAL.Login AccountFailedAttemptObj = LoginDAO.getAccountFailedAttemptByUUID(loginObj.UUID);
+
+            if (AccountFailedAttemptObj != null) // Delete failed attempt(s)
+            {
+
+                int result = LoginDAO.deleteAccountFailedAttemptTableByUUID(loginObj.UUID);
+                if (result == 1)
+                {
+                    
+                }
+                else
+                {
+                    lblError.Text = "An error has occured. Please try again.";
+                }
+
+            }
+
+            // Kai Ming's function
+            EventLog eventObj = new EventLog();
+            int result3 = eventObj.EventInsert("Successful Login", DateTime.Now, loginObj.UUID);
+
+            if (Session["accountType"].ToString() == "student")
+            {
+                // student table
+                DAL.Login studentObj = LoginDAO.getStudentTableByAccountID(loginObj.UUID);
+                Session["adminNo"] = studentObj.adminNo;
+                Session["school"] = studentObj.studentSchool;
+                Session["course"] = studentObj.course;
+                Session["allergies"] = studentObj.allergies;
+                Session["dietaryNeeds"] = studentObj.dietaryNeeds;
+                //Session["parentID"] = studentObj.parentID;
+
+            }
+            else if (Session["accountType"].ToString() == "lecturer")
+            {
+                // lecturer table
+                DAL.Login lecturerObj = LoginDAO.getLecturerTableByAccountID(loginObj.UUID);
+                Session["staffID"] = lecturerObj.staffID;
+                Session["school"] = lecturerObj.lecturerSchool;
+                Session["staffRole"] = lecturerObj.staffRole;
+            }
+            /*else if (Session["accountType"].ToString() == "parent")
+            {
+                // parent table
+                DAL.Login parentObj = LoginDAO.getParentTableByAccountID(loginObj.accountID);
+                Session["parentID"] = parentObj.parentID;
+                Session["adminNo"] = parentObj.adminNo;
+            }*/
+
+            // Password Expiration: cannot be more than a year
+            checkPasswordExpiration();
+
+            Response.Redirect("Default.aspx");
         }
         /// <summary>
         /// Feature: Check Ban Account
         /// </summary>
         protected Boolean CheckBanAccount()
         {
-            Boolean verdict = false;
+            Boolean verdict = true;
             DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
             if (loginObj != null)
             {
-                if (loginObj.accountStatus == "Ban")
+                if (loginObj.accountStatus == "Not ban") // account is not ban 
                 {
+                    verdict = false;
+                }
+                else // Any other stuffs mention in the db meant account is ban
+                {
+
                     // Compare the banAccountDateTime
-                    
                     var currentDateTime = DateTime.Now;
                     var banAccountDateTime = loginObj.banAccountDateTime;
                     var diff = currentDateTime.Subtract(banAccountDateTime);
-                    //var res = String.Format("{0}:{1}:{2}", diff.Hours, diff.Minutes, diff.Seconds);
-                    //lblError.Text = res;
+                    
                     if (diff.Hours < 5) // if the hour difference is less than 5, account is ban
                     {
                         verdict = true;
-                        lblError.Text = "Sorry! Your account is temporarily ban. Please try again later.";
-                        lblError.ForeColor = System.Drawing.Color.Red;
                     }
-                    else // account is not ban 
-                    { }
+                    else // need to update the account cos the ban is over.
+                    {
+                        string UUID = loginObj.UUID;
+                        int result = LoginDAO.updateAccountStatusToNotBanByUUID(UUID);
+                        if (result == 1)
+                        {
+                            verdict = false;
+                        }
+                        else
+                        {
+                            lblError.Text = "An error has occured. Please try again.";
+                            lblError.ForeColor = System.Drawing.Color.Red;
+                        }
+                    }
                 }
-                else // account is not ban
-                {
-
-                }
+            }
+            else
+            {
+                lblError.Text = "An error has occured. Please try again.";
+                lblError.ForeColor = System.Drawing.Color.Red;
             }
             return verdict;
         }
         /// <summary>
-        /// Password Hashing
+        /// Check CAPTCHA value
         /// </summary>
-        protected string getDBHash(string email)
-        {
-            //Get connection string from web.config
-            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
-
-            string h = null;
-            SqlConnection connection = new SqlConnection(DBConnect);
-            string sql = "SELECT passwordHash from account where email=@email";
-            SqlCommand command = new SqlCommand(sql, connection);
-            command.Parameters.AddWithValue("@email", email);
-
-            try
-            {
-                connection.Open();
-
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        if (reader["passwordHash"] != null)
-                        {
-                            if (reader["passwordHash"] != DBNull.Value)
-                            {
-                                h = reader["passwordHash"].ToString();
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.ToString());
-            }
-
-            finally { connection.Close(); }
-            return h;
-        }
-        protected string getDBSalt(string email)
-        {
-            //Get connection string from web.config
-            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
-
-            string s = null;
-            SqlConnection connection = new SqlConnection(DBConnect);
-            string sql = "SELECT passwordSalt from account where email=@email";
-            SqlCommand command = new SqlCommand(sql, connection);
-            command.Parameters.AddWithValue("@email", email);
-
-            try
-            {
-                connection.Open();
-
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        if (reader["passwordSalt"] != null)
-                        {
-                            if (reader["passwordSalt"] != DBNull.Value)
-                            {
-                                s = reader["passwordSalt"].ToString();
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.ToString());
-            }
-
-            finally { connection.Close(); }
-            return s;
-        }
-
-        /// <summary>
-        /// Feature: Password Expiration
-        /// </summary>
-        // Retrieve changePasswordDate to see if the change password date is after a year.
-        public static DAL.Login getChangePasswordDateByEmailAndPasswordHash(string UUID)
-        {
-            //Get connection string from web.config
-            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
-
-            SqlDataAdapter da;
-            DataSet ds = new DataSet();
-
-            /*
-            SELECT changePasswordDate
-            FROM account
-            WHERE UUID = '{0x39d609a5,0x10eb,0x40a8,{0x86,0xf1,0x06,0x0b,0xfe,0xe7,0xc1,0x82}}';
-            */
-
-            StringBuilder sqlStr = new StringBuilder();
-            sqlStr.AppendLine("SELECT *");
-            sqlStr.AppendLine("FROM account");
-            sqlStr.AppendLine("WHERE UUID = @UUID;");
-
-            DAL.Login obj = new DAL.Login();
-
-            SqlConnection myConn = new SqlConnection(DBConnect);
-            da = new SqlDataAdapter(sqlStr.ToString(), myConn);
-            da.SelectCommand.Parameters.AddWithValue("@UUID", UUID);
-            // fill dataset
-            da.Fill(ds, "account");
-            int rec_cnt = ds.Tables["account"].Rows.Count;
-            if (rec_cnt > 0)
-            {
-                DataRow row = ds.Tables["account"].Rows[0];  // Sql command returns only one record
-                obj.changePasswordDate = row["changePasswordDate"].ToString();
-            }
-            else
-            {
-                obj = null;
-            }
-
-            return obj;
-        }
-
-        /// <summary>
-        /// Feature: Ban Account
-        /// </summary>
-        public static DAL.Login getAccountFailedAttemptByUUID(string UUID) // select
-        {
-            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
-            SqlDataAdapter da;
-            DataSet ds = new DataSet();
-
-            StringBuilder sqlStr = new StringBuilder();
-            sqlStr.AppendLine("SELECT *");
-            sqlStr.AppendLine("FROM AccountFailedAttempt");
-            sqlStr.AppendLine("WHERE UUID = @UUID;");
-
-            DAL.Login obj = new DAL.Login(); // create a login instance;
-
-            SqlConnection myConn = new SqlConnection(DBConnect);
-            da = new SqlDataAdapter(sqlStr.ToString(), myConn);
-            da.SelectCommand.Parameters.AddWithValue("UUID", UUID);
-            // fill dataset
-            da.Fill(ds, "AccountFailedAttemptTable");
-            int rec_cnt = ds.Tables["AccountFailedAttemptTable"].Rows.Count;
-            if (rec_cnt == 1)
-            {
-                DataRow row = ds.Tables["AccountFailedAttemptTable"].Rows[0]; // Sql command only returns only 1 record
-                obj.UUID = row["UUID"].ToString();
-                obj.AccountFailedAttemptCounter = Convert.ToInt32(row["AccountFailedAttemptCounter"].ToString());
-            }
-            else
-            {
-                obj = null;
-            }
-            return obj;
-        }
-        public static int insertAccountFailedAttemptTable(string UUID)
-        {
-            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
-
-            /* 
-            INSERT INTO AccountFailedAttempt
-            VALUES('{0x39d609a5,0x10eb,0x40a8,{0x86,0xf1,0x06,0x0b,0xfe,0xe7,0xc1,0x82}}', 1);
-             */
-            StringBuilder sqlStr = new StringBuilder();
-            sqlStr.AppendLine("INSERT INTO AccountFailedAttempt");
-            sqlStr.AppendLine("VALUES(@UUID, 1);");
-
-            SqlConnection myConn = new SqlConnection(DBConnect);
-            myConn.Open();
-            SqlCommand cmd = new SqlCommand(sqlStr.ToString(), myConn);
-            cmd.Parameters.AddWithValue("@UUID", UUID);
-
-            int result = cmd.ExecuteNonQuery();
-
-            return result;
-        }
-        public static int updateAccountFailedAttemptTableByUUID(string UUID, int AccountFailedAttemptCounter)
-        {
-            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
-            /*
-            UPDATE AccountFailedAttempt
-            SET AccountFailedAttemptCounter=2
-            WHERE UUID = '{0x39d609a5,0x10eb,0x40a8,{0x86,0xf1,0x06,0x0b,0xfe,0xe7,0xc1,0x82}}';
-             */
-            StringBuilder sqlStr = new StringBuilder();
-            sqlStr.AppendLine("UPDATE AccountFailedAttempt");
-            sqlStr.AppendLine("SET AccountFailedAttemptCounter = @AccountFailedAttemptCounter");
-            sqlStr.AppendLine("WHERE UUID = @UUID;");
-
-            SqlConnection myConn = new SqlConnection(DBConnect);
-            myConn.Open();
-            SqlCommand cmd = new SqlCommand(sqlStr.ToString(), myConn);
-            cmd.Parameters.AddWithValue("@UUID", UUID);
-            cmd.Parameters.AddWithValue("@AccountFailedAttemptCounter", AccountFailedAttemptCounter);
-            int result = cmd.ExecuteNonQuery();
-            return result;
-        }
-        public static int deleteAccountFailedAttemptTableByUUID(string UUID) // delete: when login successfully
-        {
-            //Get connection string from web.config
-            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
-
-            /*
-            DELETE AccountFailedAttempt 
-            WHERE UUID = '{0x39d609a5,0x10eb,0x40a8,{0x86,0xf1,0x06,0x0b,0xfe,0xe7,0xc1,0x82}}';
-             */
-            StringBuilder sqlStr = new StringBuilder();
-            sqlStr.AppendLine("DELETE AccountFailedAttempt");
-            sqlStr.AppendLine("WHERE UUID = @UUID;");
-
-            SqlConnection myConn = new SqlConnection(DBConnect);
-            myConn.Open();
-            SqlCommand cmd = new SqlCommand(sqlStr.ToString(), myConn);
-            cmd.Parameters.AddWithValue("UUID", UUID);
-            int result = cmd.ExecuteNonQuery();
-            return result;
-        }
-        public static int updateAccountStatusToBanByUUID(string UUID) // change status from 'Not ban' to 'Ban'
-        {
-            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
-            /*
-            UPDATE account
-            SET accountStatus = 'Ban'
-            WHERE UUID = '{0x39d609a5,0x10eb,0x40a8,{0x86,0xf1,0x06,0x0b,0xfe,0xe7,0xc1,0x82}}';
-             */
-            StringBuilder sqlStr = new StringBuilder();
-            sqlStr.AppendLine("UPDATE account");
-            sqlStr.AppendLine("SET accountStatus = 'Ban', banAccountDateTime=GETDATE()");
-            sqlStr.AppendLine("WHERE UUID = @UUID;");
-
-            SqlConnection myConn = new SqlConnection(DBConnect);
-            myConn.Open();
-            SqlCommand cmd = new SqlCommand(sqlStr.ToString(), myConn);
-            cmd.Parameters.AddWithValue("@UUID", UUID);
-            int result = cmd.ExecuteNonQuery();
-            return result;
-        }
-        public static int updateAccountStatusToNotBanByUUID(string UUID) // change status from 'Ban' to 'Not ban'
-        {
-            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
-            /*
-            UPDATE account
-            SET accountStatus = 'Not ban'
-            WHERE UUID = '{0x39d609a5,0x10eb,0x40a8,{0x86,0xf1,0x06,0x0b,0xfe,0xe7,0xc1,0x82}}';
-             */
-            StringBuilder sqlStr = new StringBuilder();
-            sqlStr.AppendLine("UPDATE account");
-            sqlStr.AppendLine("SET accountStatus = 'Not ban', banAccountDateTime=''");
-            sqlStr.AppendLine("WHERE UUID = @UUID;");
-
-            SqlConnection myConn = new SqlConnection(DBConnect);
-            myConn.Open();
-            SqlCommand cmd = new SqlCommand(sqlStr.ToString(), myConn);
-            cmd.Parameters.AddWithValue("@UUID", UUID);
-            int result = cmd.ExecuteNonQuery();
-            return result;
-        }
         public bool IsReCaptchValid() // CAPTCHA
         {
             var result = false;
@@ -679,6 +567,424 @@ namespace ITP213
                 }
             }
             return result;
+        }
+
+        // Part 2 --> Part 3
+        // If user selects OTP: repetitive!! Copied from register page. Need to improve on this code.
+        public Tuple<string, string> hashingAndSaltingPassword(string pwd)
+        {
+            //hashing & salting pwd
+            string finalHash;
+            string salt;
+
+            string password = pwd.Trim();
+
+            // Generate random "salt"
+            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+            byte[] saltByte = new byte[8];
+
+            // Fills array of bytes with a cryptographically strong sequence of random values;
+            rng.GetBytes(saltByte);
+            salt = Convert.ToBase64String(saltByte);
+
+            SHA512Managed hashing = new SHA512Managed();
+
+            string pwdWithSalt = password + salt;
+            byte[] plainHash = hashing.ComputeHash(Encoding.UTF8.GetBytes(password));
+            byte[] hashWithSalt = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
+
+            finalHash = Convert.ToBase64String(hashWithSalt);
+
+            /*RijndaelManaged cipher = new RijndaelManaged();
+            cipher.GenerateKey();
+            Key = cipher.Key;
+            IV = cipher.IV;*/
+
+            return Tuple.Create(finalHash, salt);
+        }
+        public string otp()
+        {
+            // Generate OTP
+            string num = "0123456789";
+            int len = num.Length;
+            string otp = string.Empty;
+
+            // How many digits otp you want to mention
+            int otpdigit = 6;
+            string finalDigit;
+            int getindex;
+            for (int i = 0; i < otpdigit; i++)
+            {
+                do
+                {
+                    getindex = new Random().Next(0, len);
+                    finalDigit = num.ToCharArray()[getindex].ToString();
+                }
+                while (otp.IndexOf(finalDigit) != -1);
+                otp += finalDigit;
+            }
+
+            return otp;
+        }
+        public void sendSMSForPhoneVerification(string password, string verifyNumber)
+        {
+            // sms
+            string accountSid = Environment.GetEnvironmentVariable("TWILIO_ACCOUNT_SID");
+            string authToken = Environment.GetEnvironmentVariable("TWILIO_AUTH_TOKEN");
+            Twilio.TwilioClient.Init(accountSid, authToken);
+            var to = new PhoneNumber(verifyNumber); // Verifying number
+            var from = new PhoneNumber("+12565703020"); // Twilio num
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                                                | SecurityProtocolType.Tls11
+                                                | SecurityProtocolType.Tls12
+                                                | SecurityProtocolType.Ssl3;
+            var message = MessageResource.Create(
+                to: to,
+                from: from,
+                body: "Your OTP for phone verification is " + password);
+        }
+        public void SendOTP()
+        {
+            string otpPassword;
+            string finalHash;
+            string salt;
+
+            try
+            {
+                DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
+                string UUID = loginObj.UUID; // retriving UUID from loginObj
+
+                // 1) Check if the data has alr existed
+                DAL.Register verifyPhoneOTPObj = RegisterDAO.checkVerifyPhoneOTP(UUID);
+                if (verifyPhoneOTPObj == null) // first time the user has generate a 6 digit OTP
+                {
+                    otpPassword = string.Empty;
+                    otpPassword = otp().Trim(); // Generate random 6 digit OTP
+
+                    var getHashingAndSaltingPwd = hashingAndSaltingPassword(otpPassword);
+
+                    finalHash = string.Empty;
+                    finalHash = getHashingAndSaltingPwd.Item1;
+
+                    salt = string.Empty;
+                    salt = getHashingAndSaltingPwd.Item2;
+
+                    int result = RegisterDAO.insertIntoVerifyPhoneOTP(UUID, finalHash, salt); // insert the otp as they do not exist
+
+                    if (result == 1)
+                    {
+                        // sendSMSForPhoneVerification(otpPassword, tbContactNumber.Text); // send an sms to the user --> costs $0.05 per sms
+                        lblError.Text = "Your otp password: " + otpPassword + ", " +loginObj.mobile; // ****temp
+                    }
+
+                    else
+                    {
+                        lblError.Text = "Sorry! An error has occurred!";
+                        lblError.ForeColor = System.Drawing.Color.Red;
+                    }
+
+                }
+                else // not the first time the user has verified their phone number
+                {
+                    // check if datetimeSend passed a day
+                    var currentDateTime = DateTime.Now;
+                    var otpDateTimeSend = verifyPhoneOTPObj.dateTimeSend;
+                    var diff = currentDateTime.Subtract(otpDateTimeSend);
+
+                    if (diff.Minutes < 1) // if the minute difference is less than 1, password is still valid
+                    {
+
+                    }
+                    else // ******************send a new otp // if the minute difference is more than 1, password is invalid; Hence, there's a need to generate new password
+                    {
+
+                        int result = RegisterDAO.deleteVerifyPhoneOTPTable(UUID); // delete the otpValue
+                        if (result == 1)
+                        {
+                            otpPassword = string.Empty;
+                            otpPassword = otp().Trim(); // Generate random 6 digit OTP
+
+                            var getHashingAndSaltingPwd2 = hashingAndSaltingPassword(otpPassword);
+
+                            finalHash = string.Empty;
+                            finalHash = getHashingAndSaltingPwd2.Item1;
+
+                            salt = string.Empty;
+                            salt = getHashingAndSaltingPwd2.Item2;
+
+                            int result2 = RegisterDAO.insertIntoVerifyPhoneOTP(UUID, finalHash, salt); // insert new otp
+
+                            if (result2 == 1)
+                            {
+                                //sendSMSForPhoneVerification(otpPassword, tbContactNumber.Text);
+                                lblError.Text = "Resending otp as it expires: Your otp password: " + otpPassword; // ****temp
+                            }
+
+                            else
+                            {
+                                lblError.Text = "Sorry! An error has occurred!";
+                                lblError.ForeColor = System.Drawing.Color.Red;
+                            }
+                        }
+                        else
+                        {
+                            lblError.Text = "Sorry! An error has occurred!";
+                            lblError.ForeColor = System.Drawing.Color.Red;
+                        }
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+        // If user selects GoogleAuth, needs to get secretKey from account Table.
+        private void VerifyGoogleAuth()
+        {
+            DAL.Login obj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
+            if (obj != null)
+            {
+                if (obj.secretKey != null)
+                {
+
+                    string user_enter = tb2FAPin.Text; // store this password in db when it loads
+                    byte[] secretKeyByte = Convert.FromBase64String(obj.secretKey);
+                    string secretKey = decryptData(secretKeyByte);
+
+                    TwoFactorAuthenticator tfa = new TwoFactorAuthenticator();
+                    bool isCorrectPIN = tfa.ValidateTwoFactorPIN(secretKey, user_enter);
+
+                    if (isCorrectPIN == true)
+                    {
+                        // lblError.Text = "Yes";
+                        LogIn();
+                    }
+                    else // **************** improve this code
+                    {
+
+                        lblError.Text = "Incorrect 2FA password. Please try again";
+                        lblError.ForeColor = System.Drawing.Color.Red;
+                        // To be improved. Repetitive error counter && changePasswordDate && NewDeviceLogin
+                        string UUID = obj.UUID;
+                        DAL.Login AccountFailedAttemptObj = LoginDAO.getAccountFailedAttemptByUUID(UUID);
+
+                        if (AccountFailedAttemptObj != null) // update
+                        {
+                            int failCount = AccountFailedAttemptObj.AccountFailedAttemptCounter;
+                            if (failCount == 10)
+                            {
+                                int result = LoginDAO.updateAccountStatusToBanByUUID(UUID);
+                                if (result == 1) { }
+                                else
+                                {
+                                    lblError.Text = "An error has occured. Please try again.";
+                                }
+                            }
+                            else
+                            {
+                                failCount += 1;
+
+                                int result = LoginDAO.updateAccountFailedAttemptTableByUUID(UUID, failCount);
+                                if (result == 1) { }
+                                else
+                                {
+                                    lblError.Text = "An error has occured. Please try again.";
+                                }
+                            }
+
+                        }
+                        else // insert
+                        {
+                            int result = LoginDAO.insertAccountFailedAttemptTable(UUID);
+                            if (result == 1) { }
+                            else
+                            {
+                                lblError.Text = "An error has occured. Please try again.";
+                            }
+                        }
+                        
+                    }
+                }
+                else // by right secretKey should already been stored cos the googleAuth has already been enabled.
+                {
+                    lblError.Text = "Sorry! An error has occurred!";
+                    lblError.ForeColor = System.Drawing.Color.Red;
+                }
+            }
+            else // by right secretKey should already been stored cos the googleAuth has already been enabled.
+            {
+                lblError.Text = "Sorry! An error has occurred!";
+                lblError.ForeColor = System.Drawing.Color.Red;
+            }
+        }
+        protected string decryptData(byte[] cipherText)
+        {
+            string plainText = null;
+
+            try
+            {
+                RijndaelManaged cipher = new RijndaelManaged();
+                DAL.Login obj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
+                if (obj != null)
+                {
+                    cipher.IV = Convert.FromBase64String(obj.IV);
+                    cipher.Key = Convert.FromBase64String(obj.Key);
+
+                    // Create a decryptor to perform the stream transform
+                    ICryptoTransform decryptTransform = cipher.CreateDecryptor();
+
+                    // Create the streams used for decryption.
+                    using (MemoryStream msDecrypt = new MemoryStream(cipherText))
+                    {
+                        using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptTransform, CryptoStreamMode.Read))
+                        {
+                            using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                            {
+                                // Read the decrypted bytes from the decrypting stream and place them in a string
+                                plainText = srDecrypt.ReadToEnd();
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    lblError.Text = "Sorry! An error has occurred!";
+                    lblError.ForeColor = System.Drawing.Color.Red;
+                }
+                
+            }
+            catch (Exception ex) { throw new Exception(ex.ToString()); }
+            finally
+            { }
+
+            return plainText;
+        }
+        private void VerifyOTP(string userpassword)
+        {
+            try
+            {
+                DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
+                string UUID = loginObj.UUID;
+
+                // 1) Check if the data has alr existed
+                DAL.Register verifyPhoneOTPObj = RegisterDAO.checkVerifyPhoneOTP(UUID);
+
+                if (verifyPhoneOTPObj != null) // they should receive an sms by now; hence, verifyPhoneOTPObj shouldn't be null
+                {
+                    // check if datetimeSend passed a day
+                    var currentDateTime = DateTime.Now;
+                    var otpDateTimeSend = verifyPhoneOTPObj.dateTimeSend;
+                    var diff = currentDateTime.Subtract(otpDateTimeSend);
+
+                    if (diff.Minutes < 1) // if the minute difference is less than 1, password is still valid
+                    {
+                        // ********** get db hash & db salt
+                        SHA512Managed hashing = new SHA512Managed();
+                        string dbHash = verifyPhoneOTPObj.passwordHash;
+                        string dbSalt = verifyPhoneOTPObj.passwordSalt;
+
+                        // validating password
+                        string pwdWithSalt = userpassword + dbSalt;
+                        byte[] hashWithSalt = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
+                        string userHash = Convert.ToBase64String(hashWithSalt);
+
+                        if (userHash.Equals(dbHash)) // MATCH; UPDATE ACCOUNT
+                        {
+                            int result = RegisterDAO.updatePhoneVerifiedInAccountTable(UUID);
+                            if (result == 1)
+                            {
+                                int result2 = RegisterDAO.deleteVerifyPhoneOTPTable(UUID); // delete OTP table
+                                if (result2 == 1)
+                                {
+                                    LogIn();
+                                    //Response.Redirect("/login.aspx"); // Successful!
+                                }
+                                else
+                                {
+                                    lblError.Text = "Sorry! An error has occurred!";
+                                    lblError.ForeColor = System.Drawing.Color.Red;
+                                }
+                            }
+                            else
+                            {
+                                lblError.Text = "Sorry! An error has occurred!";
+                                lblError.ForeColor = System.Drawing.Color.Red;
+                            }
+                        }
+                        else
+                        {
+                            lblError.Text = "Sorry! Password is not valid!";
+                            lblError.ForeColor = System.Drawing.Color.Red;
+                        }
+                    }
+                    else // ******************send a new otp // if the minute difference is more than 1, password is invalid; Hence, there's a need to generate new password
+                    {
+                        lblError.Text = "Sorry! OTP has expired, we'll send you a new one.";
+                        lblError.ForeColor = System.Drawing.Color.Red;
+
+                        // sending a new otp
+                        string otpPassword = string.Empty;
+                        otpPassword = otp().Trim();
+
+                        var getHashingAndSaltingPwd2 = hashingAndSaltingPassword(otpPassword);
+
+                        string finalHash = string.Empty;
+                        finalHash = getHashingAndSaltingPwd2.Item1;
+
+                        string salt = string.Empty;
+                        salt = getHashingAndSaltingPwd2.Item2;
+
+                        int result = RegisterDAO.insertIntoVerifyPhoneOTP(UUID, finalHash, salt); // insert the otp as they do not exist
+
+                        if (result == 1)
+                        {
+                            //sendSMSForPhoneVerification(otpPassword, tbContactNumber.Text);
+                            lblError.Text = "Your otp password has expired: " + otpPassword;
+                        }
+
+                        else
+                        {
+                            lblError.Text = "Sorry! An error has occurred!";
+                            lblError.ForeColor = System.Drawing.Color.Red;
+                        }
+                    }
+
+                }
+                else
+                {
+                    lblError.Text = "Sorry! An error has occurred!";
+                    lblError.ForeColor = System.Drawing.Color.Red;
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+        // *********************************Check Password Expiration function
+        public void checkPasswordExpiration()
+        {
+            DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
+
+            DateTime changePasswordDate = Convert.ToDateTime(loginObj.changePasswordDate.ToString());
+
+            if ((DateTime.Now - changePasswordDate).TotalDays > 365)// if bigger than one year
+            {
+                Response.Redirect("changePassword.aspx");
+            }
+        }
+
+        // **********************************New Device Login
+        private void newDeviceLogin()
+        {
+            // select statement to retrieve the lists of macAddresses stored into the newDeviceLogin table
+            // Check if the list of macAddresses matches with the current macAddress
+            // ---> If it does, redirect them to new device login alert
+            // ---> Else, insert them into newDeviceLogin && sendEmail to giive the user an option on whether to remove the device
+            // ---> (EXTRA): Take note of this macAddress with this UUID, if it tries to login again, prevent them from doing so.
         }
     }
 }

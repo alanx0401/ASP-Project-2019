@@ -27,7 +27,44 @@
     <link rel='stylesheet' href='Content/jquery-ui-timepicker-addon.min.css' />
     <!--Tab-->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
-
+    <script type="text/javascript">  
+        $(document).ready(function () {  
+            $('#show_password').hover(function show() {  
+                //Change the attribute to text  
+                $('#tbPassword').attr('type', 'text');
+                $('.icon_password').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+            },  
+            function () {  
+                //Change the attribute back to password  
+                $('#tbPassword').attr('type', 'password');
+                $('.icon_password').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+            });
+            $('#show_confirmPassword').hover(function show() {
+                //Change the attribute to text  
+                $('#tbConfirmPassword').attr('type', 'text');
+                $('.icon_confirmPassword').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+            },
+            function () {
+                //Change the attribute back to password  
+                $('#tbConfirmPassword').attr('type', 'password');
+                $('.icon_confirmPassword').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+            });
+            //show_confirmPassword
+        });
+        function cbReadAgreementValidation(sender, args)
+        {
+            var x = document.getElementById('cbReadAgreement');
+            if (x.checked == true)
+            {
+                args.IsValid = true;
+            }
+            else
+            {
+                args.IsValid = false;
+            }
+            return;
+        }
+    </script>
 </head>
 <body>
     <style>
@@ -55,30 +92,45 @@
                                     <asp:Panel ID="PanelPart1" runat="server">
                                         <div class="form-group">
                                             <asp:TextBox ID="tbName" runat="server" placeholder="Name"></asp:TextBox>
+                                            <asp:RequiredFieldValidator ID="RFVName" runat="server" ErrorMessage="Please enter your name." ControlToValidate="tbName" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
                                         </div>
                                         <div class="form-group">
                                             <asp:TextBox ID="tbAdminNo" runat="server" placeholder="Admin No"></asp:TextBox>
+                                            <asp:RequiredFieldValidator ID="RFVAdminNo" runat="server" ErrorMessage="Please enter your admin no." ControlToValidate="tbAdminNo" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
+                                            <asp:RegularExpressionValidator ID="REVAdminNo" runat="server" ErrorMessage="Admin Number is not in a correct format." ControlToValidate="tbAdminNo" ForeColor="Red" ValidationExpression="^\d{6}[a-z|A-Z]$" Display="Dynamic">*</asp:RegularExpressionValidator>
+                                            <asp:CustomValidator ID="CVAdminNo" runat="server" ErrorMessage="Admin number has already been taken." ControlToValidate="tbAdminNo" ForeColor="Red" Display="Dynamic" OnServerValidate="CVAdminNo_ServerValidate">*</asp:CustomValidator>
                                         </div>
                                         <div class="form-group">
-                                            <asp:TextBox ID="tbEmail" runat="server" placeholder="Email" TextMode="Email" oninput="checkPassword();"></asp:TextBox>
+                                            <asp:TextBox ID="tbEmail" runat="server" placeholder="Email" TextMode="Email"></asp:TextBox>
+                                            <asp:RequiredFieldValidator ID="RFVEmail" runat="server" ErrorMessage="Please enter your email." ControlToValidate="tbEmail" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
+                                            <asp:RegularExpressionValidator ID="REVEmail" runat="server" ErrorMessage="Please enter a valid email format" ForeColor="Red" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" ControlToValidate="tbEmail" Display="Dynamic">*</asp:RegularExpressionValidator>
+                                            <asp:CustomValidator ID="CVEmail" runat="server" ErrorMessage="Email has already been taken." ControlToValidate="tbEmail" ForeColor="Red" Display="Dynamic" OnServerValidate="CVEmail_ServerValidate">*</asp:CustomValidator>
                                         </div>
-                                        <div class="form-group">
-                                            <asp:TextBox ID="tbPassword" runat="server" placeholder="Password" TextMode="Password" oninput="checkPassword();"></asp:TextBox>
-                                            <asp:Label ID="passstrength" runat="server"></asp:Label>
+                                        <div class="form-group input-group">
+                                            <asp:TextBox ID="tbPassword" runat="server" placeholder="Password" TextMode="Password"></asp:TextBox>
+                                            <div class="input-group-append">  
+                                                <button id="show_password" type="button" style="padding: 0; border: none; background: none;">  
+                                                    <span class="fa fa-eye-slash icon_password"></span>  
+                                                </button> 
+                                            </div>
                                             <div id="pswd_info">
                                                 <strong>Your password must:</strong>
                                                 <ul style="list-style-type:none;padding:0;margin:0;">
                                                     <li id="length" class="invalid">Be at least <strong>8 characters</strong></li>
-                                                    <li id="letter" class="invalid">At least <strong>one letter</strong></li>
+                                                    <li id="letter" class="invalid">At least <strong>one small-case letter</strong></li>
                                                     <li id="capital" class="invalid">At least <strong>one capital letter</strong></li>
                                                     <li id="number" class="invalid">At least <strong>one number</strong></li>
                                                     <li id="symbol" class="invalid">At least <strong>1 <a href="#" data-toggle="tooltip" data-placement="top" title="For example: @%+\\\/'!#$^?:.(){}\[\]~\-_.">symbol</a></strong></li>
                                                 </ul>
                                             </div>
+                                            <asp:RequiredFieldValidator ID="RFVPassword" runat="server" ErrorMessage="Please enter your password." ControlToValidate="tbPassword" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
+                                            <asp:CustomValidator ID="CVPassword" runat="server" ErrorMessage="Password cannot contain your name or admin number." ControlToValidate="tbPassword" ForeColor="Red" Display="Dynamic" OnServerValidate="CVPassword_ServerValidate">*</asp:CustomValidator>
+                                            <asp:CustomValidator ID="CVPassword1" runat="server" ErrorMessage="Password is too common" ForeColor="Red" ControlToValidate="tbPassword" Display="Dynamic" OnServerValidate="CVPassword1_ServerValidate" >*</asp:CustomValidator>
+                                            <asp:RegularExpressionValidator ID="REVPassword" runat="server" ErrorMessage="Password does not meet the requirements." ControlToValidate="tbPassword" Display="Dynamic" ForeColor="Red" ValidationExpression="(?=^.{8,100}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@%+\\\/'!#$^?:.(){}\[\]~\-_.])(?!.*\s).*$">*</asp:RegularExpressionValidator>
                                             <style>
                                                 #pswd_info {
                                                     position: absolute;
-                                                    bottom: -50px;
+                                                    bottom: -200px;
                                                     bottom: -115px\9; /* IE Specific */
                                                     right: 55px;
                                                     width: 250px;
@@ -90,6 +142,7 @@
                                                     border: 1px solid #ddd;
                                                     margin-left: auto;
                                                     margin-right: auto;
+                                                    z-index: 100;
                                                 }
 
                                                 #pswd_info strong {
@@ -129,42 +182,56 @@
                                                 }
                                             </style>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group input-group">
                                             <asp:TextBox ID="tbConfirmPassword" runat="server" TextMode="Password" placeholder="Confirm Password"></asp:TextBox>
-                                            <asp:Label ID="matchpassword" runat="server"></asp:Label>
+                                            <div class="input-group-append">  
+                                                <button id="show_confirmPassword" type="button" style="padding: 0; border: none; background: none;">  
+                                                    <span class="fa fa-eye-slash icon_confirmPassword"></span>  
+                                                </button> 
+                                            </div>
+                                            <asp:RequiredFieldValidator ID="RFVConfirmPassword" runat="server" ErrorMessage="Please enter the same password." ControlToValidate="tbConfirmPassword" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
+                                            <asp:CompareValidator ID="CVConfirmPassword" runat="server" ErrorMessage="Password does not match!" ControlToCompare="tbPassword" ControlToValidate="tbConfirmPassword" ForeColor="Red" Display="Dynamic">*</asp:CompareValidator>
                                         </div>
                                     </asp:Panel>
                                     <asp:Panel ID="PanelPart2" runat="server" Visible="false">
                                         <div class="form-group">
                                             <asp:TextBox ID="tbDateOfBirth" runat="server" class="form-control" TextMode="DateTime" ClientIDMode="Static" placeholder="Date of birth"></asp:TextBox>
+                                            <asp:RequiredFieldValidator ID="RFVDateOfBirth" runat="server" ErrorMessage="Please enter your date of birth" ControlToValidate="tbDateOfBirth" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
+                                            <asp:CompareValidator ID="CVDateOfBirth" runat="server" ErrorMessage="Please enter a valid date." ControlToValidate="tbDateOfBirth" Display="Dynamic" ForeColor="Red" Operator="DataTypeCheck" Type="Date">*</asp:CompareValidator>
+                                            <asp:CompareValidator ID="CVDateOfBirth1" Operator="LessThan" type="Date" ControltoValidate="tbDateOfBirth" ErrorMessage="Please enter your correct date of birth" runat="server" Display="Dynamic" ForeColor="Red" Text="*"/>
                                         </div>
                                         <div class="form-group">
                                             <asp:TextBox ID="tbContactNumber" runat="server" placeholder="Contact Number"></asp:TextBox>
+                                            <asp:RequiredFieldValidator ID="RFVContactNumber" runat="server" ErrorMessage="Please enter your contact number" ControlToValidate="tbContactNumber" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
                                         </div>
                                         <div class="form-group">
                                             <asp:CheckBox ID="cbReadAgreement" lass="form-check-input" runat="server" Text="I have read the agreement." />
+                                            <asp:CustomValidator ID="cvReadAgreement" runat="server" ErrorMessage="Please check read agreement" ClientValidationFunction="cbReadAgreementValidation" Display="Dynamic" ForeColor="Red">*</asp:CustomValidator>
                                         </div>
                                     </asp:Panel>
                                     <asp:Panel ID="PanelPart3" runat="server" Visible="false">
                                         <div class="form-group">
                                             <asp:TextBox ID="tbVerifyPassword" runat="server" placeholder="Enter code"></asp:TextBox>
+                                            <asp:RequiredFieldValidator ID="RFVVerifyPassword" runat="server" ErrorMessage="Please enter your password" ControlToValidate="tbVerifyPassword" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
+                                            <asp:RegularExpressionValidator ID="REVVerifyPassword" runat="server" ErrorMessage="Please enter the password in a correct format" ControlToValidate="tbVerifyPassword" Display="Dynamic" ForeColor="Red" ValidationExpression="^\d{6}$">*</asp:RegularExpressionValidator>
                                         </div>
                                     </asp:Panel>
 
                                     <p>
                                         <asp:Label ID="lblLogin" runat="server"><a href="/login.aspx">Sign in instead.</a></asp:Label>
-                                        <asp:Button ID="btnNext" class="btn btn-primary float-right" runat="server" Text="Next" OnClick="btnNext_Click" CausesValidation="False" />
-                                        <asp:Button ID="btnNext1" class="btn btn-primary float-right" runat="server" Text="Next" OnClick="btnNext1_Click" Visible="false" CausesValidation="False" />
-                                        <asp:Button ID="btnBack1" class="btn btn-default float-left" runat="server" Text="Back" Visible="false" OnClick="btnBack1_Click" />
+                                        <asp:Button ID="btnNext" class="btn btn-primary float-right" runat="server" Text="Next" OnClick="btnNext_Click" />
+                                        <asp:Button ID="btnNext1" class="btn btn-primary float-right" runat="server" Text="Next" OnClick="btnNext1_Click" Visible="false"/>
+                                        <asp:Button ID="btnBack1" class="btn btn-default float-left" runat="server" Text="Back" Visible="false" OnClick="btnBack1_Click" CausesValidation="False" />
                                         <asp:Button ID="btnRegister" class="btn btn-success float-right" runat="server" Text="Register" Visible="false" OnClick="btnRegister_Click" />
                                     </p>
                                     <p>
                                         <asp:Label ID="lblError" runat="server"></asp:Label>
-                                    </p>
+                                        <!--<asp:Label ID="lblError0" runat="server"></asp:Label>-->
+                                        <asp:ValidationSummary ID="ValidationSummary1" runat="server" ForeColor="Red" />
                                 </form>
                                 <style>
-                                    #tbEmail, #tbPassword, #tbName, #tbContactNumber, #tbConfirmPassword, #tbDateOfBirth, #tbAdminNo {
-                                        width: 100%;
+                                    #tbEmail, #tbPassword, #tbName, #tbContactNumber, #tbConfirmPassword, #tbDateOfBirth, #tbAdminNo, #tbVerifyPassword {
+                                        width: 87%;
                                         padding: 10px;
                                         box-sizing: border-box;
                                         background: none;
@@ -176,7 +243,7 @@
                                         border-bottom: 2px solid #bebed2;
                                     }
 
-                                        #tbEmail:focus, #tbPassword:focus, #tbName:focus, #tbContactNumber:focus, tbConfirmPassword:focus, tbDateOfBirth:focus, tbAdminNo:focus {
+                                        #tbEmail:focus, #tbPassword:focus, #tbName:focus, #tbContactNumber:focus, #tbConfirmPassword:focus, #tbDateOfBirth:focus, #tbAdminNo:focus, #tbVerifyPassword:focus {
                                             border-bottom: 2px solid #78788c;
                                         }
                                 </style>
@@ -214,88 +281,18 @@
         $(document).ready(function () {
             $(function () {
                 $("#tbDateOfBirth").datepicker({
-                    maxDate: 0
+                    //maxDate: 0,
+                    changeMonth: true,
+                    changeYear: true,
+                    yearRange: '1950:2013',
+                    //showButtonPanel: true,
+                    maxDate: '31/12/2013',
+                    dateFormat: 'dd-mm-yy'
                 });
             });
         });
-        function checkPassword() {
-            var password = document.getElementById("tbPassword")
-            var email = document.getElementById("tbEmail")
-            var confirmPassword = document.getElementById("tbConfirmPassword")
-
-            if (password.value == "") {
-                password.setCustomValidity("Field cannot be empty!");
-            } else {
-                password.setCustomValidity('');
-            }
-
-            if (email.value == "") {
-                email.setCustomValidity("Field cannot be empty!");
-            } else {
-                email.setCustomValidity('');
-            }
-
-            /*if (confirmPassword.value == "") {
-                 confirmPassword.setCustomValidity("Field cannot be empty!");
-             } else {
-                 confirmPassword.setCustomValidity('');
-             }*/
-            /*var con = (document.getElementById("tbPassword").value != document.getElementById("tbConfirmPassword").value)
-            if (con == true) {
-                confirmPassword.setCustomValidity("Passwords do not match!");
-            }
-            if (con == false)
-            {
-                confirmPassword.setCustomValidity('');
-            }*/
-        }
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js" type="text/javascript"></script>
-    <script>
-        function alertme() {
-            Swal(
-                'Good job!',
-                'You clicked the button!',
-                'success'
-            )
-        }
     </script>
     <script>
-        //temporary
-        /*$(document).ready(function () {
-
-            $('#tbPassword').keyup(function (e) {
-                var strongRegex = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
-                var mediumRegex = new RegExp("^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
-                var enoughRegex = new RegExp("(?=.{6,}).*", "g");
-                if (false === enoughRegex.test($(this).val())) {
-                    $('#passstrength').html('More Characters');
-                } else if (strongRegex.test($(this).val())) {
-                    $('#passstrength').className = 'ok';
-                    $('#passstrength').html('Strong!');
-                } else if (mediumRegex.test($(this).val())) {
-                    $('#passstrength').className = 'alert';
-                    $('#passstrength').html('Medium!');
-                } else {
-                    $('#passstrength').className = 'error';
-                    $('#passstrength').html('Weak!');
-                }
-                return true;
-            });*/
-
-            /*$('#tbConfirmPassword').keyup(function (e) {
-                var password = $('#tbPassword');
-                var confirmPassword = $('#tbConfirmPassword');
-                if (password.val() == confirmPassword.val()) {
-                    $('#matchpassword').html('password match');
-                }
-                if (password.val() != confirmPassword.val()) {
-                    $('#matchpassword').html('Password do not match');
-                }
-                
-            });*/
-
-        //});
         $(document).ready(function () {
 
             //code here
@@ -312,7 +309,7 @@
                 }
 
                 //validate letter
-                if (pswd.match(/[A-z]/)) {
+                if (pswd.match(/[a-z]/)) {
                     $('#letter').removeClass('invalid').addClass('valid');
                 } else {
                     $('#letter').removeClass('valid').addClass('invalid');
