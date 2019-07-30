@@ -213,6 +213,7 @@
     <Content Include="Default.aspx" />
     <Content Include="DefaultErrorPage.aspx" />
     <Content Include="ForgetPassword.aspx" />
+    <Content Include="ForgetPasswordWindow1.aspx" />
     <Content Include="GoogleAuth.aspx" />
     <Content Include="ImageGallery.aspx" />
     <Content Include="Images\check.png" />
@@ -445,6 +446,13 @@
     </Compile>
     <Compile Include="ForgetPassword.aspx.designer.cs">
       <DependentUpon>ForgetPassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ForgetPasswordWindow1.aspx.cs">
+      <DependentUpon>ForgetPasswordWindow1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ForgetPasswordWindow1.aspx.designer.cs">
+      <DependentUpon>ForgetPasswordWindow1.aspx</DependentUpon>
     </Compile>
     <Compile Include="GoogleAuth.aspx.cs">
       <DependentUpon>GoogleAuth.aspx</DependentUpon>

@@ -11,8 +11,8 @@
         <div>
             <center>
                 Enter your Email : <asp:TextBox ID="tbEmail" runat="server"></asp:TextBox>
-                <asp:Button ID="btnResetpw" runat="server" Text="Button"></asp:Button>
-                <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
+                <asp:Button ID="btnResetpw" runat="server" Text="Reset Password" OnClick="btnResetpw_Click"></asp:Button>
+                <asp:Label ID="LabelMsg" runat="server" ></asp:Label>
 
             </center>
             </div>
