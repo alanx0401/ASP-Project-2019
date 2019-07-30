@@ -10,7 +10,6 @@
 namespace ITP213 {
     
     
-<<<<<<< HEAD
     public partial class UserSecurityEventLogs {
         
         /// <summary>
@@ -66,9 +65,6 @@ namespace ITP213 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView GVUserSecurityEventLogs;
-=======
-    public partial class IndividualUserEventLog {
->>>>>>> TechnicalReview2
         
         /// <summary>
         /// lblUser control.

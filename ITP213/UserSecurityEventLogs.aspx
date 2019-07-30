@@ -1,16 +1,8 @@
-<<<<<<< HEAD
 <%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeBehind="UserSecurityEventLogs.aspx.cs" Inherits="ITP213.UserSecurityEventLogs" %>
-=======
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeBehind="UserSecurityEventLogs.aspx.cs" Inherits="ITP213.IndividualUserEventLog" %>
->>>>>>> TechnicalReview2
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
    <!--************README: Hi, please change some of the following things below when you're coding your features. Thanks! -PS -->
-<<<<<<< HEAD
-=======
-
->>>>>>> TechnicalReview2
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
 
@@ -36,7 +28,6 @@
     </style>
     <!-- //Breadcrumbs end-->
 
-<<<<<<< HEAD
 <<<<<<< HEAD
       <script type="text/javascript">
         $(document).ready(function () {
@@ -91,8 +82,6 @@
         </fieldset>
        <asp:GridView ID="GVUserSecurityEventLogs" runat="server" AutoGenerateColumns="False" Height="217px" Width="747px" >
 =======
-=======
->>>>>>> TechnicalReview2
     <!-- Page Content -->
     <h1>Event Logs</h1>
      <!--2. Change the title!--> <asp:Label ID="lblUser"  runat="server" Text="Label"></asp:Label>
@@ -101,21 +90,11 @@
         <asp:Panel ID="PanelEvents" runat="server">
           <p>Security Web events for <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
           <asp:GridView ID="GVEventLogs" runat="server" AutoGenerateColumns="False" Height="217px" Width="747px" >
-<<<<<<< HEAD
 >>>>>>> Kaiming
-=======
->>>>>>> TechnicalReview2
             <Columns>
                 <asp:BoundField DataField="eventDesc" HeaderText="Event Description" />
                 <asp:BoundField DataField="dateTimeDetails" HeaderText="Date Time Occured" />
             </Columns>
-<<<<<<< HEAD
           </asp:GridView>
     </div>
 </asp:Content>
-=======
-         </asp:GridView>
-    </asp:Panel>
-    </div>
-</asp:Content>
->>>>>>> TechnicalReview2

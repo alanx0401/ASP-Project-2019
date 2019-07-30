@@ -5,6 +5,8 @@ using System.Web;
 
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Data;
+using System.Text;
 
 namespace ITP213.DAL
 {
@@ -116,7 +118,47 @@ namespace ITP213.DAL
 
             return eventDescList;
         }
-     
+
+        //To display contents in GVEventLogs based on start date an end date 
+        public List<EventLog> searchEventLogDate(DateTime startDate, DateTime endDate)
+        {
+            List<EventLog> resultList = new List<EventLog>();
+            //Get connection string from web.config
+            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+
+            SqlDataAdapter da;
+            DataSet ds = new DataSet();
+
+            StringBuilder sqlStr = new StringBuilder();
+            sqlStr.AppendLine("SELECT * FROM EventLogs WHERE dateTimeDetails BETWEEN @startDate AND @endDate Order By dateTimeDetails DESC");
+            //Create Adapter
+
+            SqlConnection myConn = new SqlConnection(DBConnect);
+            da = new SqlDataAdapter(sqlStr.ToString(), myConn);
+            da.SelectCommand.Parameters.AddWithValue("@startDate", startDate);
+            da.SelectCommand.Parameters.AddWithValue("@endDate", endDate);
+            // fill dataset
+            da.Fill(ds, "resultTable");
+            int rec_cnt = ds.Tables["resultTable"].Rows.Count;
+            if (rec_cnt > 0)
+            {
+                foreach (DataRow row in ds.Tables["resultTable"].Rows)
+                {
+                    EventLog obj = new EventLog();
+
+                    obj.eventID = Convert.ToInt32(row["eventID"].ToString());
+                    obj.dateTimeDetails = Convert.ToDateTime(row["dateTimeDetails"].ToString());
+                    obj.eventDesc = row["eventDesc"].ToString();
+                    obj.UUID = row["UUID"].ToString();
+                    resultList.Add(obj);
+                }
+            }
+            else
+            {
+                resultList = null;
+            }
+            return resultList;
+        }
         // For Wycliff's Password Reset and Pei Shan's Login
         public int EventInsert(string eventDesc, DateTime dateTimeDetails, string UUID)
         {

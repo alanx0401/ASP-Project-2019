@@ -8,7 +8,7 @@ using System.Configuration;
 
 namespace ITP213.DAL
 {
-    public class userEventLog
+    public class userSecurityEventLog
     {
         string _conn = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
         string _eventDesc = null;
@@ -25,43 +25,43 @@ namespace ITP213.DAL
             set { _dateTimeDetails = value; }
         }
 
-
-        public userEventLog()
+        public userSecurityEventLog()
         {
 
         }
-
-        public userEventLog(string eventDesc, DateTime dateTimeDetails)
+        public userSecurityEventLog(string eventDesc, DateTime dateTimeDetails)
         {
             _eventDesc = eventDesc;
             _dateTimeDetails = dateTimeDetails;
         }
+        //To display contents in GVEventLogs based on EventDesc 
 
-        public List<userEventLog> getIndividualUserLog(string UUID)
+        public List<userSecurityEventLog> getEventDesc(string UUID)
         {
-            List<userEventLog> prodList = new List<userEventLog>();
-            string eventDesc;
-            DateTime dateTimeDetails;
-            string query = "SELECT eventDesc, dateTimeDetails FROM EventLogs Where UUID =@UUID Order By eventID DESC";
+            List<userSecurityEventLog> eventDescList = new List<userSecurityEventLog>();
+            string queryStr = "SELECT eventDesc, dateTimeDetails FROM Eventlogs WHERE UUID = @UUID";
             SqlConnection conn = new SqlConnection(_conn);
-            SqlCommand cmd = new SqlCommand(query, conn);
+            SqlCommand cmd = new SqlCommand(queryStr, conn);
             cmd.Parameters.AddWithValue("@UUID", UUID);
             conn.Open();
             SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
+            if (dr.Read())
             {
-                eventDesc = dr["eventID"].ToString();
+                eventDesc = dr["eventDesc"].ToString();
                 dateTimeDetails = Convert.ToDateTime(dr["dateTimeDetails"].ToString());
-                userEventLog obj = new userEventLog(eventDesc, dateTimeDetails);
-                prodList.Add(obj);
+                userSecurityEventLog eventDescObj = new userSecurityEventLog(eventDesc, dateTimeDetails);
+                eventDescList.Add(eventDescObj);
+            }
+            else
+            {
+                eventDescList = null;
             }
 
             conn.Close();
             dr.Close();
             dr.Dispose();
 
-            return prodList;
+            return eventDescList;
         }
-
     }
 }
