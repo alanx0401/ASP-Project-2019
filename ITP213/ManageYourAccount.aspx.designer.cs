@@ -85,13 +85,22 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.Label lblOTP;
         
         /// <summary>
-        /// LinkButtonOTP control.
+        /// btnOTP control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButtonOTP;
+        protected global::System.Web.UI.WebControls.Button btnOTP;
+        
+        /// <summary>
+        /// PanelCaptcha control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel PanelCaptcha;
         
         /// <summary>
         /// lblGoogleAuth control.
@@ -103,13 +112,13 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.Label lblGoogleAuth;
         
         /// <summary>
-        /// LinkButtonGoogleAuth control.
+        /// btnGoogleAuth control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButtonGoogleAuth;
+        protected global::System.Web.UI.WebControls.Button btnGoogleAuth;
         
         /// <summary>
         /// HyperLinkChangePassword control.

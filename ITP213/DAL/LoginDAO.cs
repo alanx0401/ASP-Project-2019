@@ -85,6 +85,7 @@ namespace ITP213.DAL
             {
                 DataRow row = ds.Tables["studentTable"].Rows[0]; // Sql command only returns only 1 record
                 obj.adminNo = row["UUID"].ToString();
+                obj.aNum = row["adminNo"].ToString();
                 obj.studentSchool = row["school"].ToString();
                 obj.course = row["course"].ToString();
                 obj.allergies = row["allergies"].ToString();

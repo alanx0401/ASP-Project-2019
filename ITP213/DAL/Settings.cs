@@ -24,5 +24,7 @@ namespace ITP213.DAL
         public string secretKey { set; get; }
         public string phoneVerified { set; get; }
         public string emailVerified { set; get; }
+        //public string passwordHash { set; get; }
+        public string passwordSalt { set; get; }
     }
 }
