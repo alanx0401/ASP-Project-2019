@@ -11,8 +11,6 @@ using System.Drawing;
 using System.Net;
 using System.Net.Mail;
 
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 //test
@@ -95,13 +93,13 @@ namespace ITP213
                     SmtpClient smtp = new SmtpClient();
                     smtp.Host = "smtp.gmail.com";
                     smtp.EnableSsl = true;
-                    /*NetworkCredential nc = new NetworkCredential();*/
-                    NetworkCredential loginInfo = new NetworkCredential(Convert.ToString(ConfigurationManager.AppSettings["wycliff1999@gmail.com"]), Convert.ToString(ConfigurationManager.AppSettings["wywy12345"]));
-                   /* nc.UserName = "170998G@mymail.nyp.edu.sg";
-                    nc.Password = "Wywy12345";*/
-                    smtp.UseDefaultCredentials = true;
-                    smtp.Credentials = loginInfo;
                     smtp.Port = 587;
+                    NetworkCredential nc = new NetworkCredential();
+                    //NetworkCredential loginInfo = new NetworkCredential(Convert.ToString(ConfigurationManager.AppSettings["wycliff1999@gmail.com"]), Convert.ToString(ConfigurationManager.AppSettings["wywy12345"]));
+                    nc.UserName = "wycliff1999@gmail.com";
+                    nc.Password = "wywy12345";
+                    smtp.UseDefaultCredentials = true;
+                    smtp.Credentials = nc;
                     smtp.Send(mm);
                     LabelMsg.Text = "Your password has been sent to" + tbEmail.Text;
                     LabelMsg.ForeColor = Color.Green;
