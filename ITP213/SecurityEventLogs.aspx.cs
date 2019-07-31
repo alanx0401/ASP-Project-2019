@@ -94,35 +94,6 @@ namespace ITP213
             eventsList = obj.searchEventLogDate(startDate, endDate);
             GVEventDateRange.DataSource = eventsList;
             GVEventDateRange.DataBind();
-            //GetDataChart();
-        }
-
-        protected void GetDataChart()
-        {
-       
-            DateTime startDate = Convert.ToDateTime(tbStartDate.Text);
-            DateTime endDate = Convert.ToDateTime(tbEndDate.Text);
-            string queryStr = "SELECT eventDesc, COUNT(*) AS countEvent FROM Eventlogs  WHERE dateTimeDetails BETWEEN @startDate AND @endDate GROUP BY eventDesc";
-            using (SqlConnection con = new SqlConnection(_conn))
-            {
-                SqlCommand cmd = new SqlCommand(queryStr, con);
-                cmd.Parameters.AddWithValue("@startDate", startDate);
-                cmd.Parameters.AddWithValue("@endDate", endDate);
-                Series series = chartEvent.Series["Series1"];
-                con.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    series.XValueMember = reader["countEvent"].ToString();
-                    series.YValueMembers = reader["eventDesc"].ToString();
-       
-                }
-                chartEvent.DataSource = reader;
-                chartEvent.DataBind();
-                con.Close();
-                reader.Close();
-                reader.Dispose();
-            }
         }
     }
 }

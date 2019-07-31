@@ -49,6 +49,15 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceGVUUID;
         
         /// <summary>
+        /// SqlDataSourceChart control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceChart;
+        
+        /// <summary>
         /// DDLSearch control.
         /// </summary>
         /// <remarks>
@@ -157,13 +166,13 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.GridView GVEventDateRange;
         
         /// <summary>
-        /// chartEvent control.
+        /// ChartEvent control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.DataVisualization.Charting.Chart chartEvent;
+        protected global::System.Web.UI.DataVisualization.Charting.Chart ChartEvent;
         
         /// <summary>
         /// PanelUUID control.

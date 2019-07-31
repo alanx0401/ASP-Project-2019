@@ -158,6 +158,7 @@ namespace ITP213.DAL
             }
             return resultList;
         }
+
         // For Wycliff's Password Reset and Pei Shan's Login
         public int EventInsert(string eventDesc, DateTime dateTimeDetails, string UUID)
         {

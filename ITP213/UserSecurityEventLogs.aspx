@@ -2,7 +2,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-   <!--************README: Hi, please change some of the following things below when you're coding your features. Thanks! -PS -->
+    <!--************README: Hi, please change some of the following things below when you're coding your features. Thanks! -PS -->
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
 
@@ -63,25 +63,47 @@
     </div>
       <div>
         <asp:Panel ID="PanelEvents" runat="server">
-          <asp:GridView ID="GVEventLogs" runat="server" AutoGenerateColumns="False" Height="217px" Width="747px" >
+         <asp:Panel runat="server" ScrollBars="Vertical" Height="200px">
+          <asp:GridView ID="GVEventLogs" runat="server" AutoGenerateColumns="False" height="199px" Width="737px" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None" >
             <Columns>
                 <asp:BoundField DataField="eventDesc" HeaderText="Event Description" />
                 <asp:BoundField DataField="dateTimeDetails" HeaderText="Date Time Occured" />
             </Columns>
+              <FooterStyle BackColor="#C6C3C6" ForeColor="Black" />
+              <HeaderStyle BackColor="#4A3C8C" Font-Bold="True" ForeColor="#E7E7FF" />
+              <PagerStyle BackColor="#C6C3C6" ForeColor="Black" HorizontalAlign="Right" />
+              <RowStyle BackColor="#DEDFDE" ForeColor="Black" />
+              <SelectedRowStyle BackColor="#9471DE" Font-Bold="True" ForeColor="White" />
+              <SortedAscendingCellStyle BackColor="#F1F1F1" />
+              <SortedAscendingHeaderStyle BackColor="#594B9C" />
+              <SortedDescendingCellStyle BackColor="#CAC9C9" />
+              <SortedDescendingHeaderStyle BackColor="#33276A" />
           </asp:GridView>
+          </asp:Panel>
         </asp:Panel>
     </div>
     <div>
         <asp:Panel ID="PanelSearchFilter" runat="server">
           <p>Search Security Event based on security event description:<asp:DropDownList ID="DDLEventDesc" runat="server" AutoPostBack="True" DataSourceID="SqlDataSourceDDL" DataTextField="eventDesc" DataValueField="eventDesc">
               </asp:DropDownList>
-            </p> <asp:GridView ID="GVParticularEvent" runat="server" DataSourceID="SqlDataSourceGVUserParticularEvent" AutoGenerateColumns="False" Height="155px" Width="749px">
-              <Columns>
-                  <asp:BoundField DataField="eventDesc" HeaderText="eventDesc" SortExpression="eventDesc" />
-                  <asp:BoundField DataField="dateTimeDetails" HeaderText="dateTimeDetails" SortExpression="dateTimeDetails" />
-              </Columns>
-            </asp:GridView>
-          <br />
-        </asp:Panel>
+            </p> 
+            <asp:Panel runat="server" ScrollBars="Vertical" Height="200px">
+                <asp:GridView ID="GVParticularEvent" runat="server" DataSourceID="SqlDataSourceGVUserParticularEvent" AutoGenerateColumns="False" Height="155px" Width="749px" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None">
+                    <Columns>
+                        <asp:BoundField DataField="eventDesc" HeaderText="eventDesc" SortExpression="eventDesc" />
+                        <asp:BoundField DataField="dateTimeDetails" HeaderText="dateTimeDetails" SortExpression="dateTimeDetails" />
+                    </Columns>
+                    <FooterStyle BackColor="#C6C3C6" ForeColor="Black" />
+                    <HeaderStyle BackColor="#4A3C8C" Font-Bold="True" ForeColor="#E7E7FF" />
+                    <PagerStyle BackColor="#C6C3C6" ForeColor="Black" HorizontalAlign="Right" />
+                    <RowStyle BackColor="#DEDFDE" ForeColor="Black" />
+                    <SelectedRowStyle BackColor="#9471DE" Font-Bold="True" ForeColor="White" />
+                    <SortedAscendingCellStyle BackColor="#F1F1F1" />
+                    <SortedAscendingHeaderStyle BackColor="#594B9C" />
+                    <SortedDescendingCellStyle BackColor="#CAC9C9" />
+                    <SortedDescendingHeaderStyle BackColor="#33276A" />
+                </asp:GridView>
+            </asp:Panel>
+        </asp:Panel>            
     </div>
 </asp:Content>
