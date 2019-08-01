@@ -159,7 +159,6 @@
     <Content Include="CreateTest.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="DefaultErrorPage.aspx" />
-    <Content Include="EventLogs.aspx" />
     <Content Include="ForgetPassword.aspx" />
     <Content Include="ImageGallery.aspx" />
     <Content Include="Images\trip_background.jpg" />
@@ -187,9 +186,11 @@
     <Content Include="Scripts\jquery-ui-timepicker-addon-i18n.js" />
     <Content Include="Scripts\jquery-ui-timepicker-addon.js" />
     <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="SecurityEventLogs.aspx" />
     <Content Include="Service References\SMSSvrRef\ITP213.SMSSvrRef.SMSData.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <Content Include="UserSecurityEventLogs.aspx" />
     <Content Include="WebForm1.aspx" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <None Include="Service References\SMSSvrRef\Sms.disco" />
@@ -199,8 +200,8 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <Content Include="Site.master" />
     <None Include="Service References\SMSSvrRef\Sms.wsdl" />
+    <Content Include="Site.master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -321,7 +322,6 @@
     <Compile Include="DAL\CCARecordDAO.cs" />
     <Compile Include="DAL\Complain.cs" />
     <Compile Include="DAL\ComplainDAO.cs" />
-    <Compile Include="DAL\EventLog.cs" />
     <Compile Include="DAL\Feedback.cs" />
     <Compile Include="DAL\FeedbackDAO.cs" />
     <Compile Include="DAL\GeneralRecord.cs" />
@@ -341,11 +341,13 @@
     <Compile Include="DAL\LoginDAO.cs" />
     <Compile Include="DAL\ReportInjury.cs" />
     <Compile Include="DAL\ReportInjuryDAO.cs" />
+    <Compile Include="DAL\SecurityEventLog.cs" />
     <Compile Include="DAL\Test.cs" />
     <Compile Include="DAL\TestDAO.cs" />
     <Compile Include="DAL\TripAllocation.cs" />
     <Compile Include="DAL\TripAllocationDAO.cs" />
     <Compile Include="DAL\UploadedImage.cs" />
+    <Compile Include="DAL\userSecurityEventLog.cs" />
     <Compile Include="DAL\WithdrawalRequest.cs" />
     <Compile Include="DAL\WithdrawalRequestDAO.cs" />
     <Compile Include="Default.aspx.cs">
@@ -361,13 +363,6 @@
     </Compile>
     <Compile Include="DefaultErrorPage.aspx.designer.cs">
       <DependentUpon>DefaultErrorPage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="EventLogs.aspx.cs">
-      <DependentUpon>EventLogs.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="EventLogs.aspx.designer.cs">
-      <DependentUpon>EventLogs.aspx</DependentUpon>
     </Compile>
     <Compile Include="ForgetPassword.aspx.cs">
       <DependentUpon>ForgetPassword.aspx</DependentUpon>
@@ -464,6 +459,13 @@
     <Compile Include="ReportInjury.aspx.designer.cs">
       <DependentUpon>ReportInjury.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SecurityEventLogs.aspx.cs">
+      <DependentUpon>SecurityEventLogs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SecurityEventLogs.aspx.designer.cs">
+      <DependentUpon>SecurityEventLogs.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Service References\SMSSvrRef\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -538,6 +540,13 @@
     </Compile>
     <Compile Include="UploadReport.aspx.designer.cs">
       <DependentUpon>UploadReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserSecurityEventLogs.aspx.cs">
+      <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserSecurityEventLogs.aspx.designer.cs">
+      <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewAllocatedTrip.aspx.cs">
       <DependentUpon>ViewAllocatedTrip.aspx</DependentUpon>
