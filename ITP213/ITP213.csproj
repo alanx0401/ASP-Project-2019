@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
@@ -62,42 +62,6 @@
     </Reference>
     <Reference Include="FleekDeveloper.GoogleAuthenticator, Version=1.0.6432.39911, Culture=neutral, PublicKeyToken=103418593cd561c9, processorArchitecture=MSIL">
       <HintPath>..\packages\FleekDeveloper.GoogleAuthenticator.1.0.1\lib\FleekDeveloper.GoogleAuthenticator.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FusionCharts.DataEngine, Version=1.0.1.0, Culture=neutral, PublicKeyToken=e6b8110d59760a80, processorArchitecture=MSIL">
-      <HintPath>..\packages\FusionCharts.Visualization.1.0.4\lib\net45\FusionCharts.DataEngine.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FusionCharts.SharpVectors.Converters, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b532964b8548be77, processorArchitecture=MSIL">
-      <HintPath>..\packages\FusionCharts.Visualization.1.0.4\lib\net45\FusionCharts.SharpVectors.Converters.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FusionCharts.SharpVectors.Core, Version=0.3.1.29789, Culture=neutral, PublicKeyToken=7407205e337c98ef, processorArchitecture=MSIL">
-      <HintPath>..\packages\FusionCharts.Visualization.1.0.4\lib\net45\FusionCharts.SharpVectors.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FusionCharts.SharpVectors.Css, Version=0.3.1.29790, Culture=neutral, PublicKeyToken=7a46e3f532fdb787, processorArchitecture=MSIL">
-      <HintPath>..\packages\FusionCharts.Visualization.1.0.4\lib\net45\FusionCharts.SharpVectors.Css.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FusionCharts.SharpVectors.Dom, Version=0.3.1.29789, Culture=neutral, PublicKeyToken=517340b6277b1a7a, processorArchitecture=MSIL">
-      <HintPath>..\packages\FusionCharts.Visualization.1.0.4\lib\net45\FusionCharts.SharpVectors.Dom.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FusionCharts.SharpVectors.Model, Version=0.3.1.29790, Culture=neutral, PublicKeyToken=2236cfc76b505845, processorArchitecture=MSIL">
-      <HintPath>..\packages\FusionCharts.Visualization.1.0.4\lib\net45\FusionCharts.SharpVectors.Model.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FusionCharts.SharpVectors.Rendering.Wpf, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d0902381100df30e, processorArchitecture=MSIL">
-      <HintPath>..\packages\FusionCharts.Visualization.1.0.4\lib\net45\FusionCharts.SharpVectors.Rendering.Wpf.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FusionCharts.SharpVectors.Runtime, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d16e717f0a981fb9, processorArchitecture=MSIL">
-      <HintPath>..\packages\FusionCharts.Visualization.1.0.4\lib\net45\FusionCharts.SharpVectors.Runtime.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FusionCharts.Visualization, Version=1.0.1.0, Culture=neutral, PublicKeyToken=e6b8110d59760a80, processorArchitecture=MSIL">
-      <HintPath>..\packages\FusionCharts.Visualization.1.0.4\lib\net45\FusionCharts.Visualization.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Google.Authenticator, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -284,28 +248,6 @@
     <Content Include="ReportInjury.aspx" />
     <Content Include="Content\jquery-steps.css" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\FusionCharts\fusioncharts.charts.js" />
-    <Content Include="Scripts\FusionCharts\fusioncharts.excelexport.js" />
-    <Content Include="Scripts\FusionCharts\fusioncharts.gantt.js" />
-    <Content Include="Scripts\FusionCharts\fusioncharts.js" />
-    <Content Include="Scripts\FusionCharts\fusioncharts.maps.js" />
-    <Content Include="Scripts\FusionCharts\fusioncharts.overlappedbar2d.js" />
-    <Content Include="Scripts\FusionCharts\fusioncharts.overlappedcolumn2d.js" />
-    <Content Include="Scripts\FusionCharts\fusioncharts.powercharts.js" />
-    <Content Include="Scripts\FusionCharts\fusioncharts.timeseries.js" />
-    <Content Include="Scripts\FusionCharts\fusioncharts.treemap.js" />
-    <Content Include="Scripts\FusionCharts\fusioncharts.vml.js" />
-    <Content Include="Scripts\FusionCharts\fusioncharts.widgets.js" />
-    <Content Include="Scripts\FusionCharts\fusioncharts.zoomline.js" />
-    <Content Include="Scripts\FusionCharts\fusioncharts.zoomscatter.js" />
-    <Content Include="Scripts\FusionCharts\themes\fusioncharts.theme.candy.js" />
-    <Content Include="Scripts\FusionCharts\themes\fusioncharts.theme.carbon.js" />
-    <Content Include="Scripts\FusionCharts\themes\fusioncharts.theme.fint.js" />
-    <Content Include="Scripts\FusionCharts\themes\fusioncharts.theme.fusion.js" />
-    <Content Include="Scripts\FusionCharts\themes\fusioncharts.theme.gammel.js" />
-    <Content Include="Scripts\FusionCharts\themes\fusioncharts.theme.ocean.js" />
-    <Content Include="Scripts\FusionCharts\themes\fusioncharts.theme.umber.js" />
-    <Content Include="Scripts\FusionCharts\themes\fusioncharts.theme.zune.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-steps.js" />
@@ -356,6 +298,8 @@
     <Content Include="UnauthorizedErrorPage.aspx" />
     <Content Include="UploadedImages.aspx" />
     <Content Include="UploadReport.aspx" />
+    <Content Include="UserEventLogs.aspx" />
+    <Content Include="UserSecurityEventLogs.aspx" />
     <Content Include="ViewAllocatedTrip.aspx" />
     <Content Include="ViewAnnouncement.aspx" />
     <Content Include="ViewBlog.aspx" />
@@ -468,7 +412,6 @@
     <Compile Include="DAL\Complain.cs" />
     <Compile Include="DAL\ComplainDAO.cs" />
     <Compile Include="DAL\EditAccountDAO.cs" />
-    <Compile Include="DAL\EventLog.cs" />
     <Compile Include="DAL\Feedback.cs" />
     <Compile Include="DAL\FeedbackDAO.cs" />
     <Compile Include="DAL\GeneralRecord.cs" />
@@ -492,6 +435,7 @@
     <Compile Include="DAL\LoginDAO.cs" />
     <Compile Include="DAL\ReportInjury.cs" />
     <Compile Include="DAL\ReportInjuryDAO.cs" />
+    <Compile Include="DAL\SecurityEventLog.cs" />
     <Compile Include="DAL\Settings.cs" />
     <Compile Include="DAL\SettingsDAO.cs" />
     <Compile Include="DAL\Security.cs" />
@@ -503,6 +447,7 @@
     <Compile Include="DAL\TripAllocation.cs" />
     <Compile Include="DAL\TripAllocationDAO.cs" />
     <Compile Include="DAL\UploadedImage.cs" />
+    <Compile Include="DAL\userEventLog.cs" />
     <Compile Include="DAL\Validation\RegisterValidation.cs" />
     <Compile Include="DAL\WithdrawalRequest.cs" />
     <Compile Include="DAL\WithdrawalRequestDAO.cs" />
@@ -547,13 +492,6 @@
     </Compile>
     <Compile Include="EventLogs.aspx.designer.cs">
       <DependentUpon>EventLogs.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ForgetPassword.aspx.cs">
-      <DependentUpon>ForgetPassword.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ForgetPassword.aspx.designer.cs">
-      <DependentUpon>ForgetPassword.aspx</DependentUpon>
     </Compile>
     <Compile Include="Email\IEmailSender.cs" />
     <Compile Include="Email\SendEmailDetails.cs" />
@@ -745,6 +683,18 @@
     </Compile>
     <Compile Include="UploadReport.aspx.designer.cs">
       <DependentUpon>UploadReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserEventLogs.aspx.cs">
+      <DependentUpon>UserEventLogs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserEventLogs.aspx.designer.cs">
+      <DependentUpon>UserEventLogs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserSecurityEventLogs.aspx.cs">
+      <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserSecurityEventLogs.aspx.designer.cs">
+      <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewAllocatedTrip.aspx.cs">
       <DependentUpon>ViewAllocatedTrip.aspx</DependentUpon>
