@@ -10,7 +10,65 @@
 namespace ITP213 {
     
     
+<<<<<<< HEAD
+    public partial class UserSecurityEventLogs {
+        
+        /// <summary>
+        /// SqlDataSourceDDL control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceDDL;
+        
+        /// <summary>
+        /// SqlDataSourceDDLUUID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceDDLUUID;
+        
+        /// <summary>
+        /// SqlDataSourceGVParticularEvent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceGVParticularEvent;
+        
+        /// <summary>
+        /// SqlDataSourceGVUUID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceGVUUID;
+        
+        /// <summary>
+        /// lbUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbUser;
+        
+        /// <summary>
+        /// GVUserSecurityEventLogs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GVUserSecurityEventLogs;
+=======
     public partial class IndividualUserEventLog {
+>>>>>>> TechnicalReview2
         
         /// <summary>
         /// lblUser control.

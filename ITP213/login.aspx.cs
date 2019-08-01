@@ -288,7 +288,7 @@ namespace ITP213
                                     if (result2 == 1)
                                     {
                                         // Kai Ming's function
-                                        EventLog eventObj = new EventLog();
+                                        SecurityEventLog eventObj = new SecurityEventLog();
                                         int result3 = eventObj.EventInsert("Failed Login", DateTime.Now, UUID);
                                     }
                                     else
@@ -305,7 +305,7 @@ namespace ITP213
                                     if (result2 == 1)
                                     {
                                         // Kai Ming's function
-                                        EventLog eventObj = new EventLog();
+                                        SecurityEventLog eventObj = new SecurityEventLog();
                                         int result3 = eventObj.EventInsert("Failed Login", DateTime.Now, UUID);
                                     }
                                     else
@@ -321,7 +321,7 @@ namespace ITP213
                                 if (result2 == 1)
                                 {
                                     // Kai Ming's function
-                                    EventLog eventObj = new EventLog();
+                                    SecurityEventLog eventObj = new SecurityEventLog();
                                     int result3 = eventObj.EventInsert("Failed Login", DateTime.Now, UUID);
                                 }
                                 else
@@ -461,7 +461,7 @@ namespace ITP213
             }
 
             // Kai Ming's function
-            EventLog eventObj = new EventLog();
+            SecurityEventLog eventObj = new SecurityEventLog();
             int result3 = eventObj.EventInsert("Successful Login", DateTime.Now, loginObj.UUID);
 
             if (Session["accountType"].ToString() == "student")
