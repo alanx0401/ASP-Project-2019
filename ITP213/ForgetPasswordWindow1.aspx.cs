@@ -101,15 +101,15 @@ namespace ITP213
                     smtp.UseDefaultCredentials = true;
                     smtp.Credentials = nc;
                     smtp.Send(mm);
-                    LabelMsg.Text = "Your password has been sent to" + tbEmail.Text;
+                    LabelMsg.Text = "Your password has been sent to " + tbEmail.Text;
                     LabelMsg.ForeColor = Color.Green;
                 }
                 catch (Exception ex) { throw new Exception(ex.ToString()); }
             }
             else
             {
-                LabelMsg.Text = "Email does not exist";
-                LabelMsg.ForeColor = Color.Red;
+                LabelMsg.Text = "Your password has been sent to " + tbEmail.Text; //Message for deception
+                LabelMsg.ForeColor = Color.Green;
             }
             
             
