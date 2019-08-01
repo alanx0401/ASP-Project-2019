@@ -15,28 +15,11 @@ namespace ITP213
         {
             SecurityDAO secManager = new SecurityDAO();
             //SessionManagerDAO sessionManager = new SessionManagerDAO();
-            //currently on old build thus have to use old 
-            secManager.apply_session_fixation_patch(Session, Request, Response);
-
-            try
-            {
-                uuid = Session["accountID"].ToString();
-            } catch (Exception ex)
-            {
-                //throw new Exception(ex.ToString());
-                Response.Redirect("Login.aspx");
-            }
-            
-            //string uuid = Session["UUID"].ToString(); // new string when updated
-
-            
+               
             if (!secManager.check_account_admin(uuid))
             {
-                Response.Redirect("Error403.aspx");
+                Response.Redirect("Error.aspx");
             }
-
-
-            
         }
 
         protected void gv_UserTable_RowEditing(object sender, GridViewEditEventArgs e)

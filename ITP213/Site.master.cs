@@ -15,6 +15,8 @@ namespace ITP213
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            SecurityDAO secManager = new SecurityDAO();
+            secManager.apply_session_fixation_patch(Session, Request, Response);
             if (!IsPostBack)
             {
                 if (Session["name"] != null)
