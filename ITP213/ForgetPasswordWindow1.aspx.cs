@@ -71,7 +71,7 @@ namespace ITP213
         {
             string mainconn = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
             SqlConnection sqlconn = new SqlConnection(mainconn);
-            string sqlquery = "select email from account where email=@email";
+            string sqlquery = "select email,UUID from account where email=@email";
             SqlCommand sqlcomm = new SqlCommand(sqlquery, sqlconn);
             sqlcomm.Parameters.AddWithValue("@email", tbEmail.Text);
             sqlconn.Open();
@@ -79,7 +79,7 @@ namespace ITP213
             if (sdr.Read())
             {
                 string username = sdr["email"].ToString();
-
+                string uid = sdr["UUID"].ToString();
                 //string password = sdr["password"].ToString();
 
 
@@ -88,7 +88,7 @@ namespace ITP213
                 {
                     MailMessage mm = new MailMessage("wycliff1999@gmail.com", tbEmail.Text);
                     mm.Subject = "Your new password";
-                    mm.Body = string.Format("Hello : <h1>{0}</h1>, your password is <h1></h1>", username);
+                    mm.Body = string.Format("Hello : <h1>{0}</h1>, your password is link is http://localhost:16452/changepassword.aspx?uuid={1}", username,uid);
                     mm.IsBodyHtml = true;
                     SmtpClient smtp = new SmtpClient();
                     smtp.Host = "smtp.gmail.com";

@@ -12,9 +12,17 @@ namespace ITP213
 {
     public partial class changePassword : System.Web.UI.Page
     {
+        string uuid;
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (Request.QueryString["uuid"] != null)
+            {
+                uuid = Request.QueryString["uuid"].ToString();
+            }
+            if (Session["UUID"] != null)
+            {
+                uuid = Session["UUID"].ToString();
+            }
         }
 
         protected void btnChangePassword_Click(object sender, EventArgs e)
@@ -42,7 +50,7 @@ namespace ITP213
                 salt = string.Empty;
                 salt = getHashingAndSaltingPwd.Item2;
                 
-                int result = DAL.ChangePassword.updatePasswordIntoAccountTable(Session["UUID"].ToString(), finalHash, salt); // account table
+                int result = DAL.ChangePassword.updatePasswordIntoAccountTable(uuid, finalHash, salt); // account table
                 if (result == 1)
                 {
                     // success
