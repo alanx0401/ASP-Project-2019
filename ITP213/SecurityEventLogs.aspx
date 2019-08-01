@@ -11,8 +11,7 @@
 
             <a href="#" style="color:#D6D6D6">Home</a>
         </li>
-        <li class="breadcrumb-item active">Your current page</li> <!--1. Change the name!-->
-    </ol>
+        <li class="breadcrumb-item active">Security Event Logs</ol>
     <style>
         .breadcrumb
         {
@@ -47,15 +46,6 @@
      <!--2. Change the title!--> 
     <hr />
     <asp:SqlDataSource ID="SqlDataSourceDDL" runat="server" ConnectionString="<%$ ConnectionStrings: ConnStr %>" SelectCommand="SELECT DISTINCT [eventDesc] FROM [Eventlogs]"></asp:SqlDataSource>  
-<<<<<<< HEAD
-=======
-    <asp:SqlDataSource ID="SqlDataSourceDDLEventDuration" runat="server" ConnectionString="<%$ ConnectionStrings:ConnStr %>" SelectCommand="SELECT DISTINCT [dateTimeDetails] FROM [Eventlogs]"></asp:SqlDataSource>  
-    <asp:SqlDataSource ID="SqlDataSourceEventCount" runat="server" ConnectionString="<%$ ConnectionStrings:ConnStr %>" SelectCommand="SELECT eventDesc, COUNT(*) AS CountEvent FROM Eventlogs  WHERE ([dateTimeDetails] = @dateTimeDetails) GROUP BY eventDesc" ProviderName="System.Data.SqlClient">
-        <SelectParameters>
-            <asp:ControlParameter ControlID="DDLEventPeriod" Name="dateTimeDetails" PropertyName="SelectedValue" Type="DateTime" />
-        </SelectParameters>
-    </asp:SqlDataSource>
->>>>>>> TechnicalReview2
      <asp:SqlDataSource ID="SqlDataSourceDDLUUID" runat="server" ConnectionString="<%$ ConnectionStrings:ConnStr %>" SelectCommand="SELECT DISTINCT [UUID] FROM [Eventlogs]">
     </asp:SqlDataSource>
     <asp:SqlDataSource ID="SqlDataSourceGVParticularEvent" runat="server" ConnectionString="<%$ ConnectionStrings:ConnStr %>" SelectCommand="SELECT [eventDesc], [dateTimeDetails], [UUID] FROM [Eventlogs] WHERE ([eventDesc] = @eventDesc)" ProviderName="System.Data.SqlClient">
@@ -90,8 +80,8 @@
     <div>
         <asp:Panel ID="PanelEvents" runat="server">
           <p>All Security Events</p>
-          <asp:Panel runat="server" ScrollBars="Vertical" Height="200px">
-          <asp:GridView ID="GVEventLogs" runat="server" AutoGenerateColumns="False" Height="199px" Width="737px" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None">
+          <asp:Panel runat="server" ScrollBars="Vertical" Height="200px" Width="1100px">
+              <asp:GridView ID="GVEventLogs" runat="server" AutoGenerateColumns="False" Height="200px" Width="1100px" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None">
             <Columns>
                 <asp:BoundField DataField="eventID" HeaderText="Event ID" />
                 <asp:BoundField DataField="eventDesc" HeaderText="Event Description" />
@@ -115,8 +105,8 @@
         <asp:Panel ID="PanelSearchFilter" runat="server">
           <p>Search Security Event based on security event description:<asp:DropDownList ID="DDLEventDesc" runat="server" AutoPostBack="True" DataSourceID="SqlDataSourceDDL" DataTextField="eventDesc" DataValueField="eventDesc">
              </asp:DropDownList></p>
-          <asp:Panel runat="server" ScrollBars="Vertical" Height="200px">
-           <asp:GridView ID="GVParticularEvent" runat="server" DataSourceID="SqlDataSourceGVParticularEvent" AutoGenerateColumns="False" Height="199px" Width="737px" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None">
+          <asp:Panel runat="server" ScrollBars="vertical" Height="200px" Width="1100px">
+           <asp:GridView ID="GVParticularEvent" runat="server" DataSourceID="SqlDataSourceGVParticularEvent" AutoGenerateColumns="False" Height="200px" Width="1200px" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None">
               <Columns>
                   <asp:BoundField DataField="eventDesc" HeaderText="eventDesc" SortExpression="eventDesc" />
                   <asp:BoundField DataField="dateTimeDetails" HeaderText="dateTimeDetails" SortExpression="dateTimeDetails" />
@@ -145,8 +135,8 @@
                 <td><asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" /></td>
             </tr>
         </table>
-        <asp:Panel runat="server" ScrollBars="Vertical" Height="200px">
-              <asp:GridView ID="GVEventDateRange" runat="server" AutoGenerateColumns="False" Height="199px" Width="737px" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None">
+        <asp:Panel runat="server" ScrollBars="Vertical" Height="200px" Width="1100px">
+              <asp:GridView ID="GVEventDateRange" runat="server" AutoGenerateColumns="False" Height="200px" Width="1100px" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None">
              <Columns>
                  <asp:BoundField DataField="dateTimeDetails" HeaderText="dateTimeDetails"/>
                  <asp:BoundField DataField="eventID" HeaderText="eventID" />
@@ -180,8 +170,8 @@
         <asp:Panel ID="PanelUUID" runat="server">
           <p>Search Security Event based on UUID:&nbsp<asp:DropDownList ID="DDLUUID" runat="server" DataSourceID="SqlDataSourceDDLUUID" DataTextField="UUID" DataValueField="UUID" AutoPostBack="True" OnSelectedIndexChanged="DDLEventDesc_SelectedIndexChanged" >
           </asp:DropDownList></p>
-          <asp:Panel runat="server" ScrollBars="Vertical" Height="200px">
-          <asp:GridView ID="GVUUID" runat="server" AutoGenerateColumns="False" DataSourceID="SqlDataSourceGVUUID" height="199px" Width="737px" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None" >
+          <asp:Panel runat="server" ScrollBars="Vertical" Height="200px" Width="1100px">
+          <asp:GridView ID="GVUUID" runat="server" AutoGenerateColumns="False" DataSourceID="SqlDataSourceGVUUID" height="200px" Width="1100px" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None" >
               <Columns>
                   <asp:BoundField DataField="UUID" HeaderText="UUID" SortExpression="UUID" />
                   <asp:BoundField DataField="eventDesc" HeaderText="eventDesc" SortExpression="eventDesc" />
