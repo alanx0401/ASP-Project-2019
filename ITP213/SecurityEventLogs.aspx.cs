@@ -5,7 +5,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+using System.Data.SqlClient;
+using System.Configuration;
 using ITP213.DAL;
+using System.Web.UI.DataVisualization.Charting;
+
 namespace ITP213
 {
     public partial class SecurityEventLogs : System.Web.UI.Page
@@ -20,7 +24,7 @@ namespace ITP213
                 bind();
                 PanelEvents.Visible = true;
                 PanelSearchFilter.Visible = false;
-                PanelEventDuration.Visible = false;
+                PanelEventDateRange.Visible = false;
                 PanelUUID.Visible = false;
             }
         }
@@ -35,9 +39,12 @@ namespace ITP213
         protected void btnReset_Click(object sender, EventArgs e)
         {
             DDLSearch.SelectedValue = "0";
+            tbStartDate.Text = "";
+            tbEndDate.Text = "";
             PanelEvents.Visible = true;
             PanelSearchFilter.Visible = false;
-            PanelEventDuration.Visible = false;
+            PanelEventDateRange.Visible = false;
+            GVEventDateRange.Visible = false;
             PanelUUID.Visible = false;
         }
 
@@ -47,28 +54,28 @@ namespace ITP213
             {
                 PanelEvents.Visible = true;
                 PanelSearchFilter.Visible = false;
-                PanelEventDuration.Visible = false;
+                PanelEventDateRange.Visible = false;
                 PanelUUID.Visible = false;
             }
             else if (DDLSearch.SelectedValue== "1")
             {
                 PanelEvents.Visible = false;
                 PanelSearchFilter.Visible = true;
-                PanelEventDuration.Visible = false;
+                PanelEventDateRange.Visible = false;
                 PanelUUID.Visible = false;
             }
             else if (DDLSearch.SelectedValue == "2")
             {
                 PanelEvents.Visible = false;
                 PanelSearchFilter.Visible = false;
-                PanelEventDuration.Visible = true;
+                PanelEventDateRange.Visible = true;
                 PanelUUID.Visible = false;
             }
             else
             {
                 PanelEvents.Visible = false;
                 PanelSearchFilter.Visible = false;
-                PanelEventDuration.Visible = false;
+                PanelEventDateRange.Visible = false;
                 PanelUUID.Visible = true;
             }
 
@@ -79,7 +86,7 @@ namespace ITP213
 
         }
 
-        protected void GVeventDuration_SelectedIndexChanged(object sender, EventArgs e)
+        protected void btnSearch_Click(object sender, EventArgs e)
         {
             DateTime startDate = Convert.ToDateTime(tbStartDate.Text);
             DateTime endDate = Convert.ToDateTime(tbEndDate.Text);
