@@ -14,7 +14,7 @@ namespace ITP213
         string UUID;
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["UUID"] != null && Session["name"] != null && !IsPostBack)
+            if (Session["UUID"] != null && Session["name"] != null)
             {
                 lbUser.Text = Session["name"].ToString();
                 UUID = Session["UUID"].ToString();
@@ -36,6 +36,9 @@ namespace ITP213
             {
                 if (Session["name"] !=null && !IsPostBack)
                 {
+                    lbUser.Text = Session["name"].ToString();
+                    lbUUID.Text = Session["UUID"].ToString();
+                    //lbUser.Text = Session["name"].ToString() + Session["UUID"].ToString();
                     bind();
                 }
                 else
@@ -52,7 +55,7 @@ namespace ITP213
         }
         protected void bind()
         {
-<<<<<<< HEAD
+            string UUID;
             UUID = Session["UUID"].ToString();
             List<userSecurityEventLog> eventsList = new List<userSecurityEventLog>();
             eventsList = obj.getEventDesc(UUID);
