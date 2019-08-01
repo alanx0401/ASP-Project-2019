@@ -6,6 +6,8 @@ using Hangfire;
 using Hangfire.SqlServer;
 using Hangfire.Dashboard;
 using System.Collections.Generic;
+using ITP213.DAL;
+using Blockchain_Text;
 
 [assembly: OwinStartup(typeof(ITP213.Startup))]
 
@@ -38,9 +40,12 @@ namespace ITP213
             // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=316888
             app.UseHangfireAspNet(GetHangfireServers);
             app.UseHangfireDashboard();
-            
 
-            BackgroundJob.Enqueue(() => Console.WriteLine("Hello world from Hangfire!"));
+            Blockchain AuditLogBC = new Blockchain();
+            BlockchainManagerDAO bcManager = new BlockchainManagerDAO();
+            BackgroundJob.Enqueue(() => AuditLogBC.AddBlock(new Block(DateTime.Now, null, bcManager.GetDailyBlock()));
+            RecurringJob.AddOrUpdate(() => AuditLogBC.AddBlock(new Block(DateTime.Now, null,bcManager.GetDailyBlock())), Cron.Daily);
+
         }
     }
 }

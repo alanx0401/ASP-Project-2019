@@ -225,7 +225,6 @@
     <Content Include="DefaultErrorPage.aspx" />
     <Content Include="EditAccount.aspx" />
     <Content Include="Error.aspx" />
-    <Content Include="EventLogs.aspx" />
     <Content Include="GoogleAuth.aspx" />
     <Content Include="ImageGallery.aspx" />
     <Content Include="Images\check.png" />
@@ -332,8 +331,8 @@
     <Compile Include="Admin\ListUser.aspx.designer.cs">
       <DependentUpon>ListUser.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Blockchain\Block.cs" />
-    <Compile Include="Blockchain\Blockchain.cs" />
+    <Compile Include="DAL\Blockchain-Functions\Block.cs" />
+    <Compile Include="DAL\Blockchain-Functions\Blockchain.cs" />
     <Compile Include="BlogDetails.aspx.cs">
       <DependentUpon>BlogDetails.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -452,6 +451,7 @@
     <Compile Include="DAL\TripAllocationDAO.cs" />
     <Compile Include="DAL\UploadedImage.cs" />
     <Compile Include="DAL\userEventLog.cs" />
+    <Compile Include="DAL\userSecurityEventLog.cs" />
     <Compile Include="DAL\Validation\RegisterValidation.cs" />
     <Compile Include="DAL\WithdrawalRequest.cs" />
     <Compile Include="DAL\WithdrawalRequestDAO.cs" />
@@ -482,13 +482,6 @@
     </Compile>
     <Compile Include="Error.aspx.designer.cs">
       <DependentUpon>Error.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="EventLogs.aspx.cs">
-      <DependentUpon>EventLogs.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="EventLogs.aspx.designer.cs">
-      <DependentUpon>EventLogs.aspx</DependentUpon>
     </Compile>
     <Compile Include="Email\IEmailSender.cs" />
     <Compile Include="Email\SendEmailDetails.cs" />
