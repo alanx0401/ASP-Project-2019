@@ -59,7 +59,7 @@ namespace ITP213.DAL
              */
 
             string sqlStr =
-                "INSERT INTO account(UUID, name, accountType, accountStatus, email, mobile, dateOfBirth, passwordHash, passwordSalt, emailVerified, phoneVerified, banAccountDateTime, googleAuthEnabled, otpEnabled, changePasswordDate) VALUES(@UUID, @name, 'student', 'Not ban', @email, '', '', @passwordHash, @passwordSalt, 'No', 'No', '', 'No', 'No', GETDATE())";
+                "INSERT INTO account(UUID, name, accountType, accountStatus, email, mobile, dateOfBirth, passwordHash, passwordSalt, emailVerified, phoneVerified, banAccountDateTime, googleAuthEnabled, otpEnabled, changePasswordDate, accountCreated) VALUES(@UUID, @name, 'student', 'Not ban', @email, '', '', @passwordHash, @passwordSalt, 'No', 'No', '', 'No', 'No', GETDATE(), GETDATE())";
             //"INSERT INTO Person (FullName,Gender,PersonRole)VALUES(@pFullName,@pGender,@pPersonRole)";
 
             SqlConnection myConn = new SqlConnection(DBConnect);

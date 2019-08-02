@@ -157,6 +157,10 @@
       <HintPath>..\packages\Sendgrid.9.11.0\lib\net452\SendGrid.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Data.SQLite, Version=1.0.111.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.111.0\lib\net451\System.Data.SQLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.1.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.1.2\lib\net451\System.IdentityModel.Tokens.Jwt.dll</HintPath>
       <Private>True</Private>
@@ -211,12 +215,15 @@
     <Content Include="CreateReflection.aspx" />
     <Content Include="CreateRemarks.aspx" />
     <Content Include="CreateTest.aspx" />
+    <Content Include="DAL\Peishan-Function\template.html" />
     <Content Include="DAL\Validation\Data\dictionary.txt" />
     <Content Include="Default.aspx" />
     <Content Include="DefaultErrorPage.aspx" />
-    <Content Include="EditAccount.aspx" />
+    <Content Include="EditEmail.aspx" />
+    <Content Include="EditPhoneNumber.aspx" />
     <Content Include="Error403.aspx" />
     <Content Include="EventLogs.aspx" />
+    <Content Include="ForgetPassword.aspx" />
     <Content Include="GoogleAuth.aspx" />
     <Content Include="ImageGallery.aspx" />
     <Content Include="Images\check.png" />
@@ -417,6 +424,7 @@
     <Compile Include="DAL\OverallReport.cs" />
     <Compile Include="DAL\OverallReportDAO.cs" />
     <Compile Include="DAL\Peishan-Function\EmailAndPhoneValidation.cs" />
+    <Compile Include="DAL\Peishan-Function\NewDeviceLogin.cs" />
     <Compile Include="DAL\Question.cs" />
     <Compile Include="DAL\QuestionDAO.cs" />
     <Compile Include="DAL\Register.cs" />
@@ -457,12 +465,19 @@
     <Compile Include="DefaultErrorPage.aspx.designer.cs">
       <DependentUpon>DefaultErrorPage.aspx</DependentUpon>
     </Compile>
-    <Compile Include="EditAccount.aspx.cs">
-      <DependentUpon>EditAccount.aspx</DependentUpon>
+    <Compile Include="EditEmail.aspx.cs">
+      <DependentUpon>EditEmail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="EditAccount.aspx.designer.cs">
-      <DependentUpon>EditAccount.aspx</DependentUpon>
+    <Compile Include="EditEmail.aspx.designer.cs">
+      <DependentUpon>EditEmail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EditPhoneNumber.aspx.cs">
+      <DependentUpon>EditPhoneNumber.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditPhoneNumber.aspx.designer.cs">
+      <DependentUpon>EditPhoneNumber.aspx</DependentUpon>
     </Compile>
     <Compile Include="Error403.aspx.cs">
       <DependentUpon>Error403.aspx</DependentUpon>
@@ -801,7 +816,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.111.0\build\net451\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.111.0\build\net451\System.Data.SQLite.Core.targets'))" />
   </Target>
+  <Import Project="..\packages\System.Data.SQLite.Core.1.0.111.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.111.0\build\net451\System.Data.SQLite.Core.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

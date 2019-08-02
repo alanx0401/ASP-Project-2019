@@ -1,7 +1,10 @@
 ﻿using Google.Authenticator;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
@@ -19,6 +22,7 @@ namespace ITP213
         {
             if (!IsPostBack)
             {
+                TextBox1.Attributes.Add("autocomplete", "off");
                 if (Session["UUID"] != null)
                 {
                     DAL.Settings obj = DAL.SettingsDAO.getAccountTableByUUID(Session["UUID"].ToString());
@@ -51,7 +55,14 @@ namespace ITP213
         }
         protected void Button1_Click(object sender, EventArgs e)
         {
-            verifyGoogleAuth();
+            if (PanelCaptcha.Visible == true)
+            {
+                verifyGoogleAuth();
+            }
+            else
+            {
+                PanelCaptcha.Visible = true;
+            }
         }
 
         public void verifyGoogleAuth()
@@ -66,35 +77,76 @@ namespace ITP213
 
                 if (Session["sk"] != null)
                 {
-                    bool isCorrectPIN = tfa.ValidateTwoFactorPIN(Session["sk"].ToString(), user_enter);
-
-                    /*string[] allPINS = tfa.GetCurrentPINs(Session["sk"].ToString());
-
-                    for (int i = 0; i < allPINS.Length; i++)
+                    if (IsReCaptchValid() == true) // CAPTCHA is correct
                     {
-                        Label2.Text += i.ToString() + " :" + allPINS[i] + ", <br>";
-                    }*/
+                        bool isCorrectPIN = tfa.ValidateTwoFactorPIN(Session["sk"].ToString(), user_enter);
 
-                    if (isCorrectPIN == true)
-                    {
+                        /*string[] allPINS = tfa.GetCurrentPINs(Session["sk"].ToString());
 
-                        string secretKey = Session["sk"].ToString();
-                        secretKey = Convert.ToBase64String(encryptData(secretKey));
-                        int result = DAL.SettingsDAO.updateGoogleAuthEnabledAndSecretKeyInAccount(Session["UUID"].ToString(), secretKey, "Yes", Convert.ToBase64String(IV), Convert.ToBase64String(Key));
-                        Label2.Text = "Done! You're all set!";
+                        for (int i = 0; i < allPINS.Length; i++)
+                        {
+                            Label2.Text += i.ToString() + " :" + allPINS[i] + ", <br>";
+                        }*/
 
+                        if (isCorrectPIN == true)
+                        {
+
+                            string secretKey = Session["sk"].ToString();
+                            secretKey = Convert.ToBase64String(encryptData(secretKey));
+                            int result = DAL.SettingsDAO.updateGoogleAuthEnabledAndSecretKeyInAccount(Session["UUID"].ToString(), secretKey, "Yes", Convert.ToBase64String(IV), Convert.ToBase64String(Key));
+
+                            if (result == 1)
+                            {
+                                Label2.Text = "Done! You're all set!";
+                                Label2.ForeColor = System.Drawing.Color.Green;
+                                PanelCaptcha.Visible = false;
+                            }
+                            else
+                            {
+                                Label2.Text = "Sorry! An error has ocurred!";
+                            }
+
+                        }
+                        else
+                        {
+
+                            Label2.Text = "Incorrect password. Please try again";
+                        }
                     }
                     else
                     {
-
-                        Label2.Text = "Incorrect password. Please try again";
+                        Label2.Text = "Please check your CAPTCHA.";
+                        Label2.ForeColor = System.Drawing.Color.Red;
                     }
+                    
                 }
                 else
                 {
                     Label2.Text = "Sorry! An error has ocurred!";
                 }
             }
+        }
+
+        public bool IsReCaptchValid() // CAPTCHA
+        {
+            var result = false;
+            var captchaResponse = Request.Form["g-recaptcha-response"];
+            var secretKey = Environment.GetEnvironmentVariable("SecretKey");
+            //var secretKey = ConfigurationManager.AppSettings["SecretKey"];
+            var apiUrl = "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}";
+            var requestUri = string.Format(apiUrl, secretKey, captchaResponse);
+            var request = (HttpWebRequest)WebRequest.Create(requestUri);
+
+            using (WebResponse response = request.GetResponse())
+            {
+                using (StreamReader stream = new StreamReader(response.GetResponseStream()))
+                {
+                    JObject jResponse = JObject.Parse(stream.ReadToEnd());
+                    var isSuccess = jResponse.Value<bool>("success");
+                    result = (isSuccess) ? true : false;
+                }
+            }
+            return result;
         }
 
         protected byte[] encryptData(string data)

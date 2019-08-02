@@ -80,14 +80,14 @@ namespace ITP213
             }
 
             // temporary
-            /*DAL.Login obj = LoginDAO.getLoginByEmailAndPassword("171846Z@mymail.nyp.edu.sg");
+            /*DAL.Login obj = LoginDAO.getLoginByEmailAndPassword("linpeishann@gmail.com");
 
             Session["UUID"] = obj.UUID;
             // **** Find ways to remove the session below
             Session["accountID"] = obj.UUID;
             Session["accountType"] = obj.accountType;
             Session["name"] = obj.name;
-            Session["email"] = "171846Z@mymail.nyp.edu.sg";
+            Session["email"] = "linpeishann@gmail.com";
             Session["mobile"] = obj.mobile;
             Session["dateOfBirth"] = obj.dateOfBirth;
 
@@ -363,7 +363,15 @@ namespace ITP213
                 else if (rb2FATypes.SelectedItem.Text == "OTP")
                 {
                     // send the otp()
-                    SendOTP();
+                    var result = DAL.Peishan_Function.EmailAndPhoneValidation.SendOTP(tbEmail.Text.Trim(), obj.mobile.ToString());
+                    if (result.Item1 == true)
+                    {
+                        lblError.Text = "OTP: " + result.Item2.ToString();
+                    }
+                    else
+                    {
+                        lblError.Text = "An error has occured. Please try again.";
+                    }
                     //lblError.Text = "You clicked One Time Password";
                 }
             }
@@ -388,7 +396,16 @@ namespace ITP213
                 else if (rb2FATypes.SelectedItem.Text == "OTP")
                 {
                     // verify OTP password
-                    VerifyOTP(tb2FAPin.Text.Trim());
+                    //VerifyOTP(tb2FAPin.Text.Trim());
+                    bool result = DAL.Peishan_Function.EmailAndPhoneValidation.phoneVerification(tb2FAPin.Text.Trim(), tbEmail.Text);
+                    if (result == true)
+                    {
+                        LogIn();
+                    }
+                    else
+                    {
+                        lblError.Text = "Password entered is either incorrect or expired.";
+                    }
                 }
             }
             else // It meant that user has not entered an email and somehow it managed to bypass to this portion.
@@ -449,6 +466,7 @@ namespace ITP213
                 int result = LoginDAO.deleteAccountFailedAttemptTableByUUID(loginObj.UUID);
                 if (result == 1)
                 {
+                    // ******
                     
                 }
                 else
@@ -461,6 +479,7 @@ namespace ITP213
             // Kai Ming's function
             SecurityEventLog eventObj = new SecurityEventLog();
             int result3 = eventObj.EventInsert("Successful Login", DateTime.Now, loginObj.UUID);
+            //newDeviceLogin();
 
             if (Session["accountType"].ToString() == "student")
             {
@@ -515,8 +534,9 @@ namespace ITP213
                     var currentDateTime = DateTime.Now;
                     var banAccountDateTime = loginObj.banAccountDateTime;
                     var diff = currentDateTime.Subtract(banAccountDateTime);
-                    
-                    if (diff.Hours < 5) // if the hour difference is less than 5, account is ban
+
+                    var total = (diff.Days * 24 * 60 * 60) + (diff.Hours * 60 * 60) + (diff.Minutes * 60) + (diff.Seconds);
+                    if (total < 18000) // if the hour difference is less than 5, account is ban
                     {
                         verdict = true;
                     }
@@ -550,7 +570,8 @@ namespace ITP213
         {
             var result = false;
             var captchaResponse = Request.Form["g-recaptcha-response"];
-            var secretKey = ConfigurationManager.AppSettings["SecretKey"];
+            var secretKey = Environment.GetEnvironmentVariable("SecretKey");
+            //var secretKey = ConfigurationManager.AppSettings["SecretKey"];
             var apiUrl = "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}";
             var requestUri = string.Format(apiUrl, secretKey, captchaResponse);
             var request = (HttpWebRequest)WebRequest.Create(requestUri);
@@ -600,145 +621,7 @@ namespace ITP213
 
             return Tuple.Create(finalHash, salt);
         }
-        public string otp()
-        {
-            // Generate OTP
-            string num = "0123456789";
-            int len = num.Length;
-            string otp = string.Empty;
-
-            // How many digits otp you want to mention
-            int otpdigit = 6;
-            string finalDigit;
-            int getindex;
-            for (int i = 0; i < otpdigit; i++)
-            {
-                do
-                {
-                    getindex = new Random().Next(0, len);
-                    finalDigit = num.ToCharArray()[getindex].ToString();
-                }
-                while (otp.IndexOf(finalDigit) != -1);
-                otp += finalDigit;
-            }
-
-            return otp;
-        }
-        public void sendSMSForPhoneVerification(string password, string verifyNumber)
-        {
-            // sms
-            string accountSid = Environment.GetEnvironmentVariable("TWILIO_ACCOUNT_SID");
-            string authToken = Environment.GetEnvironmentVariable("TWILIO_AUTH_TOKEN");
-            Twilio.TwilioClient.Init(accountSid, authToken);
-            var to = new PhoneNumber(verifyNumber); // Verifying number
-            var from = new PhoneNumber("+12565703020"); // Twilio num
-
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
-                                                | SecurityProtocolType.Tls11
-                                                | SecurityProtocolType.Tls12
-                                                | SecurityProtocolType.Ssl3;
-            var message = MessageResource.Create(
-                to: to,
-                from: from,
-                body: "Your OTP for phone verification is " + password);
-        }
-        public void SendOTP()
-        {
-            string otpPassword;
-            string finalHash;
-            string salt;
-
-            try
-            {
-                DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
-                string UUID = loginObj.UUID; // retriving UUID from loginObj
-
-                // 1) Check if the data has alr existed
-                DAL.Register verifyPhoneOTPObj = RegisterDAO.checkVerifyPhoneOTP(UUID);
-                if (verifyPhoneOTPObj == null) // first time the user has generate a 6 digit OTP
-                {
-                    otpPassword = string.Empty;
-                    otpPassword = otp().Trim(); // Generate random 6 digit OTP
-
-                    var getHashingAndSaltingPwd = hashingAndSaltingPassword(otpPassword);
-
-                    finalHash = string.Empty;
-                    finalHash = getHashingAndSaltingPwd.Item1;
-
-                    salt = string.Empty;
-                    salt = getHashingAndSaltingPwd.Item2;
-
-                    int result = RegisterDAO.insertIntoVerifyPhoneOTP(UUID, finalHash, salt); // insert the otp as they do not exist
-
-                    if (result == 1)
-                    {
-                        // sendSMSForPhoneVerification(otpPassword, tbContactNumber.Text); // send an sms to the user --> costs $0.05 per sms
-                        lblError.Text = "Your otp password: " + otpPassword + ", " +loginObj.mobile; // ****temp
-                    }
-
-                    else
-                    {
-                        lblError.Text = "Sorry! An error has occurred!";
-                        lblError.ForeColor = System.Drawing.Color.Red;
-                    }
-
-                }
-                else // not the first time the user has verified their phone number
-                {
-                    // check if datetimeSend passed a day
-                    var currentDateTime = DateTime.Now;
-                    var otpDateTimeSend = verifyPhoneOTPObj.dateTimeSend;
-                    var diff = currentDateTime.Subtract(otpDateTimeSend);
-
-                    if (diff.Minutes < 1) // if the minute difference is less than 1, password is still valid
-                    {
-
-                    }
-                    else // ******************send a new otp // if the minute difference is more than 1, password is invalid; Hence, there's a need to generate new password
-                    {
-
-                        int result = RegisterDAO.deleteVerifyPhoneOTPTable(UUID); // delete the otpValue
-                        if (result == 1)
-                        {
-                            otpPassword = string.Empty;
-                            otpPassword = otp().Trim(); // Generate random 6 digit OTP
-
-                            var getHashingAndSaltingPwd2 = hashingAndSaltingPassword(otpPassword);
-
-                            finalHash = string.Empty;
-                            finalHash = getHashingAndSaltingPwd2.Item1;
-
-                            salt = string.Empty;
-                            salt = getHashingAndSaltingPwd2.Item2;
-
-                            int result2 = RegisterDAO.insertIntoVerifyPhoneOTP(UUID, finalHash, salt); // insert new otp
-
-                            if (result2 == 1)
-                            {
-                                //sendSMSForPhoneVerification(otpPassword, tbContactNumber.Text);
-                                lblError.Text = "Resending otp as it expires: Your otp password: " + otpPassword; // ****temp
-                            }
-
-                            else
-                            {
-                                lblError.Text = "Sorry! An error has occurred!";
-                                lblError.ForeColor = System.Drawing.Color.Red;
-                            }
-                        }
-                        else
-                        {
-                            lblError.Text = "Sorry! An error has occurred!";
-                            lblError.ForeColor = System.Drawing.Color.Red;
-                        }
-                    }
-                }
-
-            }
-            catch (Exception)
-            {
-
-            }
-        }
+       
         // If user selects GoogleAuth, needs to get secretKey from account Table.
         private void VerifyGoogleAuth()
         {
@@ -925,7 +808,7 @@ namespace ITP213
 
                         // sending a new otp
                         string otpPassword = string.Empty;
-                        otpPassword = otp().Trim();
+                        otpPassword = DAL.Peishan_Function.EmailAndPhoneValidation.otp().Trim();
 
                         var getHashingAndSaltingPwd2 = hashingAndSaltingPassword(otpPassword);
 
@@ -983,6 +866,15 @@ namespace ITP213
             // ---> If it does, redirect them to new device login alert
             // ---> Else, insert them into newDeviceLogin && sendEmail to giive the user an option on whether to remove the device
             // ---> (EXTRA): Take note of this macAddress with this UUID, if it tries to login again, prevent them from doing so.
+            Boolean result = DAL.Peishan_Function.NewDeviceLogin.checkDeviceLogin(tbEmail.Text.Trim()).Item1;
+            if (result == true) // insert and update success
+            {
+
+            }
+            else
+            {
+                lblError.Text = DAL.Peishan_Function.NewDeviceLogin.checkDeviceLogin(tbEmail.Text.Trim()).Item2;
+            }
         }
     }
 }

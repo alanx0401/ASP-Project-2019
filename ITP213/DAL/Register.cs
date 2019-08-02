@@ -16,5 +16,7 @@ namespace ITP213.DAL
         public string verificationToken { set; get; }
         public string UUID { set; get; }
         // public dateTime
+
+        public string oldEmail { set; get; }
     }
 }
