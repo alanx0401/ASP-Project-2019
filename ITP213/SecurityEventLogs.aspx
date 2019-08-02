@@ -39,27 +39,11 @@
                     //minDate: 0
                     dateFormat: 'yy/mm/dd'
                 });
-            });
-              $(function () {
-                var clicked = false;
-                var firstbtn = $('#btnUUID');
-                var secondbtn = $('#btnUsername');
-                firstbtn.on('click', function () {
-                    clicked = !clicked;
-                    if (clicked)
-                        secondbtn.attr('disabled', 'disabled');
-                    else
-                        secondbtn.removeAttr('disabled')
-                });
-                secondbtn.on('click', function () {
-                    clicked = !clicked;
-                    if (clicked)
-                        firstbtn.attr('disabled', 'disabled');
-                    else
-                        firstbtn.removeAttr('disabled')
-                });
+            
+                
             });
         })
+
     </script>
     <!-- Page Content -->
      <!--2. Change the title!--> 

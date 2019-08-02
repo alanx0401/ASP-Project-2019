@@ -26,6 +26,8 @@ namespace ITP213
                 PanelAuditLogs.Visible = false;
                 PanelSearchFilter.Visible = false;
                 PanelEventDateRange.Visible = false;
+                btnUUID.Enabled = true;
+                btnusername.Enabled = true;
             }
         }
         protected void bind()
@@ -55,6 +57,8 @@ namespace ITP213
             GVEventDateRange.Visible = false;
             btnUUID.Visible = true;
             btnusername.Visible = true;
+            btnUUID.Enabled = true;
+            btnusername.Enabled = true;
         }
 
         protected void DDLSearch_SelectedIndexChanged(object sender, EventArgs e)
@@ -113,10 +117,12 @@ namespace ITP213
         protected void btnUUID_Click(object sender, EventArgs e)
         {
             GVEventLogs.Visible = true;
+            btnusername.Enabled = false;
         }
 
         protected void btnusername_Click(object sender, EventArgs e)
         {
+            btnUUID.Enabled = false;
             GVEventLogs.Visible = false;
             GVEventsByUsername.Visible = true;
         }
