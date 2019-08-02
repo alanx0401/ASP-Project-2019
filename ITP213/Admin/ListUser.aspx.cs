@@ -43,5 +43,10 @@ namespace ITP213
                 e.Cancel = true;
             }
         }
+
+        protected void Repeater1_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+
+        }
     }
 }

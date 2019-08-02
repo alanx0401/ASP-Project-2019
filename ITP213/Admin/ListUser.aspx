@@ -21,4 +21,12 @@
         </Columns>
     </asp:GridView>
     <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT * FROM [account]"></asp:SqlDataSource>
+    <br />
+    ll
+    <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\ITP213.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient" SelectCommand="SELECT [UUID], [name], [accountType], [email], [accountStatus], [mobile], [dateOfBirth] FROM [account]"></asp:SqlDataSource>
+    <br />
+    <asp:DropDownList ID="DropDownList1" runat="server">
+        <asp:ListItem>Ban</asp:ListItem>
+        <asp:ListItem>Unban</asp:ListItem>
+    </asp:DropDownList>
 </asp:Content>
