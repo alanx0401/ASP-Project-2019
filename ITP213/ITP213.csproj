@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
@@ -48,12 +48,24 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Base32, Version=1.0.0.26, Culture=neutral, PublicKeyToken=3427d4dc8cee30c6, processorArchitecture=MSIL">
+      <HintPath>..\packages\Base32.1.0.0.26\lib\portable-net40+sl40+win+wp80\Base32.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FleekDeveloper.GoogleAuthenticator, Version=1.0.6432.39911, Culture=neutral, PublicKeyToken=103418593cd561c9, processorArchitecture=MSIL">
+      <HintPath>..\packages\FleekDeveloper.GoogleAuthenticator.1.0.1\lib\FleekDeveloper.GoogleAuthenticator.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Authenticator, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\GoogleAuthenticator.1.2.1\lib\net45\Google.Authenticator.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -84,6 +96,18 @@
       <HintPath>..\packages\Microsoft.ApplicationInsights.2.0.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -97,8 +121,36 @@
       <HintPath>..\packages\Microsoft.IdentityModel.Tokens.5.1.2\lib\net451\Microsoft.IdentityModel.Tokens.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OtpSharp, Version=1.3.0.4, Culture=neutral, PublicKeyToken=1ec2a4a54aeffc1e, processorArchitecture=MSIL">
+      <HintPath>..\packages\OtpSharp.1.3.0.4\lib\net40\OtpSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SendGrid, Version=9.11.0.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
@@ -138,12 +190,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AddRemarks.aspx" />
+    <Content Include="Admin\ListUser.aspx" />
     <Content Include="App_Data\ITP213.mdf" />
     <Content Include="App_Data\ITP213_log.ldf">
       <DependentUpon>ITP213.mdf</DependentUpon>
     </Content>
     <Content Include="BlogDetails.aspx" />
     <Content Include="changePassword.aspx" />
+    <Content Include="ConfirmEmail.aspx" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\imageGallery.css" />
     <Content Include="Content\jquery-ui-timepicker-addon.min.css" />
@@ -157,17 +211,24 @@
     <Content Include="CreateReflection.aspx" />
     <Content Include="CreateRemarks.aspx" />
     <Content Include="CreateTest.aspx" />
+    <Content Include="DAL\Validation\Data\dictionary.txt" />
     <Content Include="Default.aspx" />
     <Content Include="DefaultErrorPage.aspx" />
-    <Content Include="ForgetPassword.aspx" />
+    <Content Include="EditAccount.aspx" />
+    <Content Include="Error403.aspx" />
+    <Content Include="EventLogs.aspx" />
+    <Content Include="GoogleAuth.aspx" />
     <Content Include="ImageGallery.aspx" />
+    <Content Include="Images\check.png" />
     <Content Include="Images\trip_background.jpg" />
+    <Content Include="Images\unchecked.png" />
     <Content Include="InformationSummary.aspx" />
     <Content Include="InternalServerErrorPage.aspx" />
     <Content Include="LecturerWithdrawalRequest.aspx" />
     <Content Include="login.aspx" />
     <Content Include="Logout.aspx" />
     <Content Include="ManageImageGallery.aspx" />
+    <Content Include="ManageYourAccount.aspx" />
     <Content Include="OverseasInternMain.aspx" />
     <Content Include="Format.aspx" />
     <Content Include="Images\favicon.png" />
@@ -186,12 +247,15 @@
     <Content Include="Scripts\jquery-ui-timepicker-addon-i18n.js" />
     <Content Include="Scripts\jquery-ui-timepicker-addon.js" />
     <Content Include="Scripts\jquery-ui.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="SecurityEventLogs.aspx" />
     <Content Include="Service References\SMSSvrRef\ITP213.SMSSvrRef.SMSData.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="UserSecurityEventLogs.aspx" />
-    <Content Include="WebForm1.aspx" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <None Include="Service References\SMSSvrRef\Sms.disco" />
     <None Include="Service References\SMSSvrRef\configuration91.svcinfo" />
@@ -200,7 +264,7 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <None Include="Service References\SMSSvrRef\Sms.wsdl" />
+    <Content Include="SettingsDummy.aspx" />
     <Content Include="Site.master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -226,6 +290,8 @@
     <Content Include="UnauthorizedErrorPage.aspx" />
     <Content Include="UploadedImages.aspx" />
     <Content Include="UploadReport.aspx" />
+    <Content Include="UserEventLogs.aspx" />
+    <Content Include="UserSecurityEventLogs.aspx" />
     <Content Include="ViewAllocatedTrip.aspx" />
     <Content Include="ViewAnnouncement.aspx" />
     <Content Include="ViewBlog.aspx" />
@@ -249,6 +315,13 @@
     <Compile Include="AddRemarks.aspx.designer.cs">
       <DependentUpon>AddRemarks.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\ListUser.aspx.cs">
+      <DependentUpon>ListUser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ListUser.aspx.designer.cs">
+      <DependentUpon>ListUser.aspx</DependentUpon>
+    </Compile>
     <Compile Include="BlogDetails.aspx.cs">
       <DependentUpon>BlogDetails.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -262,6 +335,13 @@
     </Compile>
     <Compile Include="changePassword.aspx.designer.cs">
       <DependentUpon>changePassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConfirmEmail.aspx.cs">
+      <DependentUpon>ConfirmEmail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConfirmEmail.aspx.designer.cs">
+      <DependentUpon>ConfirmEmail.aspx</DependentUpon>
     </Compile>
     <Compile Include="CreateAnnouncement.aspx.cs">
       <DependentUpon>CreateAnnouncement.aspx</DependentUpon>
@@ -320,8 +400,10 @@
     <Compile Include="DAL\BlogDAO.cs" />
     <Compile Include="DAL\CCARecord.cs" />
     <Compile Include="DAL\CCARecordDAO.cs" />
+    <Compile Include="DAL\ChangePassword.cs" />
     <Compile Include="DAL\Complain.cs" />
     <Compile Include="DAL\ComplainDAO.cs" />
+    <Compile Include="DAL\EditAccountDAO.cs" />
     <Compile Include="DAL\Feedback.cs" />
     <Compile Include="DAL\FeedbackDAO.cs" />
     <Compile Include="DAL\GeneralRecord.cs" />
@@ -333,8 +415,11 @@
     <Compile Include="DAL\MedicalRecordDAO.cs" />
     <Compile Include="DAL\OverallReport.cs" />
     <Compile Include="DAL\OverallReportDAO.cs" />
+    <Compile Include="DAL\Peishan-Function\EmailAndPhoneValidation.cs" />
     <Compile Include="DAL\Question.cs" />
     <Compile Include="DAL\QuestionDAO.cs" />
+    <Compile Include="DAL\Register.cs" />
+    <Compile Include="DAL\RegisterDAO.cs" />
     <Compile Include="DAL\Response.cs" />
     <Compile Include="DAL\ResponseDAO.cs" />
     <Compile Include="DAL\Login.cs" />
@@ -342,11 +427,20 @@
     <Compile Include="DAL\ReportInjury.cs" />
     <Compile Include="DAL\ReportInjuryDAO.cs" />
     <Compile Include="DAL\SecurityEventLog.cs" />
+    <Compile Include="DAL\Settings.cs" />
+    <Compile Include="DAL\SettingsDAO.cs" />
+    <Compile Include="DAL\Security.cs" />
+    <Compile Include="DAL\SecurityDAO.cs" />
+    <Compile Include="DAL\SessionManager.cs" />
+    <Compile Include="DAL\SessionManagerDAO.cs" />
+    <Compile Include="DAL\SecurityEventLog.cs" />
     <Compile Include="DAL\Test.cs" />
     <Compile Include="DAL\TestDAO.cs" />
     <Compile Include="DAL\TripAllocation.cs" />
     <Compile Include="DAL\TripAllocationDAO.cs" />
     <Compile Include="DAL\UploadedImage.cs" />
+    <Compile Include="DAL\userEventLog.cs" />
+    <Compile Include="DAL\Validation\RegisterValidation.cs" />
     <Compile Include="DAL\userSecurityEventLog.cs" />
     <Compile Include="DAL\WithdrawalRequest.cs" />
     <Compile Include="DAL\WithdrawalRequestDAO.cs" />
@@ -364,16 +458,37 @@
     <Compile Include="DefaultErrorPage.aspx.designer.cs">
       <DependentUpon>DefaultErrorPage.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ForgetPassword.aspx.cs">
-      <DependentUpon>ForgetPassword.aspx</DependentUpon>
+    <Compile Include="EditAccount.aspx.cs">
+      <DependentUpon>EditAccount.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ForgetPassword.aspx.designer.cs">
-      <DependentUpon>ForgetPassword.aspx</DependentUpon>
+    <Compile Include="EditAccount.aspx.designer.cs">
+      <DependentUpon>EditAccount.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Error403.aspx.cs">
+      <DependentUpon>Error403.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Error403.aspx.designer.cs">
+      <DependentUpon>Error403.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EventLogs.aspx.cs">
+      <DependentUpon>EventLogs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EventLogs.aspx.designer.cs">
+      <DependentUpon>EventLogs.aspx</DependentUpon>
     </Compile>
     <Compile Include="Email\IEmailSender.cs" />
     <Compile Include="Email\SendEmailDetails.cs" />
     <Compile Include="Email\SendEmailResponse.cs" />
+    <Compile Include="GoogleAuth.aspx.cs">
+      <DependentUpon>GoogleAuth.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GoogleAuth.aspx.designer.cs">
+      <DependentUpon>GoogleAuth.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ImageGallery.aspx.cs">
       <DependentUpon>ImageGallery.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -423,6 +538,13 @@
     <Compile Include="ManageImageGallery.aspx.designer.cs">
       <DependentUpon>ManageImageGallery.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ManageYourAccount.aspx.cs">
+      <DependentUpon>ManageYourAccount.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ManageYourAccount.aspx.designer.cs">
+      <DependentUpon>ManageYourAccount.aspx</DependentUpon>
+    </Compile>
     <Compile Include="OverseasInternMain.aspx.cs">
       <DependentUpon>OverseasInternMain.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -470,6 +592,13 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsDummy.aspx.cs">
+      <DependentUpon>SettingsDummy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SettingsDummy.aspx.designer.cs">
+      <DependentUpon>SettingsDummy.aspx</DependentUpon>
     </Compile>
     <Compile Include="Site.master.cs">
       <DependentUpon>Site.master</DependentUpon>
@@ -540,6 +669,18 @@
     </Compile>
     <Compile Include="UploadReport.aspx.designer.cs">
       <DependentUpon>UploadReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserEventLogs.aspx.cs">
+      <DependentUpon>UserEventLogs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserEventLogs.aspx.designer.cs">
+      <DependentUpon>UserEventLogs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserSecurityEventLogs.aspx.cs">
+      <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserSecurityEventLogs.aspx.designer.cs">
+      <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>
     </Compile>
     <Compile Include="UserSecurityEventLogs.aspx.cs">
       <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>
@@ -624,13 +765,6 @@
     </Compile>
     <Compile Include="ViewTestAnswers.aspx.designer.cs">
       <DependentUpon>ViewTestAnswers.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="WebForm1.aspx.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebForm1.aspx.designer.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

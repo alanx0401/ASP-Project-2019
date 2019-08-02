@@ -50,6 +50,9 @@ namespace ITP213.DAL
                 obj.changePasswordDate = row["changePasswordDate"].ToString();
                 obj.accountStatus = row["accountStatus"].ToString();
                 obj.banAccountDateTime = Convert.ToDateTime(row["banAccountDateTime"].ToString());
+                obj.secretKey = row["secretKey"].ToString();
+                obj.Key = row["Key"].ToString();
+                obj.IV = row["IV"].ToString();
             }
             else
             {
@@ -135,7 +138,6 @@ namespace ITP213.DAL
             DataSet ds = new DataSet();
 
             // Create adapter 
-            // Write SQL Statement to retrieve all columns from lecturer by accountID using query parameter
             string sqlString = "SELECT * FROM lecturer WHERE UUID = @UUID";
 
             Login obj = new Login(); // create a login instance;
@@ -144,11 +146,11 @@ namespace ITP213.DAL
             da = new SqlDataAdapter(sqlString, myConn);
             da.SelectCommand.Parameters.AddWithValue("UUID", UUID);
             // fill dataset
-            da.Fill(ds, "lecturerTable");
-            int rec_cnt = ds.Tables["lecturerTable"].Rows.Count;
+            da.Fill(ds, "studentTable");
+            int rec_cnt = ds.Tables["studentTable"].Rows.Count;
             if (rec_cnt == 1)
             {
-                DataRow row = ds.Tables["lecturerTable"].Rows[0]; // Sql command only returns only 1 record
+                DataRow row = ds.Tables["studentTable"].Rows[0]; // Sql command only returns only 1 record
                 obj.staffID = row["staffID"].ToString();
                 obj.lecturerSchool = row["school"].ToString();
                 obj.staffRole = row["staffRole"].ToString();
@@ -159,145 +161,261 @@ namespace ITP213.DAL
             }
             return obj;
         }
+        //=========================================================================================================
         /// <summary>
-        /// Store Register Part 1's Content
-        /// -- Part 1
-        /// -- Name
-        /// -- Email
-        /// -- Password
-        /// -- Confirm Password
+        /// Feature: Password Expiration
         /// </summary>
-        public static int insertIntoAccountTable(string UUID,string name, string email, string passwordHash, string passwordSalt)
+        // Retrieve changePasswordDate to see if the change password date is after a year.
+        public static DAL.Login getChangePasswordDateByEmailAndPasswordHash(string UUID)
         {
             //Get connection string from web.config
             string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
 
-            /* 
-             * "INSERT INTO account(name, accountType, accountStatus, email, mobile, dateOfBirth, passwordHash, passwordSalt, emailVerified, phoneVerified, banAccountDateTime, googleAuthEnabled, otpEnabled, changePasswordDate)
-             VALUES('Lin Peishan1111', 'student', 'Not ban', 'lin@email.com', '81849020', '1/31/2018', 'ewewfewfw', 'anything', 'No', 'No', '','No', 'No', GETDATE())"
-             * 
-             */
-            
-            string sqlStr =
-                "INSERT INTO account(UUID, name, accountType, accountStatus, email, mobile, dateOfBirth, passwordHash, passwordSalt, emailVerified, phoneVerified, banAccountDateTime, googleAuthEnabled, otpEnabled, changePasswordDate) VALUES(@UUID, @name, 'student', 'Not ban', @email, '', '', @passwordHash, @passwordSalt, 'No', 'No', '', 'No', 'No', GETDATE())";
-                //"INSERT INTO Person (FullName,Gender,PersonRole)VALUES(@pFullName,@pGender,@pPersonRole)";
+            SqlDataAdapter da;
+            DataSet ds = new DataSet();
 
-            SqlConnection myConn = new SqlConnection(DBConnect);
-            myConn.Open();
-            SqlCommand cmd = new SqlCommand(sqlStr, myConn);
-            cmd.Parameters.AddWithValue("@UUID", UUID);
-            cmd.Parameters.AddWithValue("@name", name);
-            cmd.Parameters.AddWithValue("@email", email);
-            // cmd.Parameters.AddWithValue("@mobile", mobile);
-            // DateTime.ParseExact(arrivalDate,"MM/dd/yyyy", null)
-            // cmd.Parameters.AddWithValue("@dateOfBirth", DateTime.ParseExact(dateOfBirth, "MM/dd/yyyy", null));
-            cmd.Parameters.AddWithValue("@passwordHash", passwordHash);
-            cmd.Parameters.AddWithValue("@passwordSalt", passwordSalt);
-
-            int result = cmd.ExecuteNonQuery();
-            /*string sendEmail = ConfigurationManager.AppSettings["SendEmail"];
-            if (sendEmail.ToLower() == "true")
-            {
-                SendEmail("Yayy!");
-            }*/
-            string sendEmail = ConfigurationManager.AppSettings["SendEmail"];
-            if (sendEmail.ToLower() == "true")
-            {
-                //var emailVerificatonCode = mUserManger.Gener
-                //Execute("Hi","www.localhost");
-                //string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                
-                
-            }
-            //Execute().Wait();
-            string MyNewGuid = Guid.NewGuid().ToString(); // email Token
-            Execute("Peishan", MyNewGuid);
-            return result;
-        }
-        // Part 1: Store adminNo in student table
-        public static int insertaAdminNoInAdminTable(string adminNo, string UUID)
-        {
-            //Get connection string from web.config
-            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
-
-            /* 
-             * INSERT INTO student(adminNo, UUID) VALUES('171846Z','{0x0ba085b1,0x4ad8,0x480a,{0xa0,0xf9,0x4b,0x5b,0xa1,0x3c,0xa9,0xe9}}'
-             * 
-             */
-            string sqlStr =
-                "INSERT INTO student(adminNo, UUID) VALUES(@adminNo,@UUID);";
-
-            SqlConnection myConn = new SqlConnection(DBConnect);
-            myConn.Open();
-            SqlCommand cmd = new SqlCommand(sqlStr, myConn);
-            cmd.Parameters.AddWithValue("@UUID", UUID);
-            cmd.Parameters.AddWithValue("@adminNo", adminNo);
-
-            int result = cmd.ExecuteNonQuery();
-
-            return result;
-        }
-        // Part 2: Update mobile & dateOfBirth in accountTable through adminNo from student table.
-        public static int updateById(string mobile, string dateOfBirth, string adminNo)
-        {
-            //Get connection string from web.config
-            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
             /*
-            UPDATE account
-            SET mobile = '81234567', dateOfBirth='01-31-2000'
+            SELECT changePasswordDate
             FROM account
-            INNER JOIN student
-            ON account.UUID = student.UUID
-            WHERE adminNo='171846z';
+            WHERE UUID = '{0x39d609a5,0x10eb,0x40a8,{0x86,0xf1,0x06,0x0b,0xfe,0xe7,0xc1,0x82}}';
+            */
+
+            StringBuilder sqlStr = new StringBuilder();
+            sqlStr.AppendLine("SELECT *");
+            sqlStr.AppendLine("FROM account");
+            sqlStr.AppendLine("WHERE UUID = @UUID;");
+
+            DAL.Login obj = new DAL.Login();
+
+            SqlConnection myConn = new SqlConnection(DBConnect);
+            da = new SqlDataAdapter(sqlStr.ToString(), myConn);
+            da.SelectCommand.Parameters.AddWithValue("@UUID", UUID);
+            // fill dataset
+            da.Fill(ds, "account");
+            int rec_cnt = ds.Tables["account"].Rows.Count;
+            if (rec_cnt > 0)
+            {
+                DataRow row = ds.Tables["account"].Rows[0];  // Sql command returns only one record
+                obj.changePasswordDate = row["changePasswordDate"].ToString();
+            }
+            else
+            {
+                obj = null;
+            }
+
+            return obj;
+        }
+        
+        /// <summary>
+        /// Feature: Ban Account
+        /// </summary>
+        public static DAL.Login getAccountFailedAttemptByUUID(string UUID) // select
+        {
+            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+            SqlDataAdapter da;
+            DataSet ds = new DataSet();
+
+            StringBuilder sqlStr = new StringBuilder();
+            sqlStr.AppendLine("SELECT *");
+            sqlStr.AppendLine("FROM AccountFailedAttempt");
+            sqlStr.AppendLine("WHERE UUID = @UUID;");
+
+            DAL.Login obj = new DAL.Login(); // create a login instance;
+
+            SqlConnection myConn = new SqlConnection(DBConnect);
+            da = new SqlDataAdapter(sqlStr.ToString(), myConn);
+            da.SelectCommand.Parameters.AddWithValue("UUID", UUID);
+            // fill dataset
+            da.Fill(ds, "AccountFailedAttemptTable");
+            int rec_cnt = ds.Tables["AccountFailedAttemptTable"].Rows.Count;
+            if (rec_cnt == 1)
+            {
+                DataRow row = ds.Tables["AccountFailedAttemptTable"].Rows[0]; // Sql command only returns only 1 record
+                obj.UUID = row["UUID"].ToString();
+                obj.AccountFailedAttemptCounter = Convert.ToInt32(row["AccountFailedAttemptCounter"].ToString());
+            }
+            else
+            {
+                obj = null;
+            }
+            return obj;
+        }
+        public static int insertAccountFailedAttemptTable(string UUID)
+        {
+            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+
+            /* 
+            INSERT INTO AccountFailedAttempt
+            VALUES('{0x39d609a5,0x10eb,0x40a8,{0x86,0xf1,0x06,0x0b,0xfe,0xe7,0xc1,0x82}}', 1);
              */
             StringBuilder sqlStr = new StringBuilder();
-            sqlStr.AppendLine("UPDATE account ");
-            sqlStr.AppendLine("SET mobile = @mobile, dateOfBirth = @dateOfBirth");
-            sqlStr.AppendLine("FROM account");
-            sqlStr.AppendLine("INNER JOIN student");
-            sqlStr.AppendLine("ON account.UUID = student.UUID");
-            sqlStr.AppendLine("WHERE adminNo=@adminNo;");
-
+            sqlStr.AppendLine("INSERT INTO AccountFailedAttempt");
+            sqlStr.AppendLine("VALUES(@UUID, 1);");
 
             SqlConnection myConn = new SqlConnection(DBConnect);
             myConn.Open();
             SqlCommand cmd = new SqlCommand(sqlStr.ToString(), myConn);
-            cmd.Parameters.AddWithValue("@mobile", mobile);
-            cmd.Parameters.AddWithValue("@dateOfBirth", DateTime.ParseExact(dateOfBirth, "MM/dd/yyyy", null));
-            cmd.Parameters.AddWithValue("@adminNo", adminNo);
+            cmd.Parameters.AddWithValue("@UUID", UUID);
+
+            int result = cmd.ExecuteNonQuery();
+
+            return result;
+        }
+        public static int updateAccountFailedAttemptTableByUUID(string UUID, int AccountFailedAttemptCounter)
+        {
+            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+            /*
+            UPDATE AccountFailedAttempt
+            SET AccountFailedAttemptCounter=2
+            WHERE UUID = '{0x39d609a5,0x10eb,0x40a8,{0x86,0xf1,0x06,0x0b,0xfe,0xe7,0xc1,0x82}}';
+             */
+            StringBuilder sqlStr = new StringBuilder();
+            sqlStr.AppendLine("UPDATE AccountFailedAttempt");
+            sqlStr.AppendLine("SET AccountFailedAttemptCounter = @AccountFailedAttemptCounter");
+            sqlStr.AppendLine("WHERE UUID = @UUID;");
+
+            SqlConnection myConn = new SqlConnection(DBConnect);
+            myConn.Open();
+            SqlCommand cmd = new SqlCommand(sqlStr.ToString(), myConn);
+            cmd.Parameters.AddWithValue("@UUID", UUID);
+            cmd.Parameters.AddWithValue("@AccountFailedAttemptCounter", AccountFailedAttemptCounter);
             int result = cmd.ExecuteNonQuery();
             return result;
         }
-
-        // send grid
-        //public static async Task<SendEmailResponse> Execute(SendEmailDetails details)
-        public static async Task<SendEmailResponse> Execute(string displayName, string randomToken)
+        public static int deleteAccountFailedAttemptTableByUUID(string UUID) // delete: when login successfully
         {
-            var apiKey = ConfigurationManager.AppSettings["SENDGRID_API_KEY"];
-            //var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
-            var client = new SendGridClient(apiKey);
-            var from = new EmailAddress("nyptravel2019@gmail.com", "NYP Travel");
-            var subject = "NYP Travel - Email Confirmation";
-            var to = new EmailAddress("linpeishann@gmail.com", "Peishan");
-            var plainTextContent = "Confirm your account";
+            //Get connection string from web.config
+            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
 
-            string encodeRandomToken = EncodeServerName(randomToken);
-            var htmlContent = "Hi, "+displayName+ ". Please confirm your account by clicking this link: <strong><a href=\"" + encodeRandomToken + "\">link</a></strong>";
-            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-            var response = await client.SendEmailAsync(msg);
+            /*
+            DELETE AccountFailedAttempt 
+            WHERE UUID = '{0x39d609a5,0x10eb,0x40a8,{0x86,0xf1,0x06,0x0b,0xfe,0xe7,0xc1,0x82}}';
+             */
+            StringBuilder sqlStr = new StringBuilder();
+            sqlStr.AppendLine("DELETE AccountFailedAttempt");
+            sqlStr.AppendLine("WHERE UUID = @UUID;");
 
-            return new SendEmailResponse();
+            SqlConnection myConn = new SqlConnection(DBConnect);
+            myConn.Open();
+            SqlCommand cmd = new SqlCommand(sqlStr.ToString(), myConn);
+            cmd.Parameters.AddWithValue("UUID", UUID);
+            int result = cmd.ExecuteNonQuery();
+            return result;
         }
-
-        public static string EncodeServerName(string serverName)
+        public static int updateAccountStatusToBanByUUID(string UUID) // change status from 'Not ban' to 'Ban'
         {
-            return Convert.ToBase64String(Encoding.UTF8.GetBytes(serverName));
-        }
+            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+            /*
+            UPDATE account
+            SET accountStatus = 'Ban'
+            WHERE UUID = '{0x39d609a5,0x10eb,0x40a8,{0x86,0xf1,0x06,0x0b,0xfe,0xe7,0xc1,0x82}}';
+             */
+            StringBuilder sqlStr = new StringBuilder();
+            sqlStr.AppendLine("UPDATE account");
+            sqlStr.AppendLine("SET accountStatus = 'Ban', banAccountDateTime=GETDATE()");
+            sqlStr.AppendLine("WHERE UUID = @UUID;");
 
-        public static string DecodeServerName(string encodedServername)
+            SqlConnection myConn = new SqlConnection(DBConnect);
+            myConn.Open();
+            SqlCommand cmd = new SqlCommand(sqlStr.ToString(), myConn);
+            cmd.Parameters.AddWithValue("@UUID", UUID);
+            int result = cmd.ExecuteNonQuery();
+            return result;
+        }
+        public static int updateAccountStatusToNotBanByUUID(string UUID) // change status from 'Ban' to 'Not ban'
         {
-            return Encoding.UTF8.GetString(Convert.FromBase64String(encodedServername));
-        }
+            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+            /*
+            UPDATE account
+            SET accountStatus = 'Not ban'
+            WHERE UUID = '{0x39d609a5,0x10eb,0x40a8,{0x86,0xf1,0x06,0x0b,0xfe,0xe7,0xc1,0x82}}';
+             */
+            StringBuilder sqlStr = new StringBuilder();
+            sqlStr.AppendLine("UPDATE account");
+            sqlStr.AppendLine("SET accountStatus = 'Not ban', banAccountDateTime=''");
+            sqlStr.AppendLine("WHERE UUID = @UUID;");
 
+            SqlConnection myConn = new SqlConnection(DBConnect);
+            myConn.Open();
+            SqlCommand cmd = new SqlCommand(sqlStr.ToString(), myConn);
+            cmd.Parameters.AddWithValue("@UUID", UUID);
+            int result = cmd.ExecuteNonQuery();
+            return result;
+        }
+        // temp: have not choose whether to keep it
+        public static string getDBHash(string email)
+        {
+            //Get connection string from web.config
+            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+
+            string h = null;
+            SqlConnection connection = new SqlConnection(DBConnect);
+            string sql = "SELECT passwordHash from account where email=@email";
+            SqlCommand command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@email", email);
+
+            try
+            {
+                connection.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader["passwordHash"] != null)
+                        {
+                            if (reader["passwordHash"] != DBNull.Value)
+                            {
+                                h = reader["passwordHash"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+
+            finally { connection.Close(); }
+            return h;
+        }
+        public static string getDBSalt(string email)
+        {
+            //Get connection string from web.config
+            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+
+            string s = null;
+            SqlConnection connection = new SqlConnection(DBConnect);
+            string sql = "SELECT passwordSalt from account where email=@email";
+            SqlCommand command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@email", email);
+
+            try
+            {
+                connection.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader["passwordSalt"] != null)
+                        {
+                            if (reader["passwordSalt"] != DBNull.Value)
+                            {
+                                s = reader["passwordSalt"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+
+            finally { connection.Close(); }
+            return s;
+        }
     }
 }
