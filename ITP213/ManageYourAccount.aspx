@@ -3,8 +3,6 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <!--************README: Hi, please change some of the following things below when you're coding your features. Thanks! -PS -->
-
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
 
@@ -20,13 +18,13 @@
             background-color: #FFFFFF !important;
         }
 
-            .breadcrumb > .breadcrumb-item {
-                color: #031A82 !important;
-            }
+        .breadcrumb > .breadcrumb-item {
+            color: #031A82 !important;
+        }
 
-            .breadcrumb .breadcrumb-item + .breadcrumb-item::before {
-                color: #D6D6D6;
-            }
+        .breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+            color: #D6D6D6;
+        }
     </style>
     <!-- //Breadcrumbs end-->
 
@@ -36,6 +34,7 @@
     <hr />
     <p>
         <!--3. This is where you code all your features-->
+
         Phone Number:
         <asp:Label ID="lblPhoneNumber" runat="server" Text=""></asp:Label>
         (<asp:Label ID="lblVerifiedPhoneStatus" runat="server" Text=""></asp:Label>)
@@ -46,23 +45,48 @@
         Email:
         <asp:Label ID="lblEmail" runat="server"></asp:Label>
         (<asp:Label ID="lblVerifiedEmailStatus" runat="server"></asp:Label>) [<asp:HyperLink ID="HyperLinkEmail" runat="server">Change</asp:HyperLink>
-        ]</p>
+        ]
+    </p>
 
     <asp:Panel ID="Panel1" runat="server" Visible="false">
         <p>
             One Time Password:
             <asp:Label ID="lblOTP" runat="server" Text=""></asp:Label>
-            &nbsp;[<asp:LinkButton ID="LinkButtonOTP" runat="server" OnClick="LinkButtonOTP_Click">Enable</asp:LinkButton>
-            ]</p>
-        <p>
+            &nbsp;[<asp:Button ID="btnOTP" runat="server" Text="Disable" Style="padding: 0; border: none; background: none; color: #0000FF" OnClick="btnOTP_Click"/>
+            ]
+            
+        </p>
+
     </asp:Panel>
-        Google Auth:
+    <asp:Panel ID="PanelCaptcha" runat="server" Visible="false">
+        <div class="form-row">
+            <div class="form-group">
+                <div id="ReCaptchContainer"></div>
+            </div>
+
+        </div>
+    </asp:Panel>
+    Google Auth:
         <asp:Label ID="lblGoogleAuth" runat="server" Text=""></asp:Label>
-        &nbsp;[<asp:LinkButton ID="LinkButtonGoogleAuth" runat="server" OnClick="LinkButtonGoogleAuth_Click">Enable</asp:LinkButton>]<br />
+    &nbsp;[<asp:Button ID="btnGoogleAuth" runat="server" Visible="true" Text="Enable" Style="padding: 0; border: none; background: none; color: #0000FF" OnClick="btnGoogleAuth_Click" />]<br />
     <asp:HyperLink ID="HyperLinkChangePassword" runat="server">Change Password</asp:HyperLink>
-    </p>
+    <br />
+
     <p>
-        <asp:Label ID="lblResult" runat="server"></asp:Label>
+        <asp:Label ID="lblResult" runat="server" ForeColor="Green"></asp:Label>
     </p>
     <!--//Page Content-->
+    <script src="https://www.google.com/recaptcha/api.js?onload=renderRecaptcha&render=explicit" async defer></script>
+    <script type="text/javascript">
+        var your_site_key = '<%= Environment.GetEnvironmentVariable("SiteKey")%>';
+        var renderRecaptcha = function () {
+            grecaptcha.render('ReCaptchContainer', {
+                'sitekey': your_site_key,
+                theme: 'light', //light or dark    
+                type: 'image',// image or audio    
+                size: 'normal'//normal or compact    
+            });
+        };
+
+    </script>
 </asp:Content>

@@ -4,6 +4,7 @@ using SendGrid.Helpers.Mail;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
@@ -45,25 +46,25 @@ namespace ITP213.DAL.Peishan_Function
 
             return otp;
         }
-        public void sendSMSForPhoneVerification(string password, string verifyNumber)
+        public static void sendSMSForPhoneVerification(string password, string verifyNumber)
         {
             // sms
             string accountSid = Environment.GetEnvironmentVariable("TWILIO_ACCOUNT_SID");
             string authToken = Environment.GetEnvironmentVariable("TWILIO_AUTH_TOKEN");
             Twilio.TwilioClient.Init(accountSid, authToken);
-            var to = new PhoneNumber(verifyNumber); // Verifying number
-            var from = new PhoneNumber("+12565703020"); // Twilio num
+            var to = new PhoneNumber("+65" + verifyNumber); // Verifying number
+            var from = new PhoneNumber("+14249032648"); // Twilio num
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                                                 | SecurityProtocolType.Tls11
                                                 | SecurityProtocolType.Tls12
                                                 | SecurityProtocolType.Ssl3;
-            var message = MessageResource.Create(
+            /*var message = MessageResource.Create(
                 to: to,
                 from: from,
-                body: "Your OTP for phone verification is " + password);
+                body: "Your OTP for phone verification is " + password);*/
         }
-        public static Tuple<Boolean, string> SendOTP(string email)
+        public static Tuple<Boolean, string> SendOTP(string email, string number)
         {
             Boolean verdict = false;
             string otpPassword = string.Empty;
@@ -96,7 +97,7 @@ namespace ITP213.DAL.Peishan_Function
                     if (result == 1)
                     {
                         // ************
-                        // sendSMSForPhoneVerification(otpPassword, tbContactNumber.Text); // send an sms to the user --> costs $0.05 per sms
+                        sendSMSForPhoneVerification(otpPassword, number); // send an sms to the user --> costs $0.05 per sms
 
                         //lblError.Text = "Your otp password: " + otpPassword; // ****temp
                         verdict = true;
@@ -109,58 +110,40 @@ namespace ITP213.DAL.Peishan_Function
                     }
 
                 }
-                else // not the first time the user has verified their phone number
+                else // not the first time the user has verified their phone number; user could change their phone number again without verifying it
                 {
-                    // ****===> move this to resend email? When user request to resend otp password 
-                    // check if datetimeSend passed a day
-                    var currentDateTime = DateTime.Now;
-                    var otpDateTimeSend = verifyPhoneOTPObj.dateTimeSend;
-                    var diff = currentDateTime.Subtract(otpDateTimeSend);
+                    otpPassword = string.Empty;
+                    otpPassword = otp().Trim(); // Generate random 6 digit OTP
 
-                    if (diff.Minutes < 1) // if the minute difference is less than 1, password is still valid
-                    {
-                        // false
-                    }
-                    else // ******************send a new otp // if the minute difference is more than 1, password is invalid; Hence, there's a need to generate new password
-                    {
+                    var getHashingAndSaltingPwd = hashingAndSaltingPassword(otpPassword);
 
-                        int result = RegisterDAO.deleteVerifyPhoneOTPTable(UUID); // delete the otpValue
-                        if (result == 1)
+                    finalHash = string.Empty;
+                    finalHash = getHashingAndSaltingPwd.Item1;
+
+                    salt = string.Empty;
+                    salt = getHashingAndSaltingPwd.Item2;
+
+                    int result = RegisterDAO.deleteVerifyPhoneOTPTable(UUID);
+                    if (result == 1)
+                    {
+                        int result2 = RegisterDAO.insertIntoVerifyPhoneOTP(UUID, finalHash, salt); // insert the otp as they do not exist
+
+                        if (result2 == 1)
                         {
-                            otpPassword = string.Empty;
-                            otpPassword = otp().Trim(); // Generate random 6 digit OTP
+                            // ************
+                            sendSMSForPhoneVerification(otpPassword, number); // send an sms to the user --> costs $0.05 per sms
 
-                            var getHashingAndSaltingPwd2 = hashingAndSaltingPassword(otpPassword);
-
-                            finalHash = string.Empty;
-                            finalHash = getHashingAndSaltingPwd2.Item1;
-
-                            salt = string.Empty;
-                            salt = getHashingAndSaltingPwd2.Item2;
-
-                            int result2 = RegisterDAO.insertIntoVerifyPhoneOTP(UUID, finalHash, salt); // insert new otp
-
-                            if (result2 == 1)
-                            {
-                                // ************
-                                //sendSMSForPhoneVerification(otpPassword, tbContactNumber.Text);
-                                //lblError.Text = "Resending otp as it expires: Your otp password: " + otpPassword; // ****temp
-                                verdict = true;
-
-                            }
-
-                            else
-                            {
-                                /*lblError.Text = "Sorry! An error has occurred!";
-                                lblError.ForeColor = System.Drawing.Color.Red;*/
-                            }
+                            //lblError.Text = "Your otp password: " + otpPassword; // ****temp
+                            verdict = true;
                         }
+
                         else
                         {
                             /*lblError.Text = "Sorry! An error has occurred!";
                             lblError.ForeColor = System.Drawing.Color.Red;*/
                         }
                     }
+                    
                 }
 
             }
@@ -225,7 +208,7 @@ namespace ITP213.DAL.Peishan_Function
                     var otpDateTimeSend = verifyPhoneOTPObj.dateTimeSend;
                     var diff = currentDateTime.Subtract(otpDateTimeSend);
 
-                    if (diff.Minutes < 1) // if the minute difference is less than 1, password is still valid
+                    if (diff.Minutes < 5) // if the minute difference is less than 5, password is still valid
                     {
                         // ********** get db hash & db salt
                         SHA512Managed hashing = new SHA512Managed();
@@ -268,35 +251,7 @@ namespace ITP213.DAL.Peishan_Function
                     }
                     else // ******************send a new otp // if the minute difference is more than 1, password is invalid; Hence, there's a need to generate new password
                     {
-                        /*lblError.Text = "Sorry! OTP has expired, we'll send you a new one.";
-                        lblError.ForeColor = System.Drawing.Color.Red;*/
-
-                        // sending a new otp
-                        string otpPassword = string.Empty;
-                        otpPassword = otp().Trim();
-
-                        var getHashingAndSaltingPwd2 = hashingAndSaltingPassword(otpPassword);
-
-                        string finalHash = string.Empty;
-                        finalHash = getHashingAndSaltingPwd2.Item1;
-
-                        string salt = string.Empty;
-                        salt = getHashingAndSaltingPwd2.Item2;
-
-                        int result = RegisterDAO.insertIntoVerifyPhoneOTP(UUID, finalHash, salt); // insert the otp as they do not exist
-
-                        if (result == 1)
-                        {
-                            //sendSMSForPhoneVerification(otpPassword, tbContactNumber.Text);
-                            /*lblError.Text = "Your otp password has expired: " + otpPassword;*/
-
-                        }
-
-                        else
-                        {
-                            /*lblError.Text = "Sorry! An error has occurred!";
-                            lblError.ForeColor = System.Drawing.Color.Red;*/
-                        }
+                        
                     }
 
                 }
@@ -312,11 +267,87 @@ namespace ITP213.DAL.Peishan_Function
             }
             return verdict;
         }
+        public static Tuple<Boolean, string, string> resendPhoneVerification(string email, string phoneNumber)
+        {
+            Boolean verdict = false;
+            string otpPassword = string.Empty;
+            string lblError = string.Empty;
+
+            string finalHash;
+            string salt;
+
+
+            DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(email);
+            string UUID = loginObj.UUID; // retriving UUID from loginObj
+
+            // 1) Check if the data has alr existed
+            DAL.Register verifyPhoneOTPObj = RegisterDAO.checkVerifyPhoneOTP(UUID);
+            if (verifyPhoneOTPObj == null)
+            {
+
+
+            }
+            else // not the first time the user has verified their phone number
+            {
+                // check if datetimeSend passed a day
+                var currentDateTime = DateTime.Now;
+                var otpDateTimeSend = verifyPhoneOTPObj.dateTimeSend;
+                var diff = currentDateTime.Subtract(otpDateTimeSend);
+
+                if (diff.Minutes < 5) // if the minute difference is less than 5, password is still valid
+                {
+                    // false
+                    lblError = "Password is still valid. Please wait.";
+                }
+                else
+                {
+
+                    int result = RegisterDAO.deleteVerifyPhoneOTPTable(UUID); // delete the otpValue
+                    if (result == 1)
+                    {
+                        otpPassword = string.Empty;
+                        otpPassword = otp().Trim(); // Generate random 6 digit OTP
+
+                        var getHashingAndSaltingPwd2 = hashingAndSaltingPassword(otpPassword);
+
+                        finalHash = string.Empty;
+                        finalHash = getHashingAndSaltingPwd2.Item1;
+
+                        salt = string.Empty;
+                        salt = getHashingAndSaltingPwd2.Item2;
+
+                        int result2 = RegisterDAO.insertIntoVerifyPhoneOTP(UUID, finalHash, salt); // insert new otp
+
+                        if (result2 == 1)
+                        {
+                            // ************
+                            //sendSMSForPhoneVerification(otpPassword, tbContactNumber.Text);
+                            //lblError.Text = "Resending otp as it expires: Your otp password: " + otpPassword; // ****temp
+                            verdict = true;
+
+                        }
+
+                        else
+                        {
+                            /*lblError.Text = "Sorry! An error has occurred!";
+                            lblError.ForeColor = System.Drawing.Color.Red;*/
+                        }
+                    }
+                    else
+                    {
+                        /*lblError.Text = "Sorry! An error has occurred!";
+                        lblError.ForeColor = System.Drawing.Color.Red;*/
+                    }
+                }
+            }
+            return Tuple.Create(verdict, otpPassword, lblError);
+         }
+           
         // For email verification
         public static async Task<SendEmailResponse> Execute(string displayName, string email, string randomToken, string title, string bodyMessage)
         {
-            //var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
-            var apiKey = ConfigurationManager.AppSettings["SENDGRID_API_KEY"];
+            var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
+            //var apiKey = ConfigurationManager.AppSettings["SENDGRID_API_KEY"];
 
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress("nyptravel2019@gmail.com", "NYP Travel");
@@ -326,8 +357,15 @@ namespace ITP213.DAL.Peishan_Function
             var plainTextContent = "Confirm your account";
 
 
-            /*Uri uri = HttpContext.Current.Request.Url;
-            string host = uri.Scheme + Uri.SchemeDelimiter + uri.Host + ":" + uri.Port;*/
+            Uri uri = HttpContext.Current.Request.Url;
+            string host = uri.Scheme + Uri.SchemeDelimiter + uri.Host + ":" + uri.Port;
+
+
+
+            /*string body = System.IO.File.ReadAllText(HttpContext.Current.Server.MapPath("DAL/Peishan-Function/template.html"));
+            body = body.Replace("[Title]", title.Trim());
+            body = body.Replace("[bodyMessage]", bodyMessage);*/
+
             var htmlContent = bodyMessage;
 
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
@@ -358,8 +396,9 @@ namespace ITP213.DAL.Peishan_Function
                     string title = "NYP Travel - Email Confirmation";
                     Uri uri = HttpContext.Current.Request.Url;
                     string host = uri.Scheme + Uri.SchemeDelimiter + uri.Host + ":" + uri.Port;
-                    var htmlContent = "Hi, " + loginObj.name + ". Please confirm your account by clicking <strong><a href=\"" + host + "/ConfirmEmail.aspx/?x=" + randomToken + "\" + >here</a></strong>";
+                    var htmlContent = "Hi, " + loginObj.name + ".<br/> Please confirm your account by clicking <strong><a href=\"" + host + "/ConfirmEmail.aspx/?x=" + encodeRandomToken + "\" + >here</a></strong>";
 
+                    verdict = true;
                     DAL.Peishan_Function.EmailAndPhoneValidation.Execute(loginObj.name, email, encodeRandomToken, title, htmlContent);
                 }
                 else
@@ -379,39 +418,49 @@ namespace ITP213.DAL.Peishan_Function
 
                 if (diff.Hours < 24) // token is still valid
                 {
-                    lblError = "Please verify your email.";
+                    lblError = "We have already sent your email verification. Please check your email.";
                 }
                 else
                 {
-                    int result = DAL.RegisterDAO.deleteVerifyEmailOTPTable(UUID); // delete current expired token
-                    if (result == 1)
-                    {
-                        string randomToken = Guid.NewGuid().ToString(); // email Token
-                        string encodeRandomToken = EncodeToken(randomToken); // not used yet
-
-                        // insert
-                        int result2 = RegisterDAO.insertIntoVerifyEmail(UUID, randomToken);
-                        if (result2 == 1)
-                        {
-                            // send an email to the old email about the changing into new email
-                            string title = "NYP Travel - Email Confirmation";
-                            Uri uri = HttpContext.Current.Request.Url;
-                            string host = uri.Scheme + Uri.SchemeDelimiter + uri.Host + ":" + uri.Port;
-                            var htmlContent = "Hi, " + loginObj.name + ". Please confirm your account by clicking <strong><a href=\"" + host + "/ConfirmEmail.aspx/?y=" + randomToken + "\" + >here</a></strong>";
-
-                            DAL.Peishan_Function.EmailAndPhoneValidation.Execute(loginObj.name, email, encodeRandomToken, title, htmlContent);
-                            lblError = "We're sorry, the email address verification link you've submitted is invalid, expired, or has already been used.";
-                        }
-                        else
-                        {
-                            lblError= "We're sorry, the email address verification link you've submitted is invalid, expired, or has already been used.";
-                        }
-                    }
-                    else
-                    {
-                        lblError = "We're sorry, the email address verification link you've submitted is invalid, expired, or has already been used.";
-                    }
+                    lblError = "Email Verification expired. Please click 'resend email verification' button to receive new token.";
                 }
+            }
+            return Tuple.Create(verdict, lblError);
+        }
+
+        public static Tuple<Boolean, string> resendEmailVerification(string email)
+        {
+            string lblError = String.Empty;
+            bool verdict = false;
+
+            DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(email);
+            int result = DAL.RegisterDAO.deleteVerifyEmailOTPTable(loginObj.UUID); // delete current expired token
+            if (result == 1)
+            {
+                string randomToken = Guid.NewGuid().ToString(); // email Token
+                string encodeRandomToken = EncodeToken(randomToken); // not used yet
+
+                // insert
+                int result2 = RegisterDAO.insertIntoVerifyEmail(loginObj.UUID, randomToken);
+                if (result2 == 1)
+                {
+                    // send an email to the old email about the changing into new email
+                    string title = "NYP Travel - Email Confirmation";
+                    Uri uri = HttpContext.Current.Request.Url;
+                    string host = uri.Scheme + Uri.SchemeDelimiter + uri.Host + ":" + uri.Port;
+                    var htmlContent = "Hi, " + loginObj.name + ". Please confirm your account by clicking <strong><a href=\"" + host + "/ConfirmEmail.aspx/?x=" + encodeRandomToken + "\" + >here</a></strong>";
+
+                    verdict = true;
+                    DAL.Peishan_Function.EmailAndPhoneValidation.Execute(loginObj.name, email, encodeRandomToken, title, htmlContent);
+                }
+                else
+                {
+                    lblError = "We're sorry, the email address verification link you've submitted is invalid, expired, or has already been used.";
+                }
+            }
+            else
+            {
+                lblError = "We're sorry, the email address verification link you've submitted is invalid, expired, or has already been used.";
             }
             return Tuple.Create(verdict, lblError);
         }

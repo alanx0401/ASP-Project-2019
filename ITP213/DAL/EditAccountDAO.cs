@@ -66,7 +66,7 @@ namespace ITP213.DAL
             return result;
         }
 
-        public static int insertOldEmailByUUID(string email, string UUID, string oldEmailToken)
+        public static int insertOldEmailByUUID(string email, string UUID, string oldEmailToken, DateTime changedDate)
         {
             //Get connection string from web.config
             string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
@@ -77,7 +77,7 @@ namespace ITP213.DAL
              */
             StringBuilder sqlStr = new StringBuilder();
             sqlStr.AppendLine("Insert into OldEmail ");
-            sqlStr.AppendLine("VALUES (@UUID, @email, @oldEmailToken, GETDATE());");
+            sqlStr.AppendLine("VALUES (@UUID, @email, @oldEmailToken, @changedDate);");
 
             SqlConnection myConn = new SqlConnection(DBConnect);
             myConn.Open();
@@ -85,6 +85,7 @@ namespace ITP213.DAL
             cmd.Parameters.AddWithValue("@email", email);
             cmd.Parameters.AddWithValue("@UUID", UUID);
             cmd.Parameters.AddWithValue("@oldEmailToken", oldEmailToken);
+            cmd.Parameters.AddWithValue("@changedDate", changedDate);
             int result = cmd.ExecuteNonQuery();
             return result;
         }

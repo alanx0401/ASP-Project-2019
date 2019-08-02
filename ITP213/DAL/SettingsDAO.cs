@@ -49,6 +49,7 @@ namespace ITP213.DAL
                 obj.secretKey = row["secretKey"].ToString();
                 obj.phoneVerified = row["phoneVerified"].ToString();
                 obj.emailVerified = row["emailVerified"].ToString();
+                obj.passwordSalt = row["passwordSalt"].ToString();
             }
             else
             {

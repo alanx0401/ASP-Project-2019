@@ -42,5 +42,10 @@ namespace ITP213.DAL
         // AccountFailedAttempt Table
         public int AccountFailedAttemptCounter { set; get; }
         // public string AccountFailedAttemptCounter { set; get; }
+
+        public string aNum { set; get; }
+
+        // newDeviceLogin
+        public string macAddress { set; get; }
     }
 }
