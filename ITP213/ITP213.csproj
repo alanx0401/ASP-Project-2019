@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
@@ -271,7 +271,6 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <Content Include="SettingsDummy.aspx" />
     <Content Include="Site.master" />
     <None Include="Service References\SMSSvrRef\Sms.wsdl" />
     <None Include="Web.Debug.config">
@@ -412,6 +411,7 @@
     <Compile Include="DAL\Complain.cs" />
     <Compile Include="DAL\ComplainDAO.cs" />
     <Compile Include="DAL\EditAccountDAO.cs" />
+    <Compile Include="DAL\EventLog.cs" />
     <Compile Include="DAL\Feedback.cs" />
     <Compile Include="DAL\FeedbackDAO.cs" />
     <Compile Include="DAL\GeneralRecord.cs" />
@@ -448,6 +448,7 @@
     <Compile Include="DAL\TripAllocationDAO.cs" />
     <Compile Include="DAL\UploadedImage.cs" />
     <Compile Include="DAL\userEventLog.cs" />
+    <Compile Include="DAL\userSecurityEventLog.cs" />
     <Compile Include="DAL\Validation\RegisterValidation.cs" />
     <Compile Include="DAL\WithdrawalRequest.cs" />
     <Compile Include="DAL\WithdrawalRequestDAO.cs" />
@@ -607,13 +608,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="SettingsDummy.aspx.cs">
-      <DependentUpon>SettingsDummy.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="SettingsDummy.aspx.designer.cs">
-      <DependentUpon>SettingsDummy.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Site.master.cs">
       <DependentUpon>Site.master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -686,12 +680,14 @@
     </Compile>
     <Compile Include="UserEventLogs.aspx.cs">
       <DependentUpon>UserEventLogs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UserEventLogs.aspx.designer.cs">
       <DependentUpon>UserEventLogs.aspx</DependentUpon>
     </Compile>
     <Compile Include="UserSecurityEventLogs.aspx.cs">
       <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UserSecurityEventLogs.aspx.designer.cs">
       <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>

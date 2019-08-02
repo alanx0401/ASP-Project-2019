@@ -479,7 +479,7 @@ namespace ITP213
             // Kai Ming's function
             SecurityEventLog eventObj = new SecurityEventLog();
             int result3 = eventObj.EventInsert("Successful Login", DateTime.Now, loginObj.UUID);
-            //newDeviceLogin();
+            newDeviceLogin();
 
             if (Session["accountType"].ToString() == "student")
             {
@@ -869,7 +869,7 @@ namespace ITP213
             Boolean result = DAL.Peishan_Function.NewDeviceLogin.checkDeviceLogin(tbEmail.Text.Trim()).Item1;
             if (result == true) // insert and update success
             {
-
+                
             }
             else
             {

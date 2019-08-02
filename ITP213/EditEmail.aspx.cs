@@ -16,6 +16,7 @@ namespace ITP213
         {
             tbEmail.Attributes.Add("autocomplete", "off");
             tbPasswordEmail.Attributes.Add("autocomplete", "off");
+
             if (!IsPostBack)
             {
                 DAL.Settings obj = DAL.SettingsDAO.getAccountTableByUUID(Session["UUID"].ToString());
