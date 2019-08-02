@@ -88,7 +88,7 @@ namespace ITP213
                 {
                     MailMessage mm = new MailMessage("wycliff1999@gmail.com", tbEmail.Text);
                     mm.Subject = "Your new password";
-                    mm.Body = string.Format("Hello : <h1>{0}</h1>, your password is link is http://localhost:16452/changePassword.aspx?uuid={1}", username,uid);
+                    mm.Body = string.Format("Hello : <h1>{0}</h1>, your password is link is http://localhost:16452/changePassword1.aspx?uuid={1}", username,uid);
                     mm.IsBodyHtml = true;
                     SmtpClient smtp = new SmtpClient();
                     smtp.Host = "smtp.gmail.com";

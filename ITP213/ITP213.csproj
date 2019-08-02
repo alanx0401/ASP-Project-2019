@@ -201,6 +201,7 @@
     </Content>
     <Content Include="BlogDetails.aspx" />
     <Content Include="changePassword.aspx" />
+    <Content Include="changePassword1.aspx" />
     <Content Include="ConfirmEmail.aspx" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\imageGallery.css" />
@@ -347,6 +348,13 @@
     <Compile Include="changePassword.aspx.designer.cs">
       <DependentUpon>changePassword.aspx</DependentUpon>
     </Compile>
+    <Compile Include="changePassword1.aspx.cs">
+      <DependentUpon>changePassword1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="changePassword1.aspx.designer.cs">
+      <DependentUpon>changePassword1.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ConfirmEmail.aspx.cs">
       <DependentUpon>ConfirmEmail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -453,7 +461,8 @@
     <Compile Include="DAL\UploadedImage.cs" />
     <Compile Include="DAL\userEventLog.cs" />
     <Compile Include="DAL\userSecurityEventLog.cs">
-      <CustomToolNamespace> </CustomToolNamespace>
+      <CustomToolNamespace>
+      </CustomToolNamespace>
     </Compile>
     <Compile Include="DAL\Validation\RegisterValidation.cs" />
     <Compile Include="DAL\WithdrawalRequest.cs" />
