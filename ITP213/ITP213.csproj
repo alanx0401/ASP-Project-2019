@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
@@ -216,7 +216,6 @@
     <Content Include="DefaultErrorPage.aspx" />
     <Content Include="EditAccount.aspx" />
     <Content Include="Error403.aspx" />
-    <Content Include="EventLogs.aspx" />
     <Content Include="GoogleAuth.aspx" />
     <Content Include="ImageGallery.aspx" />
     <Content Include="Images\check.png" />
@@ -290,7 +289,6 @@
     <Content Include="UnauthorizedErrorPage.aspx" />
     <Content Include="UploadedImages.aspx" />
     <Content Include="UploadReport.aspx" />
-    <Content Include="UserEventLogs.aspx" />
     <Content Include="UserSecurityEventLogs.aspx" />
     <Content Include="ViewAllocatedTrip.aspx" />
     <Content Include="ViewAnnouncement.aspx" />
@@ -433,13 +431,11 @@
     <Compile Include="DAL\SecurityDAO.cs" />
     <Compile Include="DAL\SessionManager.cs" />
     <Compile Include="DAL\SessionManagerDAO.cs" />
-    <Compile Include="DAL\SecurityEventLog.cs" />
     <Compile Include="DAL\Test.cs" />
     <Compile Include="DAL\TestDAO.cs" />
     <Compile Include="DAL\TripAllocation.cs" />
     <Compile Include="DAL\TripAllocationDAO.cs" />
     <Compile Include="DAL\UploadedImage.cs" />
-    <Compile Include="DAL\userEventLog.cs" />
     <Compile Include="DAL\Validation\RegisterValidation.cs" />
     <Compile Include="DAL\userSecurityEventLog.cs" />
     <Compile Include="DAL\WithdrawalRequest.cs" />
@@ -471,13 +467,6 @@
     </Compile>
     <Compile Include="Error403.aspx.designer.cs">
       <DependentUpon>Error403.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="EventLogs.aspx.cs">
-      <DependentUpon>EventLogs.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="EventLogs.aspx.designer.cs">
-      <DependentUpon>EventLogs.aspx</DependentUpon>
     </Compile>
     <Compile Include="Email\IEmailSender.cs" />
     <Compile Include="Email\SendEmailDetails.cs" />
@@ -669,18 +658,6 @@
     </Compile>
     <Compile Include="UploadReport.aspx.designer.cs">
       <DependentUpon>UploadReport.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UserEventLogs.aspx.cs">
-      <DependentUpon>UserEventLogs.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UserEventLogs.aspx.designer.cs">
-      <DependentUpon>UserEventLogs.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UserSecurityEventLogs.aspx.cs">
-      <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UserSecurityEventLogs.aspx.designer.cs">
-      <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>
     </Compile>
     <Compile Include="UserSecurityEventLogs.aspx.cs">
       <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>

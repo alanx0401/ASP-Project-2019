@@ -1,8 +1,8 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeBehind="UserSecurityEventLogs.aspx.cs" Inherits="ITP213.UserSecurityEventLogs" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeBehind="UserSecurityEventLogs.aspx.cs" Inherits="ITP213.UserSecurityEventLogs" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-        <!--************README: Hi, please change some of the following things below when you're coding your features. Thanks! -PS -->
+         <!--************README: Hi, please change some of the following things below when you're coding your features. Thanks! -PS -->
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
 
@@ -55,7 +55,7 @@
             <SelectParameters>
                 <asp:ControlParameter ControlID="tbStartDate" Name="dateTimeDetails" PropertyName="Text" Type="DateTime" />
                 <asp:ControlParameter ControlID="tbEndDate" Name="dateTimeDetails2" PropertyName="Text" Type="DateTime" />
-                <asp:Parameter Name="UUID" />
+                <asp:ControlParameter ControlID="lbUUID" Name="UUID" PropertyName="Text" Type="String" />
             </SelectParameters>
         </asp:SqlDataSource>
      <div>     

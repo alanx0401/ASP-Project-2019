@@ -8,6 +8,7 @@ using System.Configuration;
 using System.Data;
 using System.Text;
 
+
 namespace ITP213.DAL
 {
     public class SecurityEventLog
@@ -117,6 +118,47 @@ namespace ITP213.DAL
 
             return eventDescList;
         }
+        
+        //To display audit logs in GVEventLogs based on Admin Account Type 
+        public List<SecurityEventLog>auditLog(string accountType)
+        {
+            List<SecurityEventLog> resultList = new List<SecurityEventLog>();
+            //Get connection string from web.config
+            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+
+            SqlDataAdapter da;
+            DataSet ds = new DataSet();
+
+            StringBuilder sqlStr = new StringBuilder();
+            sqlStr.AppendLine("SELECT eventID, eventDesc, dateTimeDetails, Eventlogs.UUID FROM Eventlogs INNER JOIN account on account.UUID = Eventlogs.UUID WHERE accountType=@accountType");
+            //Create Adapter
+
+            SqlConnection myConn = new SqlConnection(DBConnect);
+            da = new SqlDataAdapter(sqlStr.ToString(), myConn);
+            da.SelectCommand.Parameters.AddWithValue("@accountType", accountType);
+            // fill dataset
+            da.Fill(ds, "resultTable");
+            int rec_cnt = ds.Tables["resultTable"].Rows.Count;
+            if (rec_cnt > 0)
+            {
+                foreach (DataRow row in ds.Tables["resultTable"].Rows)
+                {
+                    SecurityEventLog obj = new SecurityEventLog();
+
+                    //obj.eventID = Convert.ToInt32(row["eventID"].ToString());
+                    obj.dateTimeDetails = Convert.ToDateTime(row["dateTimeDetails"].ToString());
+                    obj.eventDesc = row["eventDesc"].ToString();
+                    //obj.UUID = row["UUID"].ToString();
+                    resultList.Add(obj);
+                }
+            }
+            else
+            {
+                resultList = null;
+            }
+            return resultList;
+        }
+
 
         //To display contents in GVEventLogs based on start date an end date 
         public List<SecurityEventLog> searchEventLogDate(DateTime startDate, DateTime endDate)

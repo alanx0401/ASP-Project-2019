@@ -15,7 +15,7 @@ namespace ITP213
     public partial class UserSecurityEventLogs : System.Web.UI.Page
     {
         userSecurityEventLog obj = new userSecurityEventLog();
-       
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["UUID"] != null && Session["name"] != null)
@@ -29,13 +29,15 @@ namespace ITP213
                     PanelEvents.Visible = true;
                     PanelSearchFilter.Visible = false;
                     PanelEventDateRange.Visible = false;
-                }  
+                }
             }
             else
             {
                 Response.Redirect("login.aspx", false);
             }
         }
+
+
         protected void bind()
         {
             string UUID;
