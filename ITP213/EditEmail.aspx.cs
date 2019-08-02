@@ -1,7 +1,10 @@
 ﻿using ITP213.DAL;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
@@ -17,22 +20,29 @@ namespace ITP213
             tbEmail.Attributes.Add("autocomplete", "off");
             tbPasswordEmail.Attributes.Add("autocomplete", "off");
 
-            if (!IsPostBack)
+            if (Session["UUID"] != null)
             {
-                DAL.Settings obj = DAL.SettingsDAO.getAccountTableByUUID(Session["UUID"].ToString());
-                if (obj != null)
+                if (!IsPostBack)
                 {
-                    tbEmail.Text = obj.email;
+                    DAL.Settings obj = DAL.SettingsDAO.getAccountTableByUUID(Session["UUID"].ToString());
+                    if (obj != null)
+                    {
+                        tbEmail.Text = obj.email;
 
-                    if (obj.emailVerified == "Yes")
-                    {
-                        btnResendEmailVerification.Visible = false;
-                    }
-                    else
-                    {
-                        btnResendEmailVerification.Visible = true;
+                        if (obj.emailVerified == "Yes")
+                        {
+                            btnResendEmailVerification.Visible = false;
+                        }
+                        else
+                        {
+                            btnResendEmailVerification.Visible = true;
+                        }
                     }
                 }
+            }
+            else
+            {
+                Response.Redirect("/login.aspx");
             }
         }
 
@@ -44,12 +54,12 @@ namespace ITP213
                 // Email
                 if (tbEmail.Text != obj.email)  // ****** improvement: inform the previous email owner about the change in email. They can click on the link. If they didn't request for it, they can change back to the original email
                 {
-                    if (tbPasswordEmail.Visible == true && lblPasswordEmail.Visible == true)
+                    if (tbPasswordEmail.Visible == true && lblPasswordEmail.Visible == true && PanelCaptcha.Visible == true)
                     {
 
 
                         Boolean passwordResult = checkPassword(tbPasswordEmail.Text.Trim());
-                        if (passwordResult == true) // password
+                        if (passwordResult == true && IsReCaptchValid() == true) // password
                         {
                             string newEmail = tbEmail.Text.Trim();
                             string previousEmail = obj.email; // email has not been changed yet
@@ -108,13 +118,14 @@ namespace ITP213
                         }
                         else
                         {
-                            lblError.Text = "You have entered the wrong password.";
+                            lblError.Text = "You have entered the wrong password or captcha value.";
                         }
                     }
                     else
                     {
                         tbPasswordEmail.Visible = true;
                         lblPasswordEmail.Visible = true;
+                        PanelCaptcha.Visible = true;
                         lblError.Text = "Please enter your password to continue";
                     }
                     
@@ -170,6 +181,28 @@ namespace ITP213
             {
                 lblError.Text = resendEmail.Item2.ToString();
             }
+        }
+
+        public bool IsReCaptchValid() // CAPTCHA
+        {
+            var result = false;
+            var captchaResponse = Request.Form["g-recaptcha-response"];
+            var secretKey = Environment.GetEnvironmentVariable("SecretKey");
+            //var secretKey = ConfigurationManager.AppSettings["SecretKey"];
+            var apiUrl = "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}";
+            var requestUri = string.Format(apiUrl, secretKey, captchaResponse);
+            var request = (HttpWebRequest)WebRequest.Create(requestUri);
+
+            using (WebResponse response = request.GetResponse())
+            {
+                using (StreamReader stream = new StreamReader(response.GetResponseStream()))
+                {
+                    JObject jResponse = JObject.Parse(stream.ReadToEnd());
+                    var isSuccess = jResponse.Value<bool>("success");
+                    result = (isSuccess) ? true : false;
+                }
+            }
+            return result;
         }
     }
 }

@@ -22,11 +22,12 @@ namespace ITP213
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            if (!IsPostBack)
+            if (Session["UUID"] != null)
             {
-                TextBox1.Attributes.Add("autocomplete", "off");
-                if (Session["UUID"] != null)
+                if (!IsPostBack)
                 {
+                    TextBox1.Attributes.Add("autocomplete", "off");
+
                     DAL.Settings obj = DAL.SettingsDAO.getAccountTableByUUID(Session["UUID"].ToString());
                     if (obj != null)
                     {
@@ -48,12 +49,11 @@ namespace ITP213
                         Label1.Text = "Sorry, an error has occurred.";
                     }
                 }
-                else
-                {
-                    Response.Redirect("/Default.aspx");
-                }
             }
-            
+            else
+            {
+                Response.Redirect("/login.aspx");
+            }
         }
         protected void Button1_Click(object sender, EventArgs e)
         {

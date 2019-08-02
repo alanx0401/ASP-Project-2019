@@ -49,6 +49,19 @@
                 <asp:TextBox ID="tbPasswordEmail" runat="server" class="form-control" Visible="false" TextMode="Password"></asp:TextBox>
             </div>
         </div>
+        <div class="form-row">
+            <div class="form-group col-md-4"></div>
+            <div class="form-group col-md-4">
+                <asp:Panel ID="PanelCaptcha" runat="server" Visible="false">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <div id="ReCaptchContainer"></div>
+                        </div>
+
+                    </div>
+                </asp:Panel>
+            </div>
+        </div>
     </p>
     <asp:Button ID="btnConfirmUpdate" runat="server" Text="Update Information" OnClick="btnConfirmUpdate_Click" class="btn btn-success"/>
     </p>
@@ -56,4 +69,17 @@
         <asp:Label ID="lblError" runat="server" ForeColor="Red"></asp:Label>
     </p>
     <!--//Page Content-->
+    <script src="https://www.google.com/recaptcha/api.js?onload=renderRecaptcha&render=explicit" async defer></script>
+    <script type="text/javascript">
+        var your_site_key = '<%= Environment.GetEnvironmentVariable("SiteKey")%>';
+        var renderRecaptcha = function () {
+            grecaptcha.render('ReCaptchContainer', {
+                'sitekey': your_site_key,
+                theme: 'light', //light or dark    
+                type: 'image',// image or audio    
+                size: 'normal'//normal or compact    
+            });
+        };
+
+    </script>
 </asp:Content>

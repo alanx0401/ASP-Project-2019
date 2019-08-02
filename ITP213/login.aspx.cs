@@ -367,6 +367,7 @@ namespace ITP213
                     if (result.Item1 == true)
                     {
                         lblError.Text = "OTP: " + result.Item2.ToString();
+                        btnResendPhoneVerification.Enabled = false;
                     }
                     else
                     {
@@ -449,70 +450,81 @@ namespace ITP213
         {
             DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
 
-            Session["UUID"] = loginObj.UUID;
-            // **** Find ways to remove the session below
-            Session["accountID"] = loginObj.UUID;
-            Session["accountType"] = loginObj.accountType;
-            Session["name"] = loginObj.name;
-            Session["email"] = tbEmail.Text;
-            Session["mobile"] = loginObj.mobile;
-            Session["dateOfBirth"] = loginObj.dateOfBirth;
+            DAL.Settings settingsObj = SettingsDAO.getAccountTableByUUID(loginObj.UUID);
 
-            DAL.Login AccountFailedAttemptObj = LoginDAO.getAccountFailedAttemptByUUID(loginObj.UUID);
-
-            if (AccountFailedAttemptObj != null) // Delete failed attempt(s)
+            if (settingsObj.emailVerified == "Yes" && settingsObj.phoneVerified == "Yes")
             {
+                Session["UUID"] = loginObj.UUID;
+                // **** Find ways to remove the session below
+                Session["accountID"] = loginObj.UUID;
+                Session["accountType"] = loginObj.accountType;
+                Session["name"] = loginObj.name;
+                Session["email"] = tbEmail.Text;
+                Session["mobile"] = loginObj.mobile;
+                Session["dateOfBirth"] = loginObj.dateOfBirth;
 
-                int result = LoginDAO.deleteAccountFailedAttemptTableByUUID(loginObj.UUID);
-                if (result == 1)
+                DAL.Login AccountFailedAttemptObj = LoginDAO.getAccountFailedAttemptByUUID(loginObj.UUID);
+
+                if (AccountFailedAttemptObj != null) // Delete failed attempt(s)
                 {
-                    // ******
-                    
+
+                    int result = LoginDAO.deleteAccountFailedAttemptTableByUUID(loginObj.UUID);
+                    if (result == 1)
+                    {
+                        // ******
+
+                    }
+                    else
+                    {
+                        lblError.Text = "An error has occured. Please try again.";
+                    }
+
                 }
-                else
+
+                // Kai Ming's function
+                SecurityEventLog eventObj = new SecurityEventLog();
+                int result3 = eventObj.EventInsert("Successful Login", DateTime.Now, loginObj.UUID);
+                newDeviceLogin();
+
+                if (Session["accountType"].ToString() == "student")
                 {
-                    lblError.Text = "An error has occured. Please try again.";
+                    // student table
+                    DAL.Login studentObj = LoginDAO.getStudentTableByAccountID(loginObj.UUID);
+                    Session["adminNo"] = studentObj.adminNo;
+                    Session["school"] = studentObj.studentSchool;
+                    Session["course"] = studentObj.course;
+                    Session["allergies"] = studentObj.allergies;
+                    Session["dietaryNeeds"] = studentObj.dietaryNeeds;
+                    //Session["parentID"] = studentObj.parentID;
+
+                }
+                else if (Session["accountType"].ToString() == "lecturer")
+                {
+                    // lecturer table
+                    DAL.Login lecturerObj = LoginDAO.getLecturerTableByAccountID(loginObj.UUID);
+                    Session["staffID"] = lecturerObj.staffID;
+                    Session["school"] = lecturerObj.lecturerSchool;
+                    Session["staffRole"] = lecturerObj.staffRole;
                 }
 
+                /*else if (Session["accountType"].ToString() == "parent")
+                {
+                    // parent table
+                    DAL.Login parentObj = LoginDAO.getParentTableByAccountID(loginObj.accountID);
+                    Session["parentID"] = parentObj.parentID;
+                    Session["adminNo"] = parentObj.adminNo;
+                }*/
+
+                // Password Expiration: cannot be more than a year
+                checkPasswordExpiration();
+
+                Response.Redirect("Default.aspx");
             }
-
-            // Kai Ming's function
-            SecurityEventLog eventObj = new SecurityEventLog();
-            int result3 = eventObj.EventInsert("Successful Login", DateTime.Now, loginObj.UUID);
-            newDeviceLogin();
-
-            if (Session["accountType"].ToString() == "student")
+            else
             {
-                // student table
-                DAL.Login studentObj = LoginDAO.getStudentTableByAccountID(loginObj.UUID);
-                Session["adminNo"] = studentObj.adminNo;
-                Session["school"] = studentObj.studentSchool;
-                Session["course"] = studentObj.course;
-                Session["allergies"] = studentObj.allergies;
-                Session["dietaryNeeds"] = studentObj.dietaryNeeds;
-                //Session["parentID"] = studentObj.parentID;
-
+                lblError.Text = "Please ensure your password and email are verified.";
             }
-            else if (Session["accountType"].ToString() == "lecturer")
-            {
-                // lecturer table
-                DAL.Login lecturerObj = LoginDAO.getLecturerTableByAccountID(loginObj.UUID);
-                Session["staffID"] = lecturerObj.staffID;
-                Session["school"] = lecturerObj.lecturerSchool;
-                Session["staffRole"] = lecturerObj.staffRole;
-            }
-            /*else if (Session["accountType"].ToString() == "parent")
-            {
-                // parent table
-                DAL.Login parentObj = LoginDAO.getParentTableByAccountID(loginObj.accountID);
-                Session["parentID"] = parentObj.parentID;
-                Session["adminNo"] = parentObj.adminNo;
-            }*/
-
-            // Password Expiration: cannot be more than a year
-            checkPasswordExpiration();
-
-            Response.Redirect("Default.aspx");
+            
         }
         /// <summary>
         /// Feature: Check Ban Account
@@ -750,8 +762,19 @@ namespace ITP213
                 DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
                 string UUID = loginObj.UUID;
 
+                string password = tb2FAPin.Text.Trim();
+                string email = loginObj.email;
+                Boolean verdict = DAL.Peishan_Function.EmailAndPhoneValidation.phoneVerification(password, email);
+                if (verdict == true)
+                {
+                    LogIn();
+                }
+                else
+                {
+                    lblError.Text = "Sorry, password is either invalid or expired. ";
+                }
                 // 1) Check if the data has alr existed
-                DAL.Register verifyPhoneOTPObj = RegisterDAO.checkVerifyPhoneOTP(UUID);
+                /*DAL.Register verifyPhoneOTPObj = RegisterDAO.checkVerifyPhoneOTP(UUID);
 
                 if (verifyPhoneOTPObj != null) // they should receive an sms by now; hence, verifyPhoneOTPObj shouldn't be null
                 {
@@ -838,7 +861,7 @@ namespace ITP213
                 {
                     lblError.Text = "Sorry! An error has occurred!";
                     lblError.ForeColor = System.Drawing.Color.Red;
-                }
+                }*/
             }
             catch (Exception)
             {
@@ -874,6 +897,71 @@ namespace ITP213
             else
             {
                 lblError.Text = DAL.Peishan_Function.NewDeviceLogin.checkDeviceLogin(tbEmail.Text.Trim()).Item2;
+            }
+        }
+
+        protected void btnResendPhoneVerification_Click(object sender, EventArgs e)
+        {
+            DAL.Login obj = DAL.LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
+            // check password
+            var resendPhone = DAL.Peishan_Function.EmailAndPhoneValidation.resendPhoneVerification(obj.email, obj.mobile);
+            if (resendPhone.Item1 == true)
+            {
+                lblError.Text = resendPhone.Item2.ToString();
+                checkVerificationTime();
+            }
+            else
+            {
+                lblError.Text = resendPhone.Item3.ToString();
+            }
+        }
+
+        protected void Timer1_Tick(object sender, EventArgs e)
+        {
+            int seconds = int.Parse(Label1.Text);
+            if (seconds > 0)
+            {
+                Label1.Text = (seconds - 1).ToString();
+                Label1.Visible = true;
+            }
+            else
+            {
+                Label1.Visible = false;
+                btnResendPhoneVerification.Enabled = true;
+
+            }
+        }
+        private void checkVerificationTime()
+        {
+            DAL.Login obj = DAL.LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
+            DAL.Register verificationObj = DAL.RegisterDAO.checkVerifyPhoneOTP(obj.UUID);
+
+            if (verificationObj != null)
+            {
+                btnResendPhoneVerification.Visible = true;
+                // check if the verification email has expired
+                var currentDateTime = DateTime.Now;
+                var phoneDateTimeSend = verificationObj.dateTimeSend;
+                var diff = currentDateTime.Subtract(phoneDateTimeSend);
+                var total = (diff.Hours * 60 * 60) + (diff.Minutes * 60) + diff.Seconds;
+
+                if (total < 25)
+                {
+                    var time = 25 - total;
+                    btnResendPhoneVerification.Enabled = false;
+                    Label1.Text = time.ToString();
+                    Label1.Visible = true;
+                }
+                else
+                {
+                    Label1.Text = "0";
+                    Label1.Visible = false;
+                    btnResendPhoneVerification.Enabled = true;
+                }
+            }
+            else
+            {
+                btnResendPhoneVerification.Visible = false;
             }
         }
     }

@@ -111,6 +111,18 @@
                                             <asp:TextBox ID="tb2FAPin" runat="server" placeholder="Enter the password"></asp:TextBox>
                                             <asp:RequiredFieldValidator ID="RFVVerifyPassword" runat="server" ErrorMessage="Please enter your password" ControlToValidate="tb2FAPin" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
                                             <asp:RegularExpressionValidator ID="REVVerifyPassword" runat="server" ErrorMessage="Please enter the password in a correct format" ControlToValidate="tb2FAPin" Display="Dynamic" ForeColor="Red" ValidationExpression="^\d{6}$">*</asp:RegularExpressionValidator>
+                                            
+                                            <asp:ScriptManager ID="ScriptManager1" runat="server">
+                                            </asp:ScriptManager>
+                                            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                            <ContentTemplate>
+                                                <asp:button runat="server" text="Resend Verification" ID="btnResendPhoneVerification" class="btn btn-light" OnClick="btnResendPhoneVerification_Click" CausesValidation="False"/>
+                                                <asp:Label ID="Label1" runat="server" Visible="false">25</asp:Label>
+                                                <asp:Timer ID="Timer1" runat="server" Interval="1000" 
+                                                    ontick="Timer1_Tick">
+                                                </asp:Timer>
+                                            </ContentTemplate>
+                                            </asp:UpdatePanel>
                                         </div>
                                         <div class="form-group">                                       
                                             <asp:Button ID="btnBack2" class="btn btn-default" runat="server" Text="Back" OnClick="btnBack2_Click" CausesValidation="false"/>
@@ -122,7 +134,7 @@
                                         <p>
                                             <asp:ValidationSummary ID="ValidationSummary1" runat="server" ForeColor="Red" />
                                             <p>
-                                            <asp:Label ID="lblError" runat="server"></asp:Label>
+                                            <asp:Label ID="lblError" runat="server" ForeColor="Red"></asp:Label>
                                         </p>
                                     </div>
                                 </form>
