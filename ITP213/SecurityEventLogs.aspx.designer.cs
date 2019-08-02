@@ -76,6 +76,24 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.Panel PanelEvents;
         
         /// <summary>
+        /// btnUUID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnUUID;
+        
+        /// <summary>
+        /// btnUsername control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnUsername;
+        
+        /// <summary>
         /// GVEventLogs control.
         /// </summary>
         /// <remarks>
@@ -85,22 +103,13 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.GridView GVEventLogs;
         
         /// <summary>
-        /// PanelDisplayUsersEvent control.
+        /// GVEventLogsInUsername control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel PanelDisplayUsersEvent;
-        
-        /// <summary>
-        /// GVEventsByUsername control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GVEventsByUsername;
+        protected global::System.Web.UI.WebControls.GridView GVEventLogsInUsername;
         
         /// <summary>
         /// PanelSearchFilter control.
@@ -182,5 +191,23 @@ namespace ITP213 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.DataVisualization.Charting.Chart ChartEvent;
+        
+        /// <summary>
+        /// PanelAuditLogs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel PanelAuditLogs;
+        
+        /// <summary>
+        /// GVAuditLogs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GVAuditLogs;
     }
 }

@@ -23,17 +23,21 @@ namespace ITP213
             {
                 bind();
                 PanelEvents.Visible = true;
-                PanelDisplayUsersEvent.Visible = false;
                 PanelSearchFilter.Visible = false;
                 PanelEventDateRange.Visible = false;
             }
         }
         protected void bind()
         {
+            string UUID = Session["UUID"].ToString();
             List<SecurityEventLog> eventsList = new List<SecurityEventLog>();
             eventsList = obj.GetEvents();
             GVEventLogs.DataSource = eventsList;
             GVEventLogs.DataBind();
+            List<SecurityEventLog> auditLog = new List<SecurityEventLog>();
+            auditLog = obj.getEventBasedonAccountType(UUID);
+            GVAuditLogs.DataSource = auditLog;
+            GVAuditLogs.DataBind();
         }
 
         protected void btnReset_Click(object sender, EventArgs e)
@@ -42,10 +46,10 @@ namespace ITP213
             tbStartDate.Text = "";
             tbEndDate.Text = "";
             PanelEvents.Visible = true;
-            PanelDisplayUsersEvent.Visible = false;
             PanelSearchFilter.Visible = false;
             PanelEventDateRange.Visible = false;
             GVEventDateRange.Visible = false;
+            PanelAuditLogs.Visible = false;
         }
 
         protected void DDLSearch_SelectedIndexChanged(object sender, EventArgs e)
@@ -53,31 +57,31 @@ namespace ITP213
             if (DDLSearch.SelectedValue== "0")
             {
                 PanelEvents.Visible = true;
-                PanelDisplayUsersEvent.Visible = false;
                 PanelSearchFilter.Visible = false;
                 PanelEventDateRange.Visible = false;
-                
+                PanelAuditLogs.Visible = false;
+
             }
             else if (DDLSearch.SelectedValue== "1")
             {
                 PanelEvents.Visible = false;
-                PanelDisplayUsersEvent.Visible = true;
-                PanelSearchFilter.Visible = false;
+                PanelSearchFilter.Visible = true;
                 PanelEventDateRange.Visible = false;
+                PanelAuditLogs.Visible = false;
             }
             else if (DDLSearch.SelectedValue == "2")
             {
                 PanelEvents.Visible = false;
-                PanelDisplayUsersEvent.Visible = false;
-                PanelSearchFilter.Visible = true;
-                PanelEventDateRange.Visible = false;
+                PanelSearchFilter.Visible = false;
+                PanelEventDateRange.Visible = true;
+                PanelAuditLogs.Visible = false;
             }
             else
             {
                 PanelEvents.Visible = false;
-                PanelDisplayUsersEvent.Visible = false;
                 PanelSearchFilter.Visible = false;
-                PanelEventDateRange.Visible = true;
+                PanelEventDateRange.Visible = false;
+                PanelAuditLogs.Visible = true;
             }
 
         }
@@ -95,6 +99,16 @@ namespace ITP213
             eventsList = obj.searchEventLogDate(startDate, endDate);
             GVEventDateRange.DataSource = eventsList;
             GVEventDateRange.DataBind();
+        }
+
+        protected void btnUUID_Click(object sender, EventArgs e)
+        {
+            GVEventLogsInUsername.Visible = false;
+        }
+
+        protected void btnUsername_Click(object sender, EventArgs e)
+        {
+            GVEventLogs.Visible = false;
         }
     }
 }
