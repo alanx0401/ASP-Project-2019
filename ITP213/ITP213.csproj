@@ -210,6 +210,7 @@
     </Content>
     <Content Include="BlogDetails.aspx" />
     <Content Include="changePassword.aspx" />
+    <Content Include="changePassword1.aspx" />
     <Content Include="ConfirmEmail.aspx" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\imageGallery.css" />
@@ -228,6 +229,8 @@
     <Content Include="DAL\Validation\Data\dictionary.txt" />
     <Content Include="Default.aspx" />
     <Content Include="DefaultErrorPage.aspx" />
+    <Content Include="EditEmail.aspx" />
+    <Content Include="EditPhoneNumber.aspx" />
     <Content Include="ForgetPassword.aspx" />
     <Content Include="ForgetPasswordWindow1.aspx" />
     <Content Include="EditAccount.aspx" />
@@ -357,6 +360,13 @@
     </Compile>
     <Compile Include="changePassword.aspx.designer.cs">
       <DependentUpon>changePassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="changePassword1.aspx.cs">
+      <DependentUpon>changePassword1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="changePassword1.aspx.designer.cs">
+      <DependentUpon>changePassword1.aspx</DependentUpon>
     </Compile>
     <Compile Include="ConfirmEmail.aspx.cs">
       <DependentUpon>ConfirmEmail.aspx</DependentUpon>
