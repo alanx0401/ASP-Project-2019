@@ -239,7 +239,6 @@
     <Content Include="EditPhoneNumber.aspx" />
     <Content Include="ForgetPassword.aspx" />
     <Content Include="Error403.aspx" />
-    <Content Include="EventLogs.aspx" />
     <Content Include="GoogleAuth.aspx" />
     <Content Include="ImageGallery.aspx" />
     <Content Include="Images\check.png" />
@@ -288,7 +287,6 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <Content Include="Site.master" />
-    <None Include="Service References\SMSSvrRef\Sms.wsdl" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -313,7 +311,6 @@
     <Content Include="UnauthorizedErrorPage.aspx" />
     <Content Include="UploadedImages.aspx" />
     <Content Include="UploadReport.aspx" />
-    <Content Include="UserEventLogs.aspx" />
     <Content Include="UserSecurityEventLogs.aspx" />
     <Content Include="ViewAllocatedTrip.aspx" />
     <Content Include="ViewAnnouncement.aspx" />
@@ -473,9 +470,8 @@
     <Compile Include="DAL\TripAllocation.cs" />
     <Compile Include="DAL\TripAllocationDAO.cs" />
     <Compile Include="DAL\UploadedImage.cs" />
-    <Compile Include="DAL\userEventLog.cs" />
-    <Compile Include="DAL\userSecurityEventLog.cs" />
     <Compile Include="DAL\Validation\RegisterValidation.cs" />
+    <Compile Include="DAL\userSecurityEventLog.cs" />
     <Compile Include="DAL\WithdrawalRequest.cs" />
     <Compile Include="DAL\WithdrawalRequestDAO.cs" />
     <Compile Include="Default.aspx.cs">

@@ -13,40 +13,22 @@ namespace ITP213 {
     public partial class SecurityEventLogs {
         
         /// <summary>
-        /// SqlDataSourceDDL control.
+        /// SqlDataSourceDDLParticularEvent control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceDDL;
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceDDLParticularEvent;
         
         /// <summary>
-        /// SqlDataSourceDDLUUID control.
+        /// SqlDataSourceGVUserMode control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceDDLUUID;
-        
-        /// <summary>
-        /// SqlDataSourceGVParticularEvent control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceGVParticularEvent;
-        
-        /// <summary>
-        /// SqlDataSourceGVUUID control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceGVUUID;
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceGVUserMode;
         
         /// <summary>
         /// SqlDataSourceChart control.
@@ -56,6 +38,15 @@ namespace ITP213 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceChart;
+        
+        /// <summary>
+        /// SqlDataSourceGVParticularEvent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceGVParticularEvent;
         
         /// <summary>
         /// DDLSearch control.
@@ -85,6 +76,24 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.Panel PanelEvents;
         
         /// <summary>
+        /// btnUUID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnUUID;
+        
+        /// <summary>
+        /// btnusername control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnusername;
+        
+        /// <summary>
         /// GVEventLogs control.
         /// </summary>
         /// <remarks>
@@ -92,6 +101,15 @@ namespace ITP213 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView GVEventLogs;
+        
+        /// <summary>
+        /// GVEventsByUsername control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GVEventsByUsername;
         
         /// <summary>
         /// PanelSearchFilter control.
@@ -173,32 +191,5 @@ namespace ITP213 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.DataVisualization.Charting.Chart ChartEvent;
-        
-        /// <summary>
-        /// PanelUUID control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel PanelUUID;
-        
-        /// <summary>
-        /// DDLUUID control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DDLUUID;
-        
-        /// <summary>
-        /// GVUUID control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GVUUID;
     }
 }

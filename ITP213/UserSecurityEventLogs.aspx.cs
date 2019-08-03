@@ -15,7 +15,7 @@ namespace ITP213
     public partial class UserSecurityEventLogs : System.Web.UI.Page
     {
         userSecurityEventLog obj = new userSecurityEventLog();
-       
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["UUID"] != null && Session["name"] != null)
@@ -28,13 +28,16 @@ namespace ITP213
                     bind();
                     PanelEvents.Visible = true;
                     PanelSearchFilter.Visible = false;
-                }  
+                    PanelEventDateRange.Visible = false;
+                }
             }
             else
             {
                 Response.Redirect("login.aspx", false);
             }
         }
+
+
         protected void bind()
         {
             string UUID;
@@ -51,6 +54,7 @@ namespace ITP213
             DDLSearch.SelectedValue = "0";
             PanelEvents.Visible = true;
             PanelSearchFilter.Visible = false;
+            PanelEventDateRange.Visible = false;
         }
 
         protected void DDLSearch_SelectedIndexChanged(object sender, EventArgs e)
@@ -59,12 +63,31 @@ namespace ITP213
             {
                 PanelEvents.Visible = true;
                 PanelSearchFilter.Visible = false;
+                PanelEventDateRange.Visible = false;
             }
-            else//Search by Event Description
+            else if (DDLSearch.SelectedValue == "1") //Search by Event Description
             {
                 PanelEvents.Visible = false;
                 PanelSearchFilter.Visible = true;
+                PanelEventDateRange.Visible = false;
             }
+            else //Search Security Event Based on Date Range
+            {
+                PanelEvents.Visible = false;
+                PanelSearchFilter.Visible = false;
+                PanelEventDateRange.Visible = true;
+            }
+        }
+
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            string UUID = Session["UUID"].ToString();
+            DateTime startDate = Convert.ToDateTime(tbStartDate.Text);
+            DateTime endDate = Convert.ToDateTime(tbEndDate.Text);
+            List<userSecurityEventLog> eventsList = new List<userSecurityEventLog>();
+            eventsList = obj.searchEventLogDate(startDate, endDate, UUID);
+            GVEventDateRange.DataSource = eventsList;
+            GVEventDateRange.DataBind();
         }
     }
 }

@@ -73,7 +73,7 @@ namespace ITP213.DAL
         }
 
         //To display contents in GVEventLogs based on start date, end date and UUID 
-        /*public List<userSecurityEventLog> searchEventLogDate(DateTime startDate, DateTime endDate, string UUID)
+        public List<userSecurityEventLog> searchEventLogDate(DateTime startDate, DateTime endDate, string UUID)
         {
             List<userSecurityEventLog> resultList = new List<userSecurityEventLog>();
             //Get connection string from web.config
@@ -109,7 +109,7 @@ namespace ITP213.DAL
                 resultList = null;
             }
             return resultList;
-        }*/
+        }
 
     }
 }
