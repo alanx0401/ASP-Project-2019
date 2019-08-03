@@ -59,10 +59,10 @@ namespace ITP213.DAL.Peishan_Function
                                                 | SecurityProtocolType.Tls11
                                                 | SecurityProtocolType.Tls12
                                                 | SecurityProtocolType.Ssl3;
-            /*var message = MessageResource.Create(
+            var message = MessageResource.Create(
                 to: to,
                 from: from,
-                body: "Your OTP for phone verification is " + password);*/
+                body: "Your OTP for phone verification is " + password);
         }
         public static Tuple<Boolean, string> SendOTP(string email, string number)
         {

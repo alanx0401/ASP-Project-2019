@@ -80,12 +80,13 @@ namespace ITP213.DAL.Peishan_Function
 
             string country = GetCountrybyip();
             string macAddress = GetMACAddress();
+            string publicIP = getExternalIp();
 
-            Login obj = getMacAddressFromNewDeviceLogin(UUID, macAddress, country);
+            Login obj = getMacAddressFromNewDeviceLogin(UUID, macAddress, publicIP);
             if (obj != null) // macAddress exist in this user
             {
                 // update
-                int result = updateIntoNewDeviceLoginTable(UUID, GetMACAddress(), country);
+                int result = updateIntoNewDeviceLoginTable(UUID, GetMACAddress(), publicIP);
                 if (result == 1)
                 {
                     verdict = true;
@@ -123,7 +124,7 @@ namespace ITP213.DAL.Peishan_Function
            
         }
 
-        public static Login getMacAddressFromNewDeviceLogin(string UUID, string macAddress, string Location) // to check if exiiting macAddress Exist, if it did, return macAddress to update the Last Login column
+        public static Login getMacAddressFromNewDeviceLogin(string UUID, string macAddress, string PublicIPAddress) // to check if exiiting macAddress Exist, if it did, return macAddress to update the Last Login column
         {
             // Get connection string from web.config
             string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
@@ -132,7 +133,7 @@ namespace ITP213.DAL.Peishan_Function
 
             // Create adapter 
             // Write SQL Statement to retrieve all columns from account by email & password using query parameter
-            string sqlString = "SELECT macAddress FROM newDeviceLogin WHERE UUID = @UUID AND macAddress=@macAddress AND Location=@Location";
+            string sqlString = "SELECT macAddress FROM newDeviceLogin WHERE UUID = @UUID AND macAddress=@macAddress AND PublicIPAddress=@PublicIPAddress";
 
             Login obj = new Login(); // create a login instance;
 
@@ -140,7 +141,7 @@ namespace ITP213.DAL.Peishan_Function
             da = new SqlDataAdapter(sqlString, myConn);
             da.SelectCommand.Parameters.AddWithValue("@UUID", UUID);
             da.SelectCommand.Parameters.AddWithValue("@macAddress", macAddress);
-            da.SelectCommand.Parameters.AddWithValue("@Location", Location);
+            da.SelectCommand.Parameters.AddWithValue("@PublicIPAddress", PublicIPAddress);
             // fill dataset
             da.Fill(ds, "accountTable");
             int rec_cnt = ds.Tables["accountTable"].Rows.Count;
@@ -155,7 +156,7 @@ namespace ITP213.DAL.Peishan_Function
             }
             return obj;
         }
-        public static int updateIntoNewDeviceLoginTable(string UUID, string macAddress,string Location)
+        public static int updateIntoNewDeviceLoginTable(string UUID, string macAddress,string PublicIPAddress)
         {
             //Get connection string from web.config
             string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
@@ -170,7 +171,7 @@ namespace ITP213.DAL.Peishan_Function
             StringBuilder sqlStr = new StringBuilder();
             sqlStr.AppendLine("UPDATE newDeviceLogin ");
             sqlStr.AppendLine("SET LastLogin=GetDate()");
-            sqlStr.AppendLine("WHERE macAddress=@macAddress and UUID=@UUID and Location=@Location");
+            sqlStr.AppendLine("WHERE macAddress=@macAddress and UUID=@UUID and PublicIPAddress=@PublicIPAddress");
 
 
             SqlConnection myConn = new SqlConnection(DBConnect);
@@ -178,7 +179,7 @@ namespace ITP213.DAL.Peishan_Function
             SqlCommand cmd = new SqlCommand(sqlStr.ToString(), myConn);
             cmd.Parameters.AddWithValue("@UUID", UUID);
             cmd.Parameters.AddWithValue("@macAddress",macAddress);
-            cmd.Parameters.AddWithValue("@Location", Location);
+            cmd.Parameters.AddWithValue("@PublicIPAddress", PublicIPAddress);
 
             int result = cmd.ExecuteNonQuery();
             return result;

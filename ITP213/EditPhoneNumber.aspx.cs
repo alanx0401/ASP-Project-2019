@@ -17,6 +17,7 @@ namespace ITP213
             tbPhoneNumber.Attributes.Add("autocomplete", "off");
             tbPasswordPhoneNumber.Attributes.Add("autocomplete", "off");
             tbOneTimePassword.Attributes.Add("autocomplete", "off");
+
             if (!IsPostBack)
             {
                 DAL.Settings obj = DAL.SettingsDAO.getAccountTableByUUID(Session["UUID"].ToString());

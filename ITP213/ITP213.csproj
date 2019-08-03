@@ -282,7 +282,6 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <Content Include="SettingsDummy.aspx" />
     <Content Include="Site.master" />
     <None Include="Service References\SMSSvrRef\Sms.wsdl" />
     <None Include="Web.Debug.config">
@@ -426,6 +425,7 @@
     <Compile Include="DAL\Complain.cs" />
     <Compile Include="DAL\ComplainDAO.cs" />
     <Compile Include="DAL\EditAccountDAO.cs" />
+    <Compile Include="DAL\EventLog.cs" />
     <Compile Include="DAL\Feedback.cs" />
     <Compile Include="DAL\FeedbackDAO.cs" />
     <Compile Include="DAL\GeneralRecord.cs" />
@@ -616,13 +616,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="SettingsDummy.aspx.cs">
-      <DependentUpon>SettingsDummy.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="SettingsDummy.aspx.designer.cs">
-      <DependentUpon>SettingsDummy.aspx</DependentUpon>
     </Compile>
     <Compile Include="Site.master.cs">
       <DependentUpon>Site.master</DependentUpon>

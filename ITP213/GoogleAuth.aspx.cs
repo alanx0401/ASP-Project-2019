@@ -1,4 +1,5 @@
 ﻿using Google.Authenticator;
+using ITP213.DAL;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace ITP213
         byte[] IV;
         protected void Page_Load(object sender, EventArgs e)
         {
+
             if (!IsPostBack)
             {
                 TextBox1.Attributes.Add("autocomplete", "off");
@@ -29,7 +31,7 @@ namespace ITP213
                     if (obj != null)
                     {
                         TwoFactorAuthenticator tfa = new TwoFactorAuthenticator();// settings
-                                                                                  // secret key --> UUID
+                                                                                    // secret key --> UUID
                         string UUID = Session["UUID"].ToString().Substring(1, 10); // 10 digits from UUID
                         string secretKey = UUID + otp(); // 10 digits from UUID + otp()
                         Session["sk"] = secretKey;

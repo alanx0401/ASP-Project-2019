@@ -112,19 +112,19 @@
                                             <asp:RequiredFieldValidator ID="RFVVerifyPassword" runat="server" ErrorMessage="Please enter your password" ControlToValidate="tb2FAPin" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
                                             <asp:RegularExpressionValidator ID="REVVerifyPassword" runat="server" ErrorMessage="Please enter the password in a correct format" ControlToValidate="tb2FAPin" Display="Dynamic" ForeColor="Red" ValidationExpression="^\d{6}$">*</asp:RegularExpressionValidator>
                                         </div>
-                                        <p>
-                                            <div class="form-group">
-                                                <asp:Button ID="btnBack2" class="btn btn-default float-left" runat="server" Text="Back" OnClick="btnBack2_Click" CausesValidation="false"/>
-                                                <asp:Button ID="btnSubmitPassword" class="btn btn-success float-right" runat="server" Text="Submit" OnClick="btnPanel3_Click" />
-                                            </div>
-                                        </p>
+                                        <div class="form-group">                                       
+                                            <asp:Button ID="btnBack2" class="btn btn-default" runat="server" Text="Back" OnClick="btnBack2_Click" CausesValidation="false"/>
+                                            <asp:Button ID="btnSubmitPassword" class="btn btn-success float-right" runat="server" Text="Submit" OnClick="btnPanel3_Click" />
+                                        </div>
                                     </asp:Panel>
                                     <!--2FA Password-->
-                                    <p>
-                                        <asp:ValidationSummary ID="ValidationSummary1" runat="server" ForeColor="Red" />
+                                    <div class="form-group">
                                         <p>
-                                        <asp:Label ID="lblError" runat="server"></asp:Label>
-                                    </p>
+                                            <asp:ValidationSummary ID="ValidationSummary1" runat="server" ForeColor="Red" />
+                                            <p>
+                                            <asp:Label ID="lblError" runat="server"></asp:Label>
+                                        </p>
+                                    </div>
                                 </form>
                                 <style>
                                     #tbEmail, #tbPassword, #tb2FAPin {

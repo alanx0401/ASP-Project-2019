@@ -71,6 +71,31 @@
     &nbsp;[<asp:Button ID="btnGoogleAuth" runat="server" Visible="true" Text="Enable" Style="padding: 0; border: none; background: none; color: #0000FF" OnClick="btnGoogleAuth_Click" />]<br />
     <asp:HyperLink ID="HyperLinkChangePassword" runat="server">Change Password</asp:HyperLink>
     <br />
+    <p>
+        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" CellPadding="4" DataKeyNames="PublicIPAddress,UUID,macAddress" DataSourceID="SqlDataSource1" ForeColor="#333333" GridLines="None">
+            <AlternatingRowStyle BackColor="White" />
+            <Columns>
+                <asp:BoundField DataField="PublicIPAddress" HeaderText="Public IP Address" ReadOnly="True" SortExpression="PublicIPAddress" />
+                <asp:BoundField DataField="macAddress" HeaderText="Mac Address" ReadOnly="True" SortExpression="macAddress" />
+                <asp:BoundField DataField="Location" HeaderText="Location" SortExpression="Location" />
+                <asp:BoundField DataField="LastLogin" HeaderText="Last Login" SortExpression="LastLogin" />
+            </Columns>
+            <FooterStyle BackColor="#990000" Font-Bold="True" ForeColor="White" />
+            <HeaderStyle BackColor="#990000" Font-Bold="True" ForeColor="White" />
+            <PagerStyle BackColor="#FFCC66" ForeColor="#333333" HorizontalAlign="Center" />
+            <RowStyle BackColor="#FFFBD6" ForeColor="#333333" />
+            <SelectedRowStyle BackColor="#FFCC66" Font-Bold="True" ForeColor="Navy" />
+            <SortedAscendingCellStyle BackColor="#FDF5AC" />
+            <SortedAscendingHeaderStyle BackColor="#4D0000" />
+            <SortedDescendingCellStyle BackColor="#FCF6C0" />
+            <SortedDescendingHeaderStyle BackColor="#820000" />
+        </asp:GridView>
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\ITP213.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient" SelectCommand="SELECT [PublicIPAddress], [UUID], [LastLogin], [Location], [macAddress] FROM [NewDeviceLogin] WHERE ([UUID] = @UUID)">
+            <SelectParameters>
+                <asp:SessionParameter Name="UUID" SessionField="UUID" Type="String" />
+            </SelectParameters>
+        </asp:SqlDataSource>
+    </p>
 
     <p>
         <asp:Label ID="lblResult" runat="server" ForeColor="Green"></asp:Label>
