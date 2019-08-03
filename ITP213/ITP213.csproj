@@ -199,7 +199,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AddRemarks.aspx" />
-    <Content Include="Admin\ListUser.aspx" />
+    <Content Include="ListUser.aspx" />
     <Content Include="App_Data\ITP213.mdf" />
     <Content Include="App_Data\ITP213_log.ldf">
       <DependentUpon>ITP213.mdf</DependentUpon>
@@ -324,11 +324,11 @@
     <Compile Include="AddRemarks.aspx.designer.cs">
       <DependentUpon>AddRemarks.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\ListUser.aspx.cs">
+    <Compile Include="ListUser.aspx.cs">
       <DependentUpon>ListUser.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\ListUser.aspx.designer.cs">
+    <Compile Include="ListUser.aspx.designer.cs">
       <DependentUpon>ListUser.aspx</DependentUpon>
     </Compile>
     <Compile Include="DAL\Blockchain-Functions\Block.cs" />
@@ -774,6 +774,7 @@
     <WCFMetadataStorage Include="Service References\SMSSvrRef\" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Admin\" />
     <Folder Include="bin\" />
     <Folder Include="Images\InjuryPics\" />
     <Folder Include="Report\" />

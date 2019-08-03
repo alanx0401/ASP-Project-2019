@@ -8,6 +8,7 @@ using Hangfire.Dashboard;
 using System.Collections.Generic;
 using ITP213.DAL;
 using Blockchain_Text;
+using System.Diagnostics;
 
 [assembly: OwinStartup(typeof(ITP213.Startup))]
 
@@ -43,7 +44,8 @@ namespace ITP213
 
             Blockchain AuditLogBC = new Blockchain();
             BlockchainManagerDAO bcManager = new BlockchainManagerDAO();
-            BackgroundJob.Enqueue(() => AuditLogBC.AddBlock(new Block(DateTime.Now, null, bcManager.GetDailyBlock()));
+            Debug.Write("Test");
+            BackgroundJob.Enqueue(() => AuditLogBC.AddBlock(new Block(DateTime.Now, null, bcManager.GetDailyBlock())));
             RecurringJob.AddOrUpdate(() => AuditLogBC.AddBlock(new Block(DateTime.Now, null,bcManager.GetDailyBlock())), Cron.Daily);
 
         }
