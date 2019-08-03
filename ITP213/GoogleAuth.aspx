@@ -38,14 +38,16 @@
     <h1>Google Auth</h1>
     <!--2. Change the title!-->
     <hr />
-    <p>
         <!--3. This is where you code all your features-->
-
-        <asp:Image ID="Image1" runat="server" />
-    </p>
-    <p>
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <asp:Image ID="Image1" runat="server" />
+        </div>
+    </div>
+    <div class="container float-left" style="overflow-x:auto;text-align: left;">
         <asp:Label ID="Label1" runat="server"></asp:Label>
-    </p>
+    </div>
+    <br />
     <hr />
     <div class="form-row">
         <div class="form-group col-md-3">

@@ -203,6 +203,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AddRemarks.aspx" />
+    <Content Include="DAL\Functions\Validations\Data\dictionary.txt" />
     <Content Include="ListUser.aspx" />
     <Content Include="App_Data\ITP213.mdf" />
     <Content Include="App_Data\ITP213_log.ldf">
@@ -226,8 +227,6 @@
     <Content Include="CreateReflection.aspx" />
     <Content Include="CreateRemarks.aspx" />
     <Content Include="CreateTest.aspx" />
-    <Content Include="DAL\Peishan-Function\template.html" />
-    <Content Include="DAL\Validation\Data\dictionary.txt" />
     <Content Include="Default.aspx" />
     <Content Include="DefaultErrorPage.aspx" />
     <Content Include="EditEmail.aspx" />
@@ -332,6 +331,9 @@
     <Compile Include="AddRemarks.aspx.designer.cs">
       <DependentUpon>AddRemarks.aspx</DependentUpon>
     </Compile>
+    <Compile Include="DAL\Functions\NewDeviceLogin.cs" />
+    <Compile Include="DAL\Functions\Validations\EmailAndPhoneValidation.cs" />
+    <Compile Include="DAL\Functions\Validations\RegisterValidation.cs" />
     <Compile Include="ListUser.aspx.cs">
       <DependentUpon>ListUser.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -449,8 +451,6 @@
     <Compile Include="DAL\MedicalRecordDAO.cs" />
     <Compile Include="DAL\OverallReport.cs" />
     <Compile Include="DAL\OverallReportDAO.cs" />
-    <Compile Include="DAL\Peishan-Function\EmailAndPhoneValidation.cs" />
-    <Compile Include="DAL\Peishan-Function\NewDeviceLogin.cs" />
     <Compile Include="DAL\Question.cs" />
     <Compile Include="DAL\QuestionDAO.cs" />
     <Compile Include="DAL\Register.cs" />
@@ -473,7 +473,6 @@
     <Compile Include="DAL\TripAllocation.cs" />
     <Compile Include="DAL\TripAllocationDAO.cs" />
     <Compile Include="DAL\UploadedImage.cs" />
-    <Compile Include="DAL\Validation\RegisterValidation.cs" />
     <Compile Include="DAL\userSecurityEventLog.cs" />
     <Compile Include="DAL\WithdrawalRequest.cs" />
     <Compile Include="DAL\WithdrawalRequestDAO.cs" />

@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
-namespace ITP213.DAL.Validation
+namespace ITP213.DAL.Functions.Validations
 {
     public class RegisterValidation
     {

@@ -53,7 +53,7 @@ namespace ITP213
 
             string password = tbOneTimePassword.Text.Trim();
             string email = obj.email;
-            Boolean verdict = DAL.Peishan_Function.EmailAndPhoneValidation.phoneVerification(password, email);
+            Boolean verdict = DAL.Functions.Validations.EmailAndPhoneValidation.phoneVerification(password, email);
             if (verdict == true)
             {
                 Response.Redirect("/ManageYourAccount.aspx");
@@ -101,7 +101,7 @@ namespace ITP213
         {
             DAL.Settings obj = DAL.SettingsDAO.getAccountTableByUUID(Session["UUID"].ToString());
             // check password
-            var resendPhone = DAL.Peishan_Function.EmailAndPhoneValidation.resendPhoneVerification(obj.email, tbPhoneNumber.Text.Trim());
+            var resendPhone = DAL.Functions.Validations.EmailAndPhoneValidation.resendPhoneVerification(obj.email, tbPhoneNumber.Text.Trim());
             if (resendPhone.Item1 == true)
             {
                 lblError.Text = resendPhone.Item2.ToString();
@@ -153,7 +153,7 @@ namespace ITP213
                                 // ********show Panel1 & send out one time password --> verify password
                                 PanelOTP.Visible = true;
                                 string email = obj.email;
-                                var sendOTPResult = DAL.Peishan_Function.EmailAndPhoneValidation.SendOTP(email, mobile);
+                                var sendOTPResult = DAL.Functions.Validations.EmailAndPhoneValidation.SendOTP(email, mobile);
 
                                 Boolean verdict = sendOTPResult.Item1;
                                 if (verdict == true)
@@ -209,7 +209,7 @@ namespace ITP213
                 var currentDateTime = DateTime.Now;
                 var phoneDateTimeSend = verificationObj.dateTimeSend;
                 var diff = currentDateTime.Subtract(phoneDateTimeSend);
-                var total = (diff.Hours * 60 * 60) + (diff.Minutes * 60) + diff.Seconds;
+                var total = (diff.Days * 24 * 60 * 60) + (diff.Hours * 60 * 60) + (diff.Minutes * 60) + diff.Seconds;
 
                 if (total < 25)
                 {

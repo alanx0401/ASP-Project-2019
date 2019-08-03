@@ -68,7 +68,7 @@ namespace ITP213
                             if (obj.emailVerified == "Yes")
                             {
                                 string randomToken = Guid.NewGuid().ToString(); // token in case email is not changed by user
-                                string encodeRandomToken = DAL.Peishan_Function.EmailAndPhoneValidation.EncodeToken(randomToken);
+                                string encodeRandomToken = DAL.Functions.Validations.EmailAndPhoneValidation.EncodeToken(randomToken);
                                 DateTime changedDate = DateTime.Now;
 
                                 int result2 = EditAccountDAO.insertOldEmailByUUID(previousEmail, Session["UUID"].ToString(), randomToken, DateTime.Now);
@@ -79,14 +79,14 @@ namespace ITP213
                                     Uri uri = HttpContext.Current.Request.Url;
                                     string host = uri.Scheme + Uri.SchemeDelimiter + uri.Host + ":" + uri.Port;
                                     var htmlContent = "Hi, " + obj.name + ". You have requested to change your email to " + newEmail + " at "+ changedDate.ToString() + ". If you did not change your email, please click <strong><a href=\"" + host + "/ConfirmEmail.aspx/?y=" + encodeRandomToken + "\" + >here</a></strong>. Thank you!";
-                                    DAL.Peishan_Function.EmailAndPhoneValidation.Execute(obj.name, previousEmail, encodeRandomToken, title, htmlContent);
+                                    DAL.Functions.Validations.EmailAndPhoneValidation.Execute(obj.name, previousEmail, encodeRandomToken, title, htmlContent);
 
                                     int result = EditAccountDAO.updateEmailByUUID(newEmail, Session["UUID"].ToString());
 
                                     if (result == 1)
                                     {
                                         // send out email: *******
-                                        DAL.Peishan_Function.EmailAndPhoneValidation.sendingEmailVerification(newEmail);
+                                        DAL.Functions.Validations.EmailAndPhoneValidation.sendingEmailVerification(newEmail);
 
                                         Response.Redirect("/ManageYourAccount.aspx");
                                     }
@@ -106,7 +106,7 @@ namespace ITP213
                                 if (result == 1)
                                 {
                                     // send out email: *******
-                                    DAL.Peishan_Function.EmailAndPhoneValidation.sendingEmailVerification(newEmail);
+                                    DAL.Functions.Validations.EmailAndPhoneValidation.sendingEmailVerification(newEmail);
 
 
                                 }
@@ -172,7 +172,7 @@ namespace ITP213
 
         protected void btnResendEmailVerification_Click(object sender, EventArgs e)
         {
-            var resendEmail = DAL.Peishan_Function.EmailAndPhoneValidation.resendEmailVerification(tbEmail.Text.Trim());
+            var resendEmail = DAL.Functions.Validations.EmailAndPhoneValidation.resendEmailVerification(tbEmail.Text.Trim());
             if (resendEmail.Item1 == true)
             {
                 //btnResendEmailVerification.Text = false;

@@ -4,6 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title></title>
     <!--favicon-->
     <link rel="shortcut icon" type="image/png" href="Images/favicon.png" />
@@ -86,7 +87,7 @@
                             <div class="card-body">
                                 <form id="form1" runat="server">
                                     <asp:Panel ID="PanelPart1" runat="server">
-                                        <div class="form-group input-group" style="left: 0px; top: 0px">
+                                        <div class="form-group input-group">
                                             <asp:TextBox ID="tbCurrentPassword" runat="server" TextMode="Password" placeholder="Current Password"></asp:TextBox>
                                             <div class="input-group-append">  
                                                 <button id="show_currentPassword" type="button" style="padding: 0; border: none; background: none;">  

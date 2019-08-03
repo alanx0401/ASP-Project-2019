@@ -54,7 +54,7 @@ namespace ITP213
                 if (email != null)
                 {
                     email = Request.QueryString["x"].ToString();
-                    string verifiedEmail = DAL.Peishan_Function.EmailAndPhoneValidation.DecodeToken(email);
+                    string verifiedEmail = DAL.Functions.Validations.EmailAndPhoneValidation.DecodeToken(email);
                     if (verifiedEmail != email)
                     {
                         lblError.Text = "We've sent a verification to your email address: " + verifiedEmail + "<br>If this email is incorrect, please <a href=\"/changeEmail.aspx\">click here.</a>";
@@ -69,7 +69,7 @@ namespace ITP213
             tbPassword.Attributes.Add("autocomplete", "off");
             tb2FAPin.Attributes.Add("autocomplete", "off");
 
-            tripStatus(); // not sure if it's working
+            tripStatus();
             
             // check recaptcha verification if fail count is more than or equal to 6
             DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
@@ -79,12 +79,12 @@ namespace ITP213
                 if (AccountFailedAttemptObj != null) 
                 {
                     int failCount = AccountFailedAttemptObj.AccountFailedAttemptCounter;
-                    if (failCount >= 9) // ban account if failCount is more than or equals to 9.
+                    if (failCount >= 5) // ban account if failCount is more than 5.
                     {
                         lblError.Text = "Sorry! Your account is temporarily ban. Please try again later.";
                         lblError.ForeColor = System.Drawing.Color.Red;
                     }
-                    else if (failCount >= 5) // implement reCAPTCHA
+                    else if (failCount >= 3) // implement reCAPTCHA
                     {
                         ReCaptchContainer.Visible = true;
                     }
@@ -95,7 +95,7 @@ namespace ITP213
                 }
             }
 
-            // temporary
+            // If you wanna log into the account constantly.
             /*DAL.Login obj = LoginDAO.getLoginByEmailAndPassword("lecturer_dummy@nyp.edu.sg");
 
             Session["UUID"] = obj.UUID;
@@ -105,9 +105,9 @@ namespace ITP213
             Session["name"] = obj.name;
             Session["email"] = "lecturer_dummy@nyp.edu.sg";
             Session["mobile"] = obj.mobile;
-            Session["dateOfBirth"] = obj.dateOfBirth;*/
+            Session["dateOfBirth"] = obj.dateOfBirth;
 
-            /*if (Session["accountType"].ToString() == "student")
+            if (Session["accountType"].ToString() == "student")
             {
                 // student table
                 DAL.Login studentObj = LoginDAO.getStudentTableByAccountID(obj.UUID);
@@ -117,8 +117,8 @@ namespace ITP213
                 Session["allergies"] = studentObj.allergies;
                 Session["dietaryNeeds"] = studentObj.dietaryNeeds;
 
-            }*/
-            /*if (Session["accountType"].ToString() == "lecturer")
+            }
+            if (Session["accountType"].ToString() == "lecturer")
             {
                 // lecturer table
                 DAL.Login lecturerObj = LoginDAO.getLecturerTableByAccountID(obj.UUID);
@@ -202,64 +202,9 @@ namespace ITP213
                                 moveToPanel2();
                             }
                         }
-                        else // if login fails *****problem with counting
+                        else 
                         {
-                            DAL.Login AccountFailedAttemptObj = LoginDAO.getAccountFailedAttemptByUUID(UUID);
-
-                            if (AccountFailedAttemptObj != null) // update failed attempt
-                            {
-                                int failCount = AccountFailedAttemptObj.AccountFailedAttemptCounter;
-                                if (failCount >= 9) // change account status from 'Not ban' to 'Ban' when fail count hits 10 in db ; #problem: doesn't update to 10
-                                {
-                                    int result2 = LoginDAO.updateAccountStatusToBanByUUID(UUID);
-                                    if (result2 == 1)
-                                    {
-                                        // Kai Ming's function
-                                        SecurityEventLog eventObj = new SecurityEventLog();
-                                        int result3 = eventObj.EventInsert("Failed Login", DateTime.Now, UUID);
-                                    }
-                                    else
-                                    {
-                                        lblError.Text = "An error has occured. Please try again.";
-                                    }
-
-                                }
-                                else
-                                {
-                                    failCount += 1;
-
-                                    int result2 = LoginDAO.updateAccountFailedAttemptTableByUUID(UUID, failCount);
-                                    if (result2 == 1)
-                                    {
-                                        // Kai Ming's function
-                                        SecurityEventLog eventObj = new SecurityEventLog();
-                                        int result3 = eventObj.EventInsert("Failed Login", DateTime.Now, UUID);
-                                    }
-                                    else
-                                    {
-                                        lblError.Text = "An error has occured. Please try again.";
-                                    }
-                                }
-
-                            }
-                            else // insert failed attempt
-                            {
-                                int result2 = LoginDAO.insertAccountFailedAttemptTable(UUID);
-                                if (result2 == 1)
-                                {
-                                    // Kai Ming's function
-                                    SecurityEventLog eventObj = new SecurityEventLog();
-                                    int result3 = eventObj.EventInsert("Failed Login", DateTime.Now, UUID);
-                                }
-                                else
-                                {
-                                    lblError.Text = "An error has occured. Please try again.";
-                                }
-                            }
-
-
-                            lblError.Text = "Please check your email or password!";
-                            lblError.ForeColor = System.Drawing.Color.Red;
+                            failAttempt();
                         }
                     }
                 }
@@ -277,6 +222,78 @@ namespace ITP213
             }
             finally { }
         }
+        // fail attempt function
+        private void failAttempt()
+        {
+            try
+            {
+                DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
+                string UUID = loginObj.UUID;
+
+                DAL.Login AccountFailedAttemptObj = LoginDAO.getAccountFailedAttemptByUUID(UUID);
+
+                if (AccountFailedAttemptObj != null) // update failed attempt
+                {
+                    int failCount = AccountFailedAttemptObj.AccountFailedAttemptCounter;
+                    if (failCount >= 4) // change account status from 'Not ban' to 'Ban';
+                    {
+                        failCount += 1; // hits 5
+                        int result2 = LoginDAO.updateAccountStatusToBanByUUID(UUID);
+                        if (result2 == 1)
+                        {
+                            // Kai Ming's function
+                            SecurityEventLog eventObj = new SecurityEventLog();
+                            int result3 = eventObj.EventInsert("Failed Login", DateTime.Now, UUID);
+                        }
+                        else
+                        {
+                            lblError.Text = "An error has occured. Please try again.";
+                        }
+
+                    }
+                    else
+                    {
+                        failCount += 1;
+
+                        int result2 = LoginDAO.updateAccountFailedAttemptTableByUUID(UUID, failCount);
+                        if (result2 == 1)
+                        {
+                            // Kai Ming's function
+                            SecurityEventLog eventObj = new SecurityEventLog();
+                            int result3 = eventObj.EventInsert("Failed Login", DateTime.Now, UUID);
+                        }
+                        else
+                        {
+                            lblError.Text = "An error has occured. Please try again.";
+                        }
+                    }
+
+                }
+                else // insert failed attempt
+                {
+                    int result2 = LoginDAO.insertAccountFailedAttemptTable(UUID);
+                    if (result2 == 1)
+                    {
+                        // Kai Ming's function
+                        SecurityEventLog eventObj = new SecurityEventLog();
+                        int result3 = eventObj.EventInsert("Failed Login", DateTime.Now, UUID);
+                    }
+                    else
+                    {
+                        lblError.Text = "An error has occured. Please try again.";
+                    }
+                }
+
+
+                lblError.Text = "Please check your email or password!";
+                lblError.ForeColor = System.Drawing.Color.Red;
+            }
+            catch(Exception ex)
+            {
+                lblError.Text = "Sorry! An error has occurred!";
+            }
+        }
+
         // send 2FA stuffs
         private void Panel2()
         {
@@ -292,7 +309,7 @@ namespace ITP213
                 else if (rb2FATypes.SelectedItem.Text == "OTP")
                 {
                     // send the otp()
-                    var result = DAL.Peishan_Function.EmailAndPhoneValidation.SendOTP(tbEmail.Text.Trim(), obj.mobile.ToString());
+                    var result = DAL.Functions.Validations.EmailAndPhoneValidation.SendOTP(tbEmail.Text.Trim(), obj.mobile.ToString());
                     if (result.Item1 == true)
                     {
                         lblError.Text = "OTP: " + result.Item2.ToString();
@@ -327,7 +344,7 @@ namespace ITP213
                 {
                     // verify OTP password
                     //VerifyOTP(tb2FAPin.Text.Trim());
-                    bool result = DAL.Peishan_Function.EmailAndPhoneValidation.phoneVerification(tb2FAPin.Text.Trim(), tbEmail.Text);
+                    bool result = DAL.Functions.Validations.EmailAndPhoneValidation.phoneVerification(tb2FAPin.Text.Trim(), tbEmail.Text);
                     if (result == true)
                     {
                         LogIn();
@@ -600,62 +617,26 @@ namespace ITP213
 
                     if (isCorrectPIN == true)
                     {
-                        // lblError.Text = "Yes";
+                        
                         LogIn();
                     }
-                    else // **************** improve this code
+                    else 
                     {
 
                         lblError.Text = "Incorrect 2FA password. Please try again";
                         lblError.ForeColor = System.Drawing.Color.Red;
-                        // To be improved. Repetitive error counter && changePasswordDate && NewDeviceLogin
-                        string UUID = obj.UUID;
-                        DAL.Login AccountFailedAttemptObj = LoginDAO.getAccountFailedAttemptByUUID(UUID);
-
-                        if (AccountFailedAttemptObj != null) // update
-                        {
-                            int failCount = AccountFailedAttemptObj.AccountFailedAttemptCounter;
-                            if (failCount == 10)
-                            {
-                                int result = LoginDAO.updateAccountStatusToBanByUUID(UUID);
-                                if (result == 1) { }
-                                else
-                                {
-                                    lblError.Text = "An error has occured. Please try again.";
-                                }
-                            }
-                            else
-                            {
-                                failCount += 1;
-
-                                int result = LoginDAO.updateAccountFailedAttemptTableByUUID(UUID, failCount);
-                                if (result == 1) { }
-                                else
-                                {
-                                    lblError.Text = "An error has occured. Please try again.";
-                                }
-                            }
-
-                        }
-                        else // insert
-                        {
-                            int result = LoginDAO.insertAccountFailedAttemptTable(UUID);
-                            if (result == 1) { }
-                            else
-                            {
-                                lblError.Text = "An error has occured. Please try again.";
-                            }
-                        }
+                        
+                        failAttempt();
                         
                     }
                 }
-                else // by right secretKey should already been stored cos the googleAuth has already been enabled.
+                else // secretKey should already been stored cos the googleAuth has already been enabled.
                 {
                     lblError.Text = "Sorry! An error has occurred!";
                     lblError.ForeColor = System.Drawing.Color.Red;
                 }
             }
-            else // by right secretKey should already been stored cos the googleAuth has already been enabled.
+            else
             {
                 lblError.Text = "Sorry! An error has occurred!";
                 lblError.ForeColor = System.Drawing.Color.Red;
@@ -712,13 +693,14 @@ namespace ITP213
 
                 string password = tb2FAPin.Text.Trim();
                 string email = loginObj.email;
-                Boolean verdict = DAL.Peishan_Function.EmailAndPhoneValidation.phoneVerification(password, email);
+                Boolean verdict = DAL.Functions.Validations.EmailAndPhoneValidation.phoneVerification(password, email);
                 if (verdict == true)
                 {
                     LogIn();
                 }
                 else
                 {
+                    failAttempt();
                     lblError.Text = "Sorry, password is either invalid or expired. ";
                 }
             }
@@ -758,7 +740,7 @@ namespace ITP213
         {
             DAL.Login obj = DAL.LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
             // check password
-            var resendPhone = DAL.Peishan_Function.EmailAndPhoneValidation.resendPhoneVerification(obj.email, obj.mobile);
+            var resendPhone = DAL.Functions.Validations.EmailAndPhoneValidation.resendPhoneVerification(obj.email, obj.mobile);
             if (resendPhone.Item1 == true)
             {
                 lblError.Text = resendPhone.Item2.ToString();
@@ -797,7 +779,7 @@ namespace ITP213
                 var currentDateTime = DateTime.Now;
                 var phoneDateTimeSend = verificationObj.dateTimeSend;
                 var diff = currentDateTime.Subtract(phoneDateTimeSend);
-                var total = (diff.Hours * 60 * 60) + (diff.Minutes * 60) + diff.Seconds;
+                var total = (diff.Days * 24 * 60 * 60)+ (diff.Hours * 60 * 60) + (diff.Minutes * 60) + diff.Seconds;
 
                 if (total < 25)
                 {
