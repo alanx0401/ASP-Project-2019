@@ -1,4 +1,4 @@
-﻿using Google.Authenticator;
+using Google.Authenticator;
 using ITP213.DAL;
 using Newtonsoft.Json.Linq;
 using System;
