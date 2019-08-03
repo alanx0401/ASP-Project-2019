@@ -297,7 +297,7 @@ namespace ITP213.DAL
             /*
             //SELECT * FROM overseasEnrolledLecturer INNER JOIN lecturer on lecturer.staffID = overseasEnrolledLecturer.staffID INNER JOIN account on account.accountID = lecturer.accountID where tripID=30;
              */
-            string sqlStr = "SELECT * FROM overseasEnrolledLecturer INNER JOIN lecturer on lecturer.staffID = overseasEnrolledLecturer.staffID INNER JOIN account on account.accountID = lecturer.accountID where tripID=@tripID and overseasEnrolledLecturer.staffID!=@staffID;";
+            string sqlStr = "SELECT * FROM overseasEnrolledLecturer INNER JOIN lecturer on lecturer.staffID = overseasEnrolledLecturer.staffID INNER JOIN account on account.UUID = lecturer.UUID where tripID=@tripID and overseasEnrolledLecturer.staffID!=@staffID;";
 
             SqlConnection myConn = new SqlConnection(DBConnect);
             da = new SqlDataAdapter(sqlStr, myConn);
@@ -684,7 +684,7 @@ namespace ITP213.DAL
             StringBuilder sqlStr = new StringBuilder();
             sqlStr.AppendLine("SELECT * FROM overseasEnrolledStudent");
             sqlStr.AppendLine("INNER JOIN student ON student.adminNo = overseasEnrolledStudent.adminNo");
-            sqlStr.AppendLine("INNER JOIN account ON student.accountID =  account.accountID");
+            sqlStr.AppendLine("INNER JOIN account ON student.UUID =  account.UUID");
             sqlStr.AppendLine("WHERE tripID=@tripID;");
             //Create Adapter
 
@@ -721,7 +721,7 @@ namespace ITP213.DAL
             StringBuilder sqlStr = new StringBuilder();
             sqlStr.AppendLine("SELECT * FROM overseasEnrolledLecturer");
             sqlStr.AppendLine("INNER JOIN lecturer ON lecturer.staffID = overseasEnrolledLecturer.staffID");
-            sqlStr.AppendLine("INNER JOIN account ON lecturer.accountID =  account.accountID");
+            sqlStr.AppendLine("INNER JOIN account ON lecturer.UUID =  account.UUID");
             sqlStr.AppendLine("WHERE tripID=@tripID;");
             //Create Adapter
 
