@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
@@ -17,10 +17,10 @@
     <AssemblyName>ITP213</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressSSLPort>44356</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -67,6 +67,15 @@
     <Reference Include="Google.Authenticator, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\GoogleAuthenticator.1.2.1\lib\net45\Google.Authenticator.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="Hangfire.AspNet, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.AspNet.0.2.0\lib\net45\Hangfire.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Hangfire.Core, Version=1.7.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.Core.1.7.5\lib\net45\Hangfire.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Hangfire.SqlServer, Version=1.7.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.SqlServer.1.7.5\lib\net45\Hangfire.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
@@ -194,7 +203,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AddRemarks.aspx" />
-    <Content Include="Admin\ListUser.aspx" />
+    <Content Include="ListUser.aspx" />
     <Content Include="App_Data\ITP213.mdf" />
     <Content Include="App_Data\ITP213_log.ldf">
       <DependentUpon>ITP213.mdf</DependentUpon>
@@ -219,11 +228,13 @@
     <Content Include="DAL\Validation\Data\dictionary.txt" />
     <Content Include="Default.aspx" />
     <Content Include="DefaultErrorPage.aspx" />
+    <Content Include="EditAccount.aspx" />
+    <Content Include="Error.aspx" />
     <Content Include="EditEmail.aspx" />
     <Content Include="EditPhoneNumber.aspx" />
+    <Content Include="ForgetPassword.aspx" />
     <Content Include="Error403.aspx" />
     <Content Include="EventLogs.aspx" />
-    <Content Include="ForgetPassword.aspx" />
     <Content Include="GoogleAuth.aspx" />
     <Content Include="ImageGallery.aspx" />
     <Content Include="Images\check.png" />
@@ -323,13 +334,15 @@
     <Compile Include="AddRemarks.aspx.designer.cs">
       <DependentUpon>AddRemarks.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\ListUser.aspx.cs">
+    <Compile Include="ListUser.aspx.cs">
       <DependentUpon>ListUser.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\ListUser.aspx.designer.cs">
+    <Compile Include="ListUser.aspx.designer.cs">
       <DependentUpon>ListUser.aspx</DependentUpon>
     </Compile>
+    <Compile Include="DAL\Blockchain-Functions\Block.cs" />
+    <Compile Include="DAL\Blockchain-Functions\Blockchain.cs" />
     <Compile Include="BlogDetails.aspx.cs">
       <DependentUpon>BlogDetails.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -404,6 +417,7 @@
     <Compile Include="DAL\AcademicResultDAO.cs" />
     <Compile Include="DAL\Announcement.cs" />
     <Compile Include="DAL\AnnouncementDAO.cs" />
+    <Compile Include="DAL\BlockchainManagerDAO.cs" />
     <Compile Include="DAL\Blog.cs" />
     <Compile Include="DAL\BlogDAO.cs" />
     <Compile Include="DAL\CCARecord.cs" />
@@ -448,6 +462,7 @@
     <Compile Include="DAL\TripAllocationDAO.cs" />
     <Compile Include="DAL\UploadedImage.cs" />
     <Compile Include="DAL\userEventLog.cs" />
+    <Compile Include="DAL\userSecurityEventLog.cs" />
     <Compile Include="DAL\Validation\RegisterValidation.cs" />
     <Compile Include="DAL\WithdrawalRequest.cs" />
     <Compile Include="DAL\WithdrawalRequestDAO.cs" />
@@ -472,6 +487,8 @@
     <Compile Include="EditEmail.aspx.designer.cs">
       <DependentUpon>EditEmail.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Error.aspx.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
     <Compile Include="EditPhoneNumber.aspx.cs">
       <DependentUpon>EditPhoneNumber.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -483,15 +500,8 @@
       <DependentUpon>Error403.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Error403.aspx.designer.cs">
-      <DependentUpon>Error403.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="EventLogs.aspx.cs">
-      <DependentUpon>EventLogs.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="EventLogs.aspx.designer.cs">
-      <DependentUpon>EventLogs.aspx</DependentUpon>
+    <Compile Include="Error.aspx.designer.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
     </Compile>
     <Compile Include="Email\IEmailSender.cs" />
     <Compile Include="Email\SendEmailDetails.cs" />
@@ -621,6 +631,7 @@
     <Compile Include="Site.master.designer.cs">
       <DependentUpon>Site.master</DependentUpon>
     </Compile>
+    <Compile Include="Startup.cs" />
     <Compile Include="StudentParticulars.aspx.cs">
       <DependentUpon>StudentParticulars.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -686,12 +697,14 @@
     </Compile>
     <Compile Include="UserEventLogs.aspx.cs">
       <DependentUpon>UserEventLogs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UserEventLogs.aspx.designer.cs">
       <DependentUpon>UserEventLogs.aspx</DependentUpon>
     </Compile>
     <Compile Include="UserSecurityEventLogs.aspx.cs">
       <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UserSecurityEventLogs.aspx.designer.cs">
       <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>
@@ -781,6 +794,7 @@
     <WCFMetadataStorage Include="Service References\SMSSvrRef\" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Admin\" />
     <Folder Include="bin\" />
     <Folder Include="Images\InjuryPics\" />
     <Folder Include="Report\" />

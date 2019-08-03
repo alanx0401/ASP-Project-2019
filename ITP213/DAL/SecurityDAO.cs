@@ -131,23 +131,20 @@ namespace ITP213.DAL
         }
         public void apply_session_fixation_patch(HttpSessionState session, HttpRequest request, HttpResponse response)
         {
-            if (session["UserID"] != null && session["AuthToken"] != null && request.Cookies["AuthToken"] != null)
+            if (session["UUID"] != null && session["AuthToken"] != null && request.Cookies["AuthToken"] != null)
             {
                 if (!session["AuthToken"].ToString().Equals(request.Cookies["AuthToken"].Value))
                 {
+                    //TODO: Need to Change
                     response.Redirect("authnotequaltocookieauth.aspx");
                     
                 }
-                else
-                {
-                    string userID = (string)session["UserID"];
-                    //displayUserProfile(userID);
-                    
-                }
+                
             }
             else
             {
                 Exception ex = new Exception("User id or cookieauth is empty");
+                //TODO: Need to Change
                 response.Redirect("uidorauthandcookieauthempty.aspx");
                 
             }

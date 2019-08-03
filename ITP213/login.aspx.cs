@@ -448,6 +448,15 @@ namespace ITP213
         protected void LogIn() // creating Session & deleteFailedAttempt
         {
             DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
+            //Set Session to only last 20 min
+            Session.Timeout = 20;
+
+            //create a new GUID and save into the session
+            string guid = Guid.NewGuid().ToString();
+            Session["AuthToken"] = guid;
+            
+            //now create a new cookie with this guid value
+            Response.Cookies.Add(new HttpCookie("AuthToken", guid));
 
             Session["UUID"] = loginObj.UUID;
             // **** Find ways to remove the session below
