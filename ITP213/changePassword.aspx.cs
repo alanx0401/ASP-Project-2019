@@ -54,7 +54,7 @@ namespace ITP213
                     if (result == 1)
                     {
                         // success
-                        EventLog eventObj = new EventLog();
+                        SecurityEventLog eventObj = new SecurityEventLog();
                         eventObj.EventInsert("Change Password", DateTime.Now, Session["UUID"].ToString());
                         Response.Redirect("/Default.aspx");
                     }

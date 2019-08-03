@@ -231,14 +231,10 @@
     <Content Include="DefaultErrorPage.aspx" />
     <Content Include="EditEmail.aspx" />
     <Content Include="EditPhoneNumber.aspx" />
-    <Content Include="ForgetPassword.aspx" />
     <Content Include="ForgetPasswordWindow1.aspx" />
-    <Content Include="EditAccount.aspx" />
     <Content Include="Error.aspx" />
     <Content Include="EditEmail.aspx" />
     <Content Include="EditPhoneNumber.aspx" />
-    <Content Include="ForgetPassword.aspx" />
-    <Content Include="Error403.aspx" />
     <Content Include="GoogleAuth.aspx" />
     <Content Include="ImageGallery.aspx" />
     <Content Include="Images\check.png" />
@@ -434,7 +430,6 @@
     <Compile Include="DAL\Complain.cs" />
     <Compile Include="DAL\ComplainDAO.cs" />
     <Compile Include="DAL\EditAccountDAO.cs" />
-    <Compile Include="DAL\EventLog.cs" />
     <Compile Include="DAL\Feedback.cs" />
     <Compile Include="DAL\FeedbackDAO.cs" />
     <Compile Include="DAL\GeneralRecord.cs" />
@@ -495,7 +490,7 @@
     <Compile Include="EditEmail.aspx.designer.cs">
       <DependentUpon>EditEmail.aspx</DependentUpon>
     </Compile>
-	<Compile Include="Error.aspx.designer.cs">
+    <Compile Include="Error.aspx.designer.cs">
       <DependentUpon>Error.aspx</DependentUpon>
     </Compile>
     <Compile Include="EditPhoneNumber.aspx.cs">
@@ -505,20 +500,9 @@
     <Compile Include="EditPhoneNumber.aspx.designer.cs">
       <DependentUpon>EditPhoneNumber.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Error403.aspx.cs">
-      <DependentUpon>Error403.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Email\IEmailSender.cs" />
     <Compile Include="Email\SendEmailDetails.cs" />
     <Compile Include="Email\SendEmailResponse.cs" />
-    <Compile Include="ForgetPassword.aspx.cs">
-      <DependentUpon>ForgetPassword.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ForgetPassword.aspx.designer.cs">
-      <DependentUpon>ForgetPassword.aspx</DependentUpon>
-    </Compile>
     <Compile Include="ForgetPasswordWindow1.aspx.cs">
       <DependentUpon>ForgetPasswordWindow1.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -707,13 +691,6 @@
     </Compile>
     <Compile Include="UploadReport.aspx.designer.cs">
       <DependentUpon>UploadReport.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UserEventLogs.aspx.cs">
-      <DependentUpon>UserEventLogs.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserEventLogs.aspx.designer.cs">
-      <DependentUpon>UserEventLogs.aspx</DependentUpon>
     </Compile>
     <Compile Include="UserSecurityEventLogs.aspx.cs">
       <DependentUpon>UserSecurityEventLogs.aspx</DependentUpon>

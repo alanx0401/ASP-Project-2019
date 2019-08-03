@@ -2,7 +2,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <asp:GridView ID="gv_UserTable" runat="server" AllowSorting="True" AutoGenerateColumns="False" DataKeyNames="UUID" DataSourceID="SqlDataSource1" OnRowEditing="gv_UserTable_RowEditing" OnRowUpdating="gv_UserTable_RowUpdating" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" OnRowDataBound="gv_UserTable_RowDataBound">
+    <asp:GridView ID="gv_UserTable" runat="server" AllowSorting="True" AutoGenerateColumns="False" DataKeyNames="UUID" DataSourceID="SqlDataSource1" OnRowEditing="gv_UserTable_RowEditing" OnRowUpdating="gv_UserTable_RowUpdating" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" OnRowDataBound="gv_UserTable_RowDataBound" CssClass="table" RowStyle-CssClass="row" EditRowStyle-CssClass="row">
         <Columns>
             <asp:BoundField DataField="UUID" HeaderText="UUID" ReadOnly="True" SortExpression="UUID" />
             <asp:BoundField DataField="name" HeaderText="name" SortExpression="name" />

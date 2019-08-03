@@ -306,6 +306,7 @@
                                  <% if (currentAccountType == "admin")
                                     {%>
                                         <a class="dropdown-item" href="SecurityEventLogs.aspx">Security Events</a>
+                                        <a class="dropdown-item" href="ListUser.aspx">Admin Panel</a>
                                  <% } %>
                                   <% if (currentAccountType == "student")
                                     {%>
