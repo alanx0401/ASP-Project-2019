@@ -202,6 +202,7 @@
                                         </div>
                                         <div class="form-group">
                                             <asp:TextBox ID="tbContactNumber" runat="server" placeholder="Contact Number"></asp:TextBox>
+                                            <asp:RegularExpressionValidator ID="REVContactNumber" runat="server" ErrorMessage="Contact Number is in a wrong format. It must be a Singapore number." ControlToValidate="tbContactNumber" Display="Dynamic" ForeColor="Red" ValidationExpression="^[89]\d{7}$">*</asp:RegularExpressionValidator>
                                             <asp:RequiredFieldValidator ID="RFVContactNumber" runat="server" ErrorMessage="Please enter your contact number" ControlToValidate="tbContactNumber" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
                                         </div>
                                         <div class="form-group">
@@ -231,17 +232,18 @@
                                         </div>
                                     </asp:Panel>
 
-                                    <p>
+                                    <div class="form-group">
                                         <asp:Label ID="lblLogin" runat="server"><a href="/login.aspx">Sign in instead.</a></asp:Label>
                                         <asp:Button ID="btnNext" class="btn btn-primary float-right" runat="server" Text="Next" OnClick="btnNext_Click" />
                                         <asp:Button ID="btnNext1" class="btn btn-primary float-right" runat="server" Text="Next" OnClick="btnNext1_Click" Visible="false"/>
                                         <asp:Button ID="btnBack1" class="btn btn-default float-left" runat="server" Text="Back" Visible="false" OnClick="btnBack1_Click" CausesValidation="False" />
                                         <asp:Button ID="btnRegister" class="btn btn-success float-right" runat="server" Text="Register" Visible="false" OnClick="btnRegister_Click" />
-                                    </p>
-                                    <p>
-                                        <asp:Label ID="lblError" runat="server"></asp:Label>
+                                    </div>
+                                    <div class="form-group">
+                                        <asp:Label ID="lblError" runat="server" class="float-left"></asp:Label>
                                         <!--<asp:Label ID="lblError0" runat="server"></asp:Label>-->
                                         <asp:ValidationSummary ID="ValidationSummary1" runat="server" ForeColor="Red" />
+                                    </div>
                                 </form>
                                 <style>
                                     #tbEmail, #tbPassword, #tbName, #tbContactNumber, #tbConfirmPassword, #tbDateOfBirth, #tbAdminNo, #tbVerifyPassword {

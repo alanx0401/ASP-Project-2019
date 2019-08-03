@@ -470,7 +470,7 @@ namespace ITP213
             }
             else
             {
-                lblError.Text = "Please ensure your password and email are verified.";
+                lblError.Text = "Please ensure your phone number and email are verified.";
             }  
             
         }
@@ -986,7 +986,10 @@ namespace ITP213
                     country = "SG";
                 }
             }
-
+            else if (loginObj.accountType == "admin")
+            {
+                country = "SG";
+            }
             return country;
         }
 

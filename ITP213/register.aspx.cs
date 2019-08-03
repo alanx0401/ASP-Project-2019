@@ -148,28 +148,26 @@ namespace ITP213
         }
         protected void btnRegister_Click(object sender, EventArgs e) // Verify Phone & Sending Email Verification
         {
-            // Assuming that email verification has been sent & user verified their phone code, 
-            // we need to insert the current device details now
-            insertIntoNewDeviceLoginTable();
-
-            // Sending email verification
-            string sendEmail = ConfigurationManager.AppSettings["SendEmail"];
-            if (sendEmail.ToLower() == "true")
-            {
-                sendingEmailVerification();
-            }
-
-            // Verify phone code
+            
             bool result = DAL.Peishan_Function.EmailAndPhoneValidation.phoneVerification(tbVerifyPassword.Text.Trim(), tbEmail.Text.Trim());
             if (result == true)
             {
+                insertIntoNewDeviceLoginTable();
+
+                // Sending email verification
+                string sendEmail = ConfigurationManager.AppSettings["SendEmail"];
+                if (sendEmail.ToLower() == "true")
+                {
+                    sendingEmailVerification();
+                }
+
                 string email = tbEmail.Text.Trim();
                 email = DAL.Peishan_Function.EmailAndPhoneValidation.EncodeToken(email);
                 Response.Redirect("/Login.aspx?x="+email);
             }
             else
             {
-                lblError.Text = "Sorry! An error has occurred!";
+                lblError.Text = "Password entered is either incorrect or expired.";
                 lblError.ForeColor = System.Drawing.Color.Red;
             }
 

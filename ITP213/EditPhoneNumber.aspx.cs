@@ -138,13 +138,14 @@ namespace ITP213
                 // Phone
                 if (tbPhoneNumber.Text != obj.mobile) // user has changed their phone number || phone has not been verified
                 {
-
+                    PanelOTP.Visible = false;
 
                     if (PanelEnterPasswordToChangePhoneNo.Visible == true)
                     {
                         Boolean passwordResult = checkPassword(tbPasswordPhoneNumber.Text.Trim());
                         if (passwordResult == true) //************ password matches db password
                         {
+                            btnConfirmUpdate.Visible = false;
                             string mobile = tbPhoneNumber.Text.Trim();
                             int result = EditAccountDAO.updateMobileByUUID(mobile, Session["UUID"].ToString());
                             if (result == 1)
@@ -169,6 +170,7 @@ namespace ITP213
                                 else
                                 {
                                     lblError.Text = "Sorry! An error has occurred.";
+                                    lblError.ForeColor = System.Drawing.Color.Red;
                                 }
 
                             }
@@ -190,10 +192,10 @@ namespace ITP213
                     }
 
                 }
-            }
-            else
-            {
-                lblError.Text = "Please change something to update.";
+                else
+                {
+                    lblError.Text = "Please change something to update.";
+                }
             }
         }
         private void checkVerificationTime()

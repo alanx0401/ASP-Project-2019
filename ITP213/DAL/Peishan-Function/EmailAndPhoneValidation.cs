@@ -43,23 +43,36 @@ namespace ITP213.DAL.Peishan_Function
 
             return otp;
         }
-        public static void sendSMSForPhoneVerification(string password, string verifyNumber)
+        public static Boolean sendSMSForPhoneVerification(string password, string verifyNumber)
         {
             // sms
-            string accountSid = Environment.GetEnvironmentVariable("TWILIO_ACCOUNT_SID");
-            string authToken = Environment.GetEnvironmentVariable("TWILIO_AUTH_TOKEN");
-            Twilio.TwilioClient.Init(accountSid, authToken);
-            var to = new PhoneNumber("+65" + verifyNumber); // Verifying number
-            var from = new PhoneNumber("+14249032648"); // Twilio num
+            Boolean verdict = false;
+            try
+            {
+                string accountSid = Environment.GetEnvironmentVariable("TWILIO_ACCOUNT_SID");
+                string authToken = Environment.GetEnvironmentVariable("TWILIO_AUTH_TOKEN");
+                Twilio.TwilioClient.Init(accountSid, authToken);
+                var to = new PhoneNumber("+65" + verifyNumber); // Verifying number
+                var from = new PhoneNumber("+14249032648"); // Twilio num
 
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
-                                                | SecurityProtocolType.Tls11
-                                                | SecurityProtocolType.Tls12
-                                                | SecurityProtocolType.Ssl3;
-            /*var message = MessageResource.Create(
-                to: to,
-                from: from,
-                body: "Your OTP for phone verification is " + password);*/
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                                                    | SecurityProtocolType.Tls11
+                                                    | SecurityProtocolType.Tls12
+                                                    | SecurityProtocolType.Ssl3;
+                /*var message = MessageResource.Create(
+                    to: to,
+                    from: from,
+                    body: "Your OTP for phone verification is " + password);*/
+                verdict = true;
+            }
+            catch(Exception ex)
+            {
+                verdict = false;
+                return verdict;
+            }
+
+            return verdict;
+
         }
         public static Tuple<Boolean, string> SendOTP(string email, string number)
         {
@@ -94,10 +107,17 @@ namespace ITP213.DAL.Peishan_Function
                     if (result == 1)
                     {
                         // ************
-                        sendSMSForPhoneVerification(otpPassword, number); // send an sms to the user --> costs $0.05 per sms
+                        bool sendSMSresult = sendSMSForPhoneVerification(otpPassword, number); // send an sms to the user --> costs $0.05 per sms
 
-                        //lblError.Text = "Your otp password: " + otpPassword; // ****temp
-                        verdict = true;
+                        if (sendSMSresult == true)
+                        {
+                            //lblError.Text = "Your otp password: " + otpPassword; // ****temp
+                            verdict = true;
+                        }
+                        else
+                        {
+                            verdict = false;
+                        }
                     }
 
                     else
@@ -320,7 +340,7 @@ namespace ITP213.DAL.Peishan_Function
                         if (result2 == 1)
                         {
                             // ************
-                            //sendSMSForPhoneVerification(otpPassword, tbContactNumber.Text);
+                            sendSMSForPhoneVerification(otpPassword, loginObj.mobile);
                             //lblError.Text = "Resending otp as it expires: Your otp password: " + otpPassword; // ****temp
                             verdict = true;
 
