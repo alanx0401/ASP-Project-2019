@@ -495,8 +495,9 @@
     <Compile Include="EditEmail.aspx.designer.cs">
       <DependentUpon>EditEmail.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Error.aspx.cs">
+	<Compile Include="Error.aspx.designer.cs">
       <DependentUpon>Error.aspx</DependentUpon>
+    </Compile>
     <Compile Include="EditPhoneNumber.aspx.cs">
       <DependentUpon>EditPhoneNumber.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -507,9 +508,6 @@
     <Compile Include="Error403.aspx.cs">
       <DependentUpon>Error403.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Error.aspx.designer.cs">
-      <DependentUpon>Error.aspx</DependentUpon>
     </Compile>
     <Compile Include="Email\IEmailSender.cs" />
     <Compile Include="Email\SendEmailDetails.cs" />
