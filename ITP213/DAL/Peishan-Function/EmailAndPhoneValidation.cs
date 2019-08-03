@@ -16,9 +16,6 @@ using Twilio.Types;
 
 namespace ITP213.DAL.Peishan_Function
 {
-    /// <summary>
-    /// ******** Note: SMS feature is incomplete!
-    /// </summary>
     public class EmailAndPhoneValidation
     {
         // For phone verification

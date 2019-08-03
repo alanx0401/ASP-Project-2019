@@ -11,9 +11,11 @@ using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Xml;
 using Twilio.Rest.Api.V2010.Account;
 using Twilio.Types;
 
@@ -67,7 +69,7 @@ namespace ITP213
             tbPassword.Attributes.Add("autocomplete", "off");
             tb2FAPin.Attributes.Add("autocomplete", "off");
 
-            
+            tripStatus(); // not sure if it's working
             
             // check recaptcha verification if fail count is more than or equal to 6
             DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
@@ -129,14 +131,6 @@ namespace ITP213
         }
         protected void btnPanel1_Click(object sender, EventArgs e) // Submit login form and checks if pwd and email matches. 
         {
-            // If it matches, check if 2FA is enabled.
-            // --> If 2FA is enabled, check what is enabled - googleAuth || OTP
-            // --> If 2FA is not enabled, just login.
-            // If it doesn't, check for numberOfFailedAttempts. 
-            // --> If attempt is more than/ equal to 6, CAPTCHA. 
-            // --> If attempt is more than 10, ban account msg
-
-            // fix error exception msg!
             Panel1();
         }
         protected void btnPanel2_Click(object sender, EventArgs e) // Part 2 --> Part 3
@@ -151,93 +145,7 @@ namespace ITP213
 
         protected void btnPanel3_Click(object sender, EventArgs e) // Part 3 --> Part 2
         {
-            //-- Check if the password is crt, if it is, then find the UUID to retrieve personal datas
-
-            // Assumming password is checked/verified in Part 1, now, you have to verify if 2FA value is correct.
-            // If user selects googleAuth
-            // --> check if the code is valid
-            // ----> if it is valid, allow user to access /default.aspx
-            // ----> If it is not valid, failedAttemptCounter gets increased by 1
-            // Else if user selects 2FA --> check if the password expires
-            // ---> If it did, send a password
-            // ---> If it didn't, validate if it matches the one in the database
-            // ------> If it did, allow user to access /default.aspx
-            // ------> Else, failedAttemptCounter gets increased by 1.
-            // delete account failed attempts
-            /*DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
-            string UUID = loginObj.UUID;
-            DAL.Login AccountFailedAttemptObj = getAccountFailedAttemptByUUID(UUID);
-
-            if (AccountFailedAttemptObj != null) // Delete failed attempt(s)
-            {
-
-                int result = deleteAccountFailedAttemptTableByUUID(UUID);
-                if (result == 1) { }
-                else
-                {
-                    lblError.Text = "An error has occured. Please try again.";
-                }
-
-            }*/
-            //-- If password is wrong,
-            /*else // if login fails
-            {*/
             Panel3();
-            /*DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
-            string UUID = loginObj.UUID;
-            DAL.Login AccountFailedAttemptObj = LoginDAO.getAccountFailedAttemptByUUID(UUID);
-
-            if (AccountFailedAttemptObj != null) // update
-            {
-                int failCount = AccountFailedAttemptObj.AccountFailedAttemptCounter;
-                if (failCount == 10)
-                {
-                    int result = LoginDAO.updateAccountStatusToBanByUUID(UUID);
-                    if (result == 1) { }
-                    else
-                    {
-                        lblError.Text = "An error has occured. Please try again.";
-                    }
-                }
-                else
-                {
-                    failCount += 1;
-
-                    int result = LoginDAO.updateAccountFailedAttemptTableByUUID(UUID, failCount);
-                    if (result == 1) { }
-                    else
-                    {
-                        lblError.Text = "An error has occured. Please try again.";
-                    }
-                }
-
-            }
-            else // insert
-            {
-                int result = LoginDAO.insertAccountFailedAttemptTable(UUID);
-                if (result == 1) { }
-                else
-                {
-                    lblError.Text = "An error has occured. Please try again.";
-                }
-            }
-
-
-            lblError.Text = "Please check your email or password!";
-            lblError.ForeColor = System.Drawing.Color.Red;
-            //}
-            // Password Expiration: cannot be more than a year --> Based on UUID
-            DAL.Login p = LoginDAO.getChangePasswordDateByEmailAndPasswordHash("{0x39d609a5,0x10eb,0x40a8,{0x86,0xf1,0x06,0x0b,0xfe,0xe7,0xc1,0x82}}");
-
-            DateTime changePasswordDate = Convert.ToDateTime(p.changePasswordDate.ToString());
-
-            if ((DateTime.Now - changePasswordDate).TotalDays > 365)// if bigger than one year
-            {
-                Response.Redirect("changePassword.aspx");
-            }
-            string PCName = Dns.GetHostEntry(Request.ServerVariables["REMOTE_ADDR"]).HostName;
-
-            Response.Redirect("Default.aspx");*/
         }
 
         protected void btnBack2_Click(object sender, EventArgs e) 
@@ -484,76 +392,86 @@ namespace ITP213
 
             if (settingsObj.emailVerified == "Yes" && settingsObj.phoneVerified == "Yes")
             {
-                Session["UUID"] = loginObj.UUID;
-                // **** Find ways to remove the session below
-                Session["accountID"] = loginObj.UUID;
-                Session["accountType"] = loginObj.accountType;
-                Session["name"] = loginObj.name;
-                Session["email"] = tbEmail.Text;
-                Session["mobile"] = loginObj.mobile;
-                Session["dateOfBirth"] = loginObj.dateOfBirth;
-
-                DAL.Login AccountFailedAttemptObj = LoginDAO.getAccountFailedAttemptByUUID(loginObj.UUID);
-
-                if (AccountFailedAttemptObj != null) // Delete failed attempt(s)
+                string countryUserShouldBeIn = checkCountry();
+                string countryUserIsCurrentlyIn = GetCountrybyip();
+                if (countryUserShouldBeIn == countryUserIsCurrentlyIn)
                 {
+                    //=======================================
+                    Session["UUID"] = loginObj.UUID;
+                    // **** Find ways to remove the session below
+                    Session["accountID"] = loginObj.UUID;
+                    Session["accountType"] = loginObj.accountType;
+                    Session["name"] = loginObj.name;
+                    Session["email"] = tbEmail.Text;
+                    Session["mobile"] = loginObj.mobile;
+                    Session["dateOfBirth"] = loginObj.dateOfBirth;
 
-                    int result = LoginDAO.deleteAccountFailedAttemptTableByUUID(loginObj.UUID);
-                    if (result == 1)
+                    DAL.Login AccountFailedAttemptObj = LoginDAO.getAccountFailedAttemptByUUID(loginObj.UUID);
+
+                    if (AccountFailedAttemptObj != null) // Delete failed attempt(s)
                     {
-                        // ******
+
+                        int result = LoginDAO.deleteAccountFailedAttemptTableByUUID(loginObj.UUID);
+                        if (result == 1)
+                        {
+                            // ******
+
+                        }
+                        else
+                        {
+                            lblError.Text = "An error has occured. Please try again.";
+                        }
 
                     }
-                    else
+
+                    // Kai Ming's function
+                    SecurityEventLog eventObj = new SecurityEventLog();
+                    int result3 = eventObj.EventInsert("Successful Login", DateTime.Now, loginObj.UUID);
+                    newDeviceLogin();
+
+                    if (Session["accountType"].ToString() == "student")
                     {
-                        lblError.Text = "An error has occured. Please try again.";
+                        // student table
+                        DAL.Login studentObj = LoginDAO.getStudentTableByAccountID(loginObj.UUID);
+                        Session["adminNo"] = studentObj.aNum;
+                        Session["school"] = studentObj.studentSchool;
+                        Session["course"] = studentObj.course;
+                        Session["allergies"] = studentObj.allergies;
+                        Session["dietaryNeeds"] = studentObj.dietaryNeeds;
+                        //Session["parentID"] = studentObj.parentID;
+
+                    }
+                    else if (Session["accountType"].ToString() == "lecturer")
+                    {
+                        // lecturer table
+                        DAL.Login lecturerObj = LoginDAO.getLecturerTableByAccountID(loginObj.UUID);
+                        Session["staffID"] = lecturerObj.staffID;
+                        Session["school"] = lecturerObj.lecturerSchool;
+                        Session["staffRole"] = lecturerObj.staffRole;
                     }
 
+                    /*else if (Session["accountType"].ToString() == "parent")
+                    {
+                        // parent table
+                        DAL.Login parentObj = LoginDAO.getParentTableByAccountID(loginObj.accountID);
+                        Session["parentID"] = parentObj.parentID;
+                        Session["adminNo"] = parentObj.adminNo;
+                    }*/
+
+                    // Password Expiration: cannot be more than a year
+                    checkPasswordExpiration();
+
+                    Response.Redirect("Default.aspx");
                 }
-
-                // Kai Ming's function
-                SecurityEventLog eventObj = new SecurityEventLog();
-                int result3 = eventObj.EventInsert("Successful Login", DateTime.Now, loginObj.UUID);
-                newDeviceLogin();
-
-                if (Session["accountType"].ToString() == "student")
+                else
                 {
-                    // student table
-                    DAL.Login studentObj = LoginDAO.getStudentTableByAccountID(loginObj.UUID);
-                    Session["adminNo"] = studentObj.adminNo;
-                    Session["school"] = studentObj.studentSchool;
-                    Session["course"] = studentObj.course;
-                    Session["allergies"] = studentObj.allergies;
-                    Session["dietaryNeeds"] = studentObj.dietaryNeeds;
-                    //Session["parentID"] = studentObj.parentID;
-
+                    lblError.Text = "Sorry, you are not allow to log in.";
                 }
-                else if (Session["accountType"].ToString() == "lecturer")
-                {
-                    // lecturer table
-                    DAL.Login lecturerObj = LoginDAO.getLecturerTableByAccountID(loginObj.UUID);
-                    Session["staffID"] = lecturerObj.staffID;
-                    Session["school"] = lecturerObj.lecturerSchool;
-                    Session["staffRole"] = lecturerObj.staffRole;
-                }
-
-                /*else if (Session["accountType"].ToString() == "parent")
-                {
-                    // parent table
-                    DAL.Login parentObj = LoginDAO.getParentTableByAccountID(loginObj.accountID);
-                    Session["parentID"] = parentObj.parentID;
-                    Session["adminNo"] = parentObj.adminNo;
-                }*/
-
-                // Password Expiration: cannot be more than a year
-                checkPasswordExpiration();
-
-                Response.Redirect("Default.aspx");
             }
             else
             {
                 lblError.Text = "Please ensure your password and email are verified.";
-            }
+            }  
             
         }
         /// <summary>
@@ -803,95 +721,6 @@ namespace ITP213
                 {
                     lblError.Text = "Sorry, password is either invalid or expired. ";
                 }
-                // 1) Check if the data has alr existed
-                /*DAL.Register verifyPhoneOTPObj = RegisterDAO.checkVerifyPhoneOTP(UUID);
-
-                if (verifyPhoneOTPObj != null) // they should receive an sms by now; hence, verifyPhoneOTPObj shouldn't be null
-                {
-                    // check if datetimeSend passed a day
-                    var currentDateTime = DateTime.Now;
-                    var otpDateTimeSend = verifyPhoneOTPObj.dateTimeSend;
-                    var diff = currentDateTime.Subtract(otpDateTimeSend);
-
-                    if (diff.Minutes < 1) // if the minute difference is less than 1, password is still valid
-                    {
-                        // ********** get db hash & db salt
-                        SHA512Managed hashing = new SHA512Managed();
-                        string dbHash = verifyPhoneOTPObj.passwordHash;
-                        string dbSalt = verifyPhoneOTPObj.passwordSalt;
-
-                        // validating password
-                        string pwdWithSalt = userpassword + dbSalt;
-                        byte[] hashWithSalt = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
-                        string userHash = Convert.ToBase64String(hashWithSalt);
-
-                        if (userHash.Equals(dbHash)) // MATCH; UPDATE ACCOUNT
-                        {
-                            int result = RegisterDAO.updatePhoneVerifiedInAccountTable(UUID);
-                            if (result == 1)
-                            {
-                                int result2 = RegisterDAO.deleteVerifyPhoneOTPTable(UUID); // delete OTP table
-                                if (result2 == 1)
-                                {
-                                    LogIn();
-                                    //Response.Redirect("/login.aspx"); // Successful!
-                                }
-                                else
-                                {
-                                    lblError.Text = "Sorry! An error has occurred!";
-                                    lblError.ForeColor = System.Drawing.Color.Red;
-                                }
-                            }
-                            else
-                            {
-                                lblError.Text = "Sorry! An error has occurred!";
-                                lblError.ForeColor = System.Drawing.Color.Red;
-                            }
-                        }
-                        else
-                        {
-                            lblError.Text = "Sorry! Password is not valid!";
-                            lblError.ForeColor = System.Drawing.Color.Red;
-                        }
-                    }
-                    else // ******************send a new otp // if the minute difference is more than 1, password is invalid; Hence, there's a need to generate new password
-                    {
-                        lblError.Text = "Sorry! OTP has expired, we'll send you a new one.";
-                        lblError.ForeColor = System.Drawing.Color.Red;
-
-                        // sending a new otp
-                        string otpPassword = string.Empty;
-                        otpPassword = DAL.Peishan_Function.EmailAndPhoneValidation.otp().Trim();
-
-                        var getHashingAndSaltingPwd2 = hashingAndSaltingPassword(otpPassword);
-
-                        string finalHash = string.Empty;
-                        finalHash = getHashingAndSaltingPwd2.Item1;
-
-                        string salt = string.Empty;
-                        salt = getHashingAndSaltingPwd2.Item2;
-
-                        int result = RegisterDAO.insertIntoVerifyPhoneOTP(UUID, finalHash, salt); // insert the otp as they do not exist
-
-                        if (result == 1)
-                        {
-                            //sendSMSForPhoneVerification(otpPassword, tbContactNumber.Text);
-                            lblError.Text = "Your otp password has expired: " + otpPassword;
-                        }
-
-                        else
-                        {
-                            lblError.Text = "Sorry! An error has occurred!";
-                            lblError.ForeColor = System.Drawing.Color.Red;
-                        }
-                    }
-
-                }
-                else
-                {
-                    lblError.Text = "Sorry! An error has occurred!";
-                    lblError.ForeColor = System.Drawing.Color.Red;
-                }*/
             }
             catch (Exception)
             {
@@ -914,11 +743,6 @@ namespace ITP213
         // **********************************New Device Login
         private void newDeviceLogin()
         {
-            // select statement to retrieve the lists of macAddresses stored into the newDeviceLogin table
-            // Check if the list of macAddresses matches with the current macAddress
-            // ---> If it does, redirect them to new device login alert
-            // ---> Else, insert them into newDeviceLogin && sendEmail to giive the user an option on whether to remove the device
-            // ---> (EXTRA): Take note of this macAddress with this UUID, if it tries to login again, prevent them from doing so.
             Boolean result = DAL.Peishan_Function.NewDeviceLogin.checkDeviceLogin(tbEmail.Text.Trim()).Item1;
             if (result == true) // insert and update success
             {
@@ -993,6 +817,214 @@ namespace ITP213
             {
                 btnResendPhoneVerification.Visible = false;
             }
+        }
+        private void tripStatus()
+        {
+            try
+            {
+                string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+
+                StringBuilder sqlStr = new StringBuilder();
+                // overseasTripStatus = 'Ongoing'
+                sqlStr.AppendLine("UPDATE overseasTrip");
+                sqlStr.AppendLine("SET overseasTripStatus='ONGOING'");
+                sqlStr.AppendLine("WHERE departureDate<= GETDATE() AND arrivalDate>=GETDATE();");
+                // overseasTripStatus = 'Ended'
+                sqlStr.AppendLine("UPDATE overseasTrip");
+                sqlStr.AppendLine("SET overseasTripStatus='ENDED'");
+                sqlStr.AppendLine("WHERE departureDate<= GETDATE() AND arrivalDate<=GETDATE();");
+
+                SqlConnection myConn = new SqlConnection(DBConnect);
+                myConn.Open();
+                SqlCommand cmd = new SqlCommand(sqlStr.ToString(), myConn);
+                int result = cmd.ExecuteNonQuery();
+                myConn.Close();
+            }
+            catch (Exception ex)
+            {
+                lblError.Text = "Sorry, something went wrong. Please try again.";
+            }
+            finally {}
+        }
+        public static DAL.TripAllocation displayTripCountryBasedOnAdminNo(string adminNo) // check if user is inside ongoing trip
+        {
+            // Get connection string from web.config
+            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+            SqlDataAdapter da;
+            DataSet ds = new DataSet();
+
+            // Create adapter 
+            // Write SQL Statement to retrieve all columns from account by email & password using query parameter
+            StringBuilder sqlStr = new StringBuilder();
+            sqlStr.AppendLine("select * from overseasTrip");
+            sqlStr.AppendLine("INNER JOIN overseasEnrolledStudent ON overseasTrip.tripID = overseasEnrolledStudent.tripID");
+            sqlStr.AppendLine("where");
+            sqlStr.AppendLine("STR(overseasTrip.tripID)+'.'+ @sAdminNo");
+            sqlStr.AppendLine("not in (select STR(tripID)+'.'+adminNo from withdrawTripRequest where withdrawalTripRequestStatus='Approved')");
+            sqlStr.AppendLine("and adminNo=@sAdminNo");
+            sqlStr.AppendLine("and overseasTripStatus='ONGOING'");
+
+            DAL.TripAllocation obj = new DAL.TripAllocation(); // create a login instance;
+
+            SqlConnection myConn = new SqlConnection(DBConnect);
+            da = new SqlDataAdapter(sqlStr.ToString(), myConn);
+            da.SelectCommand.Parameters.AddWithValue("@sAdminNo", adminNo);
+            // fill dataset
+            da.Fill(ds, "accountTable");
+            int rec_cnt = ds.Tables["accountTable"].Rows.Count;
+            if (rec_cnt == 1)
+            {
+                DataRow row = ds.Tables["accountTable"].Rows[0]; // Sql command only returns only 1 record
+                obj.country = row["country"].ToString();
+            }
+            else
+            {
+                obj = null;
+            }
+            return obj;
+
+        }
+        public static DAL.TripAllocation displayTripCountryBasedOnStaffID(string staffID) // goal: wants to display tripName & tripID & beforeArrivalDate
+        {
+            // Get connection string from web.config
+            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
+            SqlDataAdapter da;
+            DataSet ds = new DataSet();
+
+            // Create adapter 
+            // Write SQL Statement to retrieve all columns from account by email & password using query parameter
+            StringBuilder sqlStr = new StringBuilder();
+            sqlStr.AppendLine("Select * From overseasTrip");
+            sqlStr.AppendLine("INNER JOIN overseasEnrolledLecturer ON overseasTrip.tripID = overseasEnrolledLecturer.tripID");
+            sqlStr.AppendLine("WHERE staffID=@lStaffID and overseasTripStatus='ONGOING'");
+            sqlStr.AppendLine("ORDER BY arrivalDate DESC;");
+
+            DAL.TripAllocation obj = new DAL.TripAllocation(); // create a login instance;
+
+            SqlConnection myConn = new SqlConnection(DBConnect);
+            da = new SqlDataAdapter(sqlStr.ToString(), myConn);
+            da.SelectCommand.Parameters.AddWithValue("lStaffID", staffID);
+            // fill dataset
+            da.Fill(ds, "accountTable");
+            int rec_cnt = ds.Tables["accountTable"].Rows.Count;
+            if (rec_cnt == 1)
+            {
+                DataRow row = ds.Tables["accountTable"].Rows[0]; // Sql command only returns only 1 record
+                obj.country= row["country"].ToString();
+            }
+            else
+            {
+                obj = null;
+            }
+            return obj;
+        }
+
+        private string checkCountry()
+        {
+            string country = string.Empty;
+
+            DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
+
+            // check country
+            if (loginObj.accountType == "student")
+            {
+                DAL.Login studentObj = LoginDAO.getStudentTableByAccountID(loginObj.UUID);
+
+                DAL.TripAllocation tripObj = displayTripCountryBasedOnAdminNo(studentObj.aNum);
+
+                if (tripObj != null)
+                {
+                    // trip is ongoing
+                    country = tripObj.country;
+
+                    if (country == "Canada")
+                    {
+                        country = "CA";
+                    }
+                    else if (country == "Hong Kong")
+                    {
+                        country = "HK";
+                    }
+                    else if (country == "United States")
+                    {
+                        country = "US";
+                    }
+                }
+                else
+                {
+                    // user must be in singapore
+                    country = "SG";
+                }
+            }
+            else if (loginObj.accountType == "lecturer")
+            {
+                DAL.Login lecturerObj = LoginDAO.getLecturerTableByAccountID(loginObj.UUID);
+
+                DAL.TripAllocation tripObj = displayTripCountryBasedOnStaffID(lecturerObj.staffID);
+
+                if (tripObj != null)
+                {
+                    // trip is ongoing
+                    country = tripObj.country;
+
+                    if (country == "Canada")
+                    {
+                        country = "CA";
+                    }
+                    else if (country == "Hong Kong")
+                    {
+                        country = "HK";
+                    }
+                    else if (country == "United States")
+                    {
+                        country = "US";
+                    }
+                }
+                else
+                {
+                    // user must be in singapore
+                    country = "SG";
+                }
+            }
+
+            return country;
+        }
+
+        public string GetCountrybyip()
+        {
+            string ipaddress = getExternalIp();
+            string strreturnvalue = string.Empty;
+            string ipResponse = IPRequestHelper("http://ip-api.com/xml/" + ipaddress);
+            XmlDocument ipInfixml = new XmlDocument();
+            ipInfixml.LoadXml(ipResponse);
+            XmlNodeList responseXML = ipInfixml.GetElementsByTagName("query");
+            string returnvalue = responseXML.Item(0).ChildNodes[2].InnerText.ToString();
+
+            return returnvalue;
+
+        }
+
+        public static string getExternalIp()
+        {
+            try
+            {
+                string externalIP;
+                externalIP = (new WebClient()).DownloadString("http://checkip.dyndns.org/");
+                externalIP = (new Regex(@"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"))
+                             .Matches(externalIP)[0].ToString();
+                return externalIP;
+            }
+            catch { return null; }
+        }
+        public string IPRequestHelper(string url)
+        {
+            HttpWebRequest objrequest = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebResponse objresponse = (HttpWebResponse)objrequest.GetResponse();
+            StreamReader responsereader = new StreamReader(objresponse.GetResponseStream());
+            string responseread = responsereader.ReadToEnd();
+            responsereader.Close();
+            responsereader.Dispose();
+            return responseread;
         }
     }
 }
