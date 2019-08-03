@@ -68,9 +68,8 @@
         </fieldset>
         <p>Search by dropdown list: &nbsp<asp:DropDownList ID="DDLSearch" runat="server" AutoPostBack="True" OnSelectedIndexChanged="DDLSearch_SelectedIndexChanged" DataTextField="eventDesc" DataValueField="eventDesc">
                 <asp:ListItem Value="0">Please Select</asp:ListItem>
-                <asp:ListItem Value="1">Display Security Event in username mode</asp:ListItem>
-                <asp:ListItem Value="2">Search by Event Description</asp:ListItem>
-                <asp:ListItem Value="3">Search by Date Range</asp:ListItem>
+                <asp:ListItem Value="1">Search by Event Description</asp:ListItem>
+                <asp:ListItem Value="2">Search by Date Range</asp:ListItem>
             </asp:DropDownList>&nbsp <asp:Button ID="btnReset" runat="server" Text="Reset" OnClick="btnReset_Click" /></p>
     </div>
     <div>
@@ -102,30 +101,6 @@
                       <asp:BoundField DataField="eventDesc" HeaderText="Event Description" SortExpression="eventDesc" />
                       <asp:BoundField DataField="dateTimeDetails" HeaderText="Date Occurred" SortExpression="dateTimeDetails" />
                       <asp:BoundField DataField="username" HeaderText="User" SortExpression="username" />
-                  </Columns>
-                  <FooterStyle BackColor="#C6C3C6" ForeColor="Black" />
-                  <HeaderStyle BackColor="#4A3C8C" Font-Bold="True" ForeColor="#E7E7FF" />
-                  <PagerStyle BackColor="#C6C3C6" ForeColor="Black" HorizontalAlign="Right" />
-                  <RowStyle BackColor="#DEDFDE" ForeColor="Black" />
-                  <SelectedRowStyle BackColor="#9471DE" Font-Bold="True" ForeColor="White" />
-                  <SortedAscendingCellStyle BackColor="#F1F1F1" />
-                  <SortedAscendingHeaderStyle BackColor="#594B9C" />
-                  <SortedDescendingCellStyle BackColor="#CAC9C9" />
-                  <SortedDescendingHeaderStyle BackColor="#33276A" />
-              </asp:GridView>
-          </asp:Panel>
-        </asp:Panel>
-    </div>
-    <div>
-        <asp:Panel ID="PanelAuditLogs" runat="server">
-          <p>All audit logs of admin account</p>
-          <asp:Panel runat="server" ScrollBars="vertical" Height="200px" Width="1000px">
-              <asp:GridView ID="GVAuditLogs" runat="server" Height="200px" Width="1000px" AutoGenerateColumns="False" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None">
-                  <Columns>
-                      <asp:BoundField DataField="eventID" HeaderText="S/N" />
-                      <asp:BoundField DataField="eventDesc" HeaderText="Event Description" />
-                      <asp:BoundField DataField="dateTimeDetails" HeaderText="Date Occurred" />
-                      <asp:BoundField DataField="UUID" HeaderText="UUID" />
                   </Columns>
                   <FooterStyle BackColor="#C6C3C6" ForeColor="Black" />
                   <HeaderStyle BackColor="#4A3C8C" Font-Bold="True" ForeColor="#E7E7FF" />
@@ -191,7 +166,7 @@
                   <SortedDescendingHeaderStyle BackColor="#33276A" />
           </asp:GridView>
         </asp:Panel>
-            <asp:Chart ID="ChartEvent" runat="server" DataSourceID="SqlDataSourceChart" Height="200px" Width="1000px">
+            <asp:Chart ID="ChartEvent" runat="server" DataSourceID="SqlDataSourceChart" Height="200px" Width="1000px" Palette="Berry">
                 <Series>
                     <asp:Series Name="Series1" XValueMember="eventDesc" YValueMembers="countEvent">
                     </asp:Series>

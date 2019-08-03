@@ -23,7 +23,6 @@ namespace ITP213
             {
                 bind();
                 PanelEvents.Visible = true;
-                PanelAuditLogs.Visible = false;
                 PanelSearchFilter.Visible = false;
                 PanelEventDateRange.Visible = false;
                 btnUUID.Enabled = true;
@@ -37,12 +36,6 @@ namespace ITP213
             GVEventLogs.DataSource = eventsList;
             GVEventLogs.DataBind();
 
-            string accountType = "admin";
-            List<SecurityEventLog> auditLogList = new List<SecurityEventLog>();
-            auditLogList = obj.auditLog(accountType);
-            GVEventLogs.DataSource = eventsList;
-            GVEventLogs.DataBind();
-
         }
 
         protected void btnReset_Click(object sender, EventArgs e)
@@ -51,7 +44,6 @@ namespace ITP213
             tbStartDate.Text = "";
             tbEndDate.Text = "";
             PanelEvents.Visible = true;
-            PanelAuditLogs.Visible = false;
             PanelSearchFilter.Visible = false;
             PanelEventDateRange.Visible = false;
             GVEventDateRange.Visible = false;
@@ -66,7 +58,6 @@ namespace ITP213
             if (DDLSearch.SelectedValue== "0")
             {
                 PanelEvents.Visible = true;
-                PanelAuditLogs.Visible = false;
                 PanelSearchFilter.Visible = false;
                 PanelEventDateRange.Visible = false;
                 
@@ -74,21 +65,12 @@ namespace ITP213
             else if (DDLSearch.SelectedValue== "1")
             {
                 PanelEvents.Visible = false;
-                PanelAuditLogs.Visible = true;
-                PanelSearchFilter.Visible = false;
-                PanelEventDateRange.Visible = false;
-            }
-            else if (DDLSearch.SelectedValue == "2")
-            {
-                PanelEvents.Visible = false;
-                PanelAuditLogs.Visible = false;
                 PanelSearchFilter.Visible = true;
                 PanelEventDateRange.Visible = false;
             }
             else
             {
                 PanelEvents.Visible = false;
-                PanelAuditLogs.Visible = false;
                 PanelSearchFilter.Visible = false;
                 PanelEventDateRange.Visible = true;
             }

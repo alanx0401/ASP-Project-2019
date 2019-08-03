@@ -71,8 +71,8 @@
     </div>
       <div>
         <asp:Panel ID="PanelEvents" runat="server">
-         <asp:Panel runat="server" ScrollBars="Vertical" Height="200px" Width="1100px">
-          <asp:GridView ID="GVEventLogs" runat="server" AutoGenerateColumns="False" height="200px" Width="1100px" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None" >
+         <asp:Panel runat="server" ScrollBars="Vertical" Height="200px" Width="1000px">
+          <asp:GridView ID="GVEventLogs" runat="server" AutoGenerateColumns="False" Height="200px" Width="1100px" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None" >
             <Columns>
                 <asp:BoundField DataField="eventDesc" HeaderText="Event Description" />
                 <asp:BoundField DataField="dateTimeDetails" HeaderText="Date Time Occured" />
@@ -95,8 +95,8 @@
           <p>Search Security Event based on security event description:<asp:DropDownList ID="DDLEventDesc" runat="server" AutoPostBack="True" DataSourceID="SqlDataSourceDDL" DataTextField="eventDesc" DataValueField="eventDesc">
               </asp:DropDownList>
             </p> 
-            <asp:Panel runat="server" ScrollBars="Vertical" Height="200px">
-                <asp:GridView ID="GVParticularEvent" runat="server" DataSourceID="SqlDataSourceGVUserParticularEvent" AutoGenerateColumns="False" Height="155px" Width="749px" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None">
+            <asp:Panel runat="server" ScrollBars="Vertical" Height="200px" Width="1000px">
+                <asp:GridView ID="GVParticularEvent" runat="server" DataSourceID="SqlDataSourceGVUserParticularEvent" AutoGenerateColumns="False" Height="200px" Width="1000px" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None">
                     <Columns>
                         <asp:BoundField DataField="eventDesc" HeaderText="eventDesc" SortExpression="eventDesc" />
                         <asp:BoundField DataField="dateTimeDetails" HeaderText="dateTimeDetails" SortExpression="dateTimeDetails" />
@@ -124,8 +124,8 @@
                 <td><asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" /></td>
             </tr>
         </table>
-          <asp:Panel runat="server" ScrollBars="Vertical" Height="200px" Width="1100px">
-              <asp:GridView ID="GVEventDateRange" runat="server" AutoGenerateColumns="False" Height="200px" Width="1100px" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None">
+          <asp:Panel runat="server" ScrollBars="Vertical" Height="200px" Width="1000px">
+              <asp:GridView ID="GVEventDateRange" runat="server" AutoGenerateColumns="False" Height="200px" Width="1000px" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None">
              <Columns>
                  <asp:BoundField DataField="eventDesc" HeaderText="eventDesc"/>
                  <asp:BoundField DataField="dateTimeDetails" HeaderText="dateTimeDetails"/>
@@ -141,7 +141,7 @@
                   <SortedDescendingHeaderStyle BackColor="#33276A" />
           </asp:GridView>
         </asp:Panel>
-        <asp:Chart ID="ChartEvent" runat="server" DataSourceID="SqlDataSourceChart" Height="199px" Width="737px">
+        <asp:Chart ID="ChartEvent" runat="server" DataSourceID="SqlDataSourceChart" Height="200px" Width="1000px" Palette="Berry">
                 <Series>
                     <asp:Series Name="Series1" XValueMember="eventDesc" YValueMembers="countEvent">
                     </asp:Series>
