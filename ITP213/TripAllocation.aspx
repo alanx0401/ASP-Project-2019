@@ -128,12 +128,9 @@
                                 Country:
                                 <asp:DropDownList ID="ddlCountry" runat="server" class="form-control">
                                     <asp:ListItem>--Select--</asp:ListItem>
-                                    <asp:ListItem>Thailand</asp:ListItem>
-                                    <asp:ListItem>Vietnam</asp:ListItem>
-                                    <asp:ListItem>Indonesia</asp:ListItem>
-                                    <asp:ListItem>China</asp:ListItem>
-                                    <asp:ListItem>South Korea</asp:ListItem>
-                                    <asp:ListItem>Japan</asp:ListItem>
+                                    <asp:ListItem>Canada</asp:ListItem>
+                                    <asp:ListItem>Hong Kong</asp:ListItem>
+                                    <asp:ListItem>United States</asp:ListItem>
                                 </asp:DropDownList>
                             </p>
                         </div>

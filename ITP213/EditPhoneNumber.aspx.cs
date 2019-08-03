@@ -18,25 +18,32 @@ namespace ITP213
             tbPasswordPhoneNumber.Attributes.Add("autocomplete", "off");
             tbOneTimePassword.Attributes.Add("autocomplete", "off");
 
-            if (!IsPostBack)
+            if (Session["UUID"] != null)
             {
-                DAL.Settings obj = DAL.SettingsDAO.getAccountTableByUUID(Session["UUID"].ToString());
-                if (obj != null)
+                if (!IsPostBack)
                 {
-                    tbPhoneNumber.Text = obj.mobile;
-                    if (obj.phoneVerified == "Yes")
+                    DAL.Settings obj = DAL.SettingsDAO.getAccountTableByUUID(Session["UUID"].ToString());
+                    if (obj != null)
                     {
-                        btnResendPhoneVerification.Visible = false;
-                        PanelOTP.Visible = false;
-                    }
-                    else
-                    {
-                        btnResendPhoneVerification.Visible = true;
-                        PanelOTP.Visible = true;
+                        tbPhoneNumber.Text = obj.mobile;
+                        if (obj.phoneVerified == "Yes")
+                        {
+                            btnResendPhoneVerification.Visible = false;
+                            PanelOTP.Visible = false;
+                        }
+                        else
+                        {
+                            btnResendPhoneVerification.Visible = true;
+                            PanelOTP.Visible = true;
 
-                        checkVerificationTime();
+                            checkVerificationTime();
+                        }
                     }
                 }
+            }
+            else
+            {
+                Response.Redirect("/login.aspx");
             }
         }
 
@@ -202,9 +209,9 @@ namespace ITP213
                 var diff = currentDateTime.Subtract(phoneDateTimeSend);
                 var total = (diff.Hours * 60 * 60) + (diff.Minutes * 60) + diff.Seconds;
 
-                if (total < 300)
+                if (total < 25)
                 {
-                    var time = 300 - total;
+                    var time = 25 - total;
                     btnResendPhoneVerification.Enabled = false;
                     Label1.Text = time.ToString();
                     Label1.Visible = true;

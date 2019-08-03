@@ -16,72 +16,80 @@ namespace ITP213
         protected void Page_Load(object sender, EventArgs e)
         {
             //btnOTP.Attributes.Add("onclick", "return false;");
-            if (!IsPostBack)
+            if (Session["UUID"] != null)
             {
-                HyperLinkChangePassword.NavigateUrl = "/changePassword.aspx";
-                DAL.Settings obj = DAL.SettingsDAO.getAccountTableByUUID(Session["UUID"].ToString());
-                if (obj != null)
+                if (!IsPostBack)
                 {
+                    HyperLinkChangePassword.NavigateUrl = "/changePassword.aspx";
+                    DAL.Settings obj = DAL.SettingsDAO.getAccountTableByUUID(Session["UUID"].ToString());
+                    if (obj != null)
+                    {
 
-                    lblPhoneNumber.Text = obj.mobile;
-                    HyperLinkPhoneNum.NavigateUrl = "/EditPhoneNumber.aspx";
-                    lblVerifiedPhoneStatus.Text = obj.phoneVerified;
+                        lblPhoneNumber.Text = obj.mobile;
+                        HyperLinkPhoneNum.NavigateUrl = "/EditPhoneNumber.aspx";
+                        lblVerifiedPhoneStatus.Text = obj.phoneVerified;
 
-                    if (obj.phoneVerified == "Yes")
-                    {
-                        lblVerifiedPhoneStatus.ForeColor = System.Drawing.Color.Green;
-                    }
-                    else
-                    {
-                        lblVerifiedPhoneStatus.ForeColor = System.Drawing.Color.Red;
-                    }
-
-                    lblEmail.Text = obj.email;
-                    HyperLinkEmail.NavigateUrl = "/EditEmail.aspx";
-                    lblVerifiedEmailStatus.Text = obj.emailVerified;
-                    if (obj.emailVerified == "Yes")
-                    {
-                        lblVerifiedEmailStatus.ForeColor = System.Drawing.Color.Green;
-                    }
-                    else
-                    {
-                        lblVerifiedEmailStatus.ForeColor = System.Drawing.Color.Red;
-                    }
-
-                    if (obj.googleAuthEnabled == "Yes")
-                    {
-                        lblGoogleAuth.Text = "Enabled";
-                        btnGoogleAuth.Visible = true;
-                        btnGoogleAuth.Text = "Disable";
-                    }
-                    else
-                    {
-                        lblGoogleAuth.Text = "Not enabled";
-                        btnGoogleAuth.Text = "Add phone";
-                        btnGoogleAuth.Attributes.Add("href", "/GoogleAuth.aspx");
-                    }
-                    if (obj.phoneVerified == "Yes") // only allow user to enable OTP 2FA when the phone has been verified
-                    {
-                        Panel1.Visible = true;
-                        if (obj.otpEnabled == "Yes")
+                        if (obj.phoneVerified == "Yes")
                         {
-                            lblOTP.Text = "Enabled";
-                            btnOTP.Text = "Disable"; // change number and also change number from db
+                            lblVerifiedPhoneStatus.ForeColor = System.Drawing.Color.Green;
                         }
                         else
                         {
-                            lblOTP.Text = "Not enabled";
-                            btnOTP.Text = "Enable"; // use the database's number and add it.
+                            lblVerifiedPhoneStatus.ForeColor = System.Drawing.Color.Red;
                         }
 
-                    }
-                    else
-                    {
-                        Panel1.Visible = false;
-                        //lblResult.Text = "To enable OTP, please verify your phone";
+                        lblEmail.Text = obj.email;
+                        HyperLinkEmail.NavigateUrl = "/EditEmail.aspx";
+                        lblVerifiedEmailStatus.Text = obj.emailVerified;
+                        if (obj.emailVerified == "Yes")
+                        {
+                            lblVerifiedEmailStatus.ForeColor = System.Drawing.Color.Green;
+                        }
+                        else
+                        {
+                            lblVerifiedEmailStatus.ForeColor = System.Drawing.Color.Red;
+                        }
+
+                        if (obj.googleAuthEnabled == "Yes")
+                        {
+                            lblGoogleAuth.Text = "Enabled";
+                            btnGoogleAuth.Visible = true;
+                            btnGoogleAuth.Text = "Disable";
+                        }
+                        else
+                        {
+                            lblGoogleAuth.Text = "Not enabled";
+                            btnGoogleAuth.Text = "Add phone";
+                            btnGoogleAuth.Attributes.Add("href", "/GoogleAuth.aspx");
+                        }
+                        if (obj.phoneVerified == "Yes") // only allow user to enable OTP 2FA when the phone has been verified
+                        {
+                            Panel1.Visible = true;
+                            if (obj.otpEnabled == "Yes")
+                            {
+                                lblOTP.Text = "Enabled";
+                                btnOTP.Text = "Disable"; // change number and also change number from db
+                            }
+                            else
+                            {
+                                lblOTP.Text = "Not enabled";
+                                btnOTP.Text = "Enable"; // use the database's number and add it.
+                            }
+
+                        }
+                        else
+                        {
+                            Panel1.Visible = false;
+                            //lblResult.Text = "To enable OTP, please verify your phone";
+                        }
                     }
                 }
             }
+            else
+            {
+                Response.Redirect("/login.aspx");
+            }
+            
             
         }
         protected void btnOTP_Click(object sender, EventArgs e)

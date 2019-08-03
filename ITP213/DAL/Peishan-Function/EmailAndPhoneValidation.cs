@@ -59,10 +59,10 @@ namespace ITP213.DAL.Peishan_Function
                                                 | SecurityProtocolType.Tls11
                                                 | SecurityProtocolType.Tls12
                                                 | SecurityProtocolType.Ssl3;
-            var message = MessageResource.Create(
+            /*var message = MessageResource.Create(
                 to: to,
                 from: from,
-                body: "Your OTP for phone verification is " + password);
+                body: "Your OTP for phone verification is " + password);*/
         }
         public static Tuple<Boolean, string> SendOTP(string email, string number)
         {
@@ -207,8 +207,9 @@ namespace ITP213.DAL.Peishan_Function
                     var currentDateTime = DateTime.Now;
                     var otpDateTimeSend = verifyPhoneOTPObj.dateTimeSend;
                     var diff = currentDateTime.Subtract(otpDateTimeSend);
+                    var total = (diff.Hours * 60 * 60) + (diff.Minutes * 60) + diff.Seconds;
 
-                    if (diff.Minutes < 5) // if the minute difference is less than 5, password is still valid
+                    if (total < 25)
                     {
                         // ********** get db hash & db salt
                         SHA512Managed hashing = new SHA512Managed();
@@ -293,8 +294,9 @@ namespace ITP213.DAL.Peishan_Function
                 var currentDateTime = DateTime.Now;
                 var otpDateTimeSend = verifyPhoneOTPObj.dateTimeSend;
                 var diff = currentDateTime.Subtract(otpDateTimeSend);
+                var total = (diff.Hours * 60 * 60) + (diff.Minutes * 60) + diff.Seconds;
 
-                if (diff.Minutes < 5) // if the minute difference is less than 5, password is still valid
+                if (total < 25) // if the minute difference is less than 5, password is still valid
                 {
                     // false
                     lblError = "Password is still valid. Please wait.";
@@ -415,6 +417,7 @@ namespace ITP213.DAL.Peishan_Function
                 var currentDateTime = DateTime.Now;
                 var emailDateTimeSend = obj.dateTimeSend;
                 var diff = currentDateTime.Subtract(emailDateTimeSend);
+                //var total = (diff.Hours * 60 * 60) + (diff.Minutes * 60) + diff.Seconds;
 
                 if (diff.Hours < 24) // token is still valid
                 {
@@ -467,6 +470,20 @@ namespace ITP213.DAL.Peishan_Function
         public static string EncodeToken(string serverName)
         {
             return Convert.ToBase64String(Encoding.UTF8.GetBytes(serverName));
+        }
+        public static string DecodeToken(string encodedServername)
+        {
+            string result = "";
+            try
+            {
+                result = Encoding.UTF8.GetString(Convert.FromBase64String(encodedServername));
+            }
+            catch (Exception)
+            {
+                result = encodedServername;
+            }
+            finally { }
+            return result;
         }
     }
 }

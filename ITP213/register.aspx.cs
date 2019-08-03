@@ -163,7 +163,9 @@ namespace ITP213
             bool result = DAL.Peishan_Function.EmailAndPhoneValidation.phoneVerification(tbVerifyPassword.Text.Trim(), tbEmail.Text.Trim());
             if (result == true)
             {
-                Response.Redirect("/Login.aspx");
+                string email = tbEmail.Text.Trim();
+                email = DAL.Peishan_Function.EmailAndPhoneValidation.EncodeToken(email);
+                Response.Redirect("/Login.aspx?x="+email);
             }
             else
             {
@@ -327,6 +329,7 @@ namespace ITP213
                 if (result == 1 && result2 == 1)
                 {
                     // success
+                    btnResendPhoneVerification.Enabled = false;
                 }
             }
             catch (Exception)
@@ -481,6 +484,71 @@ namespace ITP213
             else
             {
                 lblError.Text = "Sorry! An error has occurred! Please try again later!";
+            }
+        }
+
+        protected void btnResendPhoneVerification_Click(object sender, EventArgs e)
+        {
+            DAL.Login obj = DAL.LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
+            // check password
+            var resendPhone = DAL.Peishan_Function.EmailAndPhoneValidation.resendPhoneVerification(obj.email, obj.mobile);
+            if (resendPhone.Item1 == true)
+            {
+                lblError.Text = resendPhone.Item2.ToString();
+                checkVerificationTime();
+            }
+            else
+            {
+                lblError.Text = resendPhone.Item3.ToString();
+            }
+        }
+
+        protected void Timer1_Tick(object sender, EventArgs e)
+        {
+            int seconds = int.Parse(Label2.Text);
+            if (seconds > 0)
+            {
+                Label2.Text = (seconds - 1).ToString();
+                Label2.Visible = true;
+            }
+            else
+            {
+                Label2.Visible = false;
+                btnResendPhoneVerification.Enabled = true;
+
+            }
+        }
+        private void checkVerificationTime()
+        {
+            DAL.Login obj = DAL.LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
+            DAL.Register verificationObj = DAL.RegisterDAO.checkVerifyPhoneOTP(obj.UUID);
+
+            if (verificationObj != null)
+            {
+                btnResendPhoneVerification.Visible = true;
+                // check if the verification email has expired
+                var currentDateTime = DateTime.Now;
+                var phoneDateTimeSend = verificationObj.dateTimeSend;
+                var diff = currentDateTime.Subtract(phoneDateTimeSend);
+                var total = (diff.Hours * 60 * 60) + (diff.Minutes * 60) + diff.Seconds;
+
+                if (total < 25)
+                {
+                    var time = 25 - total;
+                    btnResendPhoneVerification.Enabled = false;
+                    Label2.Text = time.ToString();
+                    Label2.Visible = true;
+                }
+                else
+                {
+                    Label2.Text = "0";
+                    Label2.Visible = false;
+                    btnResendPhoneVerification.Enabled = true;
+                }
+            }
+            else
+            {
+                btnResendPhoneVerification.Visible = false;
             }
         }
     }

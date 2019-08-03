@@ -214,6 +214,20 @@
                                             <asp:TextBox ID="tbVerifyPassword" runat="server" placeholder="Enter code"></asp:TextBox>
                                             <asp:RequiredFieldValidator ID="RFVVerifyPassword" runat="server" ErrorMessage="Please enter your password" ControlToValidate="tbVerifyPassword" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
                                             <asp:RegularExpressionValidator ID="REVVerifyPassword" runat="server" ErrorMessage="Please enter the password in a correct format" ControlToValidate="tbVerifyPassword" Display="Dynamic" ForeColor="Red" ValidationExpression="^\d{6}$">*</asp:RegularExpressionValidator>
+                                            <asp:ScriptManager ID="ScriptManager1" runat="server">
+                                            </asp:ScriptManager>
+                                            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                            <ContentTemplate>
+                                                <asp:button runat="server" text="Resend Verification" ID="btnResendPhoneVerification" class="btn btn-light" OnClick="btnResendPhoneVerification_Click" CausesValidation="False"/>
+                                                <asp:Label ID="Label2" runat="server" Visible="false">25</asp:Label>
+                                                <asp:Timer ID="Timer1" runat="server" Interval="1000" 
+                                                    ontick="Timer1_Tick">
+                                                </asp:Timer>
+                                            </ContentTemplate>
+                                            </asp:UpdatePanel>
+                                        </div>
+                                        <div class="form-group">
+
                                         </div>
                                     </asp:Panel>
 

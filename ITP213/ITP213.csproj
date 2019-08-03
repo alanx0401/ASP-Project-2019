@@ -209,6 +209,7 @@
       <DependentUpon>ITP213.mdf</DependentUpon>
     </Content>
     <Content Include="BlogDetails.aspx" />
+    <Content Include="ChangeEmail.aspx" />
     <Content Include="changePassword.aspx" />
     <Content Include="changePassword1.aspx" />
     <Content Include="ConfirmEmail.aspx" />
@@ -346,6 +347,13 @@
     </Compile>
     <Compile Include="BlogDetails.aspx.designer.cs">
       <DependentUpon>BlogDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeEmail.aspx.cs">
+      <DependentUpon>ChangeEmail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ChangeEmail.aspx.designer.cs">
+      <DependentUpon>ChangeEmail.aspx</DependentUpon>
     </Compile>
     <Compile Include="changePassword.aspx.cs">
       <DependentUpon>changePassword.aspx</DependentUpon>
