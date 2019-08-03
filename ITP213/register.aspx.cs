@@ -163,7 +163,9 @@ namespace ITP213
             bool result = DAL.Peishan_Function.EmailAndPhoneValidation.phoneVerification(tbVerifyPassword.Text.Trim(), tbEmail.Text.Trim());
             if (result == true)
             {
-                Response.Redirect("/Login.aspx");
+                string email = tbEmail.Text.Trim();
+                email = DAL.Peishan_Function.EmailAndPhoneValidation.EncodeToken(email);
+                Response.Redirect("/Login.aspx?x="+email);
             }
             else
             {

@@ -471,5 +471,19 @@ namespace ITP213.DAL.Peishan_Function
         {
             return Convert.ToBase64String(Encoding.UTF8.GetBytes(serverName));
         }
+        public static string DecodeToken(string encodedServername)
+        {
+            string result = "";
+            try
+            {
+                result = Encoding.UTF8.GetString(Convert.FromBase64String(encodedServername));
+            }
+            catch (Exception)
+            {
+                result = encodedServername;
+            }
+            finally { }
+            return result;
+        }
     }
 }

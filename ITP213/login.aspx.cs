@@ -26,7 +26,7 @@ namespace ITP213
 
             if (!IsPostBack) // First Load of the page
             {
-                if (Request.Browser.Cookies) // check if browser supports cookies
+                /*if (Request.Browser.Cookies) // check if browser supports cookies
                 {
                     if (Request.QueryString["CheckCookie"] == null)
                     {
@@ -46,6 +46,18 @@ namespace ITP213
                 else
                 {
                     ScriptManager.RegisterClientScriptBlock(this, GetType(), "mykey", "alert('Browser don't support cookies. Please install one of the modern browser.');", true);
+                }*/
+                // check if user just registered their account and redirect to login page
+                string email = Request.QueryString["x"];
+                if (email != null)
+                {
+                    email = Request.QueryString["x"].ToString();
+                    string verifiedEmail = DAL.Peishan_Function.EmailAndPhoneValidation.DecodeToken(email);
+                    if (verifiedEmail != email)
+                    {
+                        lblError.Text = "We've sent a verification to your email address: " + verifiedEmail + "<br>If this email is incorrect, please <a href=\"/changeEmail.aspx\">click here.</a>";
+                        lblError.ForeColor = System.Drawing.Color.Green;
+                    }
                 }
             }
 
@@ -55,6 +67,8 @@ namespace ITP213
             tbPassword.Attributes.Add("autocomplete", "off");
             tb2FAPin.Attributes.Add("autocomplete", "off");
 
+            
+            
             // check recaptcha verification if fail count is more than or equal to 6
             DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
             if (loginObj != null) // check if user has alr inputted their email in the textbox.
@@ -80,18 +94,18 @@ namespace ITP213
             }
 
             // temporary
-            /*DAL.Login obj = LoginDAO.getLoginByEmailAndPassword("linpeishann@gmail.com");
+            /*DAL.Login obj = LoginDAO.getLoginByEmailAndPassword("lecturer_dummy@nyp.edu.sg");
 
             Session["UUID"] = obj.UUID;
             // **** Find ways to remove the session below
             Session["accountID"] = obj.UUID;
             Session["accountType"] = obj.accountType;
             Session["name"] = obj.name;
-            Session["email"] = "linpeishann@gmail.com";
+            Session["email"] = "lecturer_dummy@nyp.edu.sg";
             Session["mobile"] = obj.mobile;
-            Session["dateOfBirth"] = obj.dateOfBirth;
+            Session["dateOfBirth"] = obj.dateOfBirth;*/
 
-            if (Session["accountType"].ToString() == "student")
+            /*if (Session["accountType"].ToString() == "student")
             {
                 // student table
                 DAL.Login studentObj = LoginDAO.getStudentTableByAccountID(obj.UUID);
@@ -101,8 +115,15 @@ namespace ITP213
                 Session["allergies"] = studentObj.allergies;
                 Session["dietaryNeeds"] = studentObj.dietaryNeeds;
 
+            }*/
+            /*if (Session["accountType"].ToString() == "lecturer")
+            {
+                // lecturer table
+                DAL.Login lecturerObj = LoginDAO.getLecturerTableByAccountID(obj.UUID);
+                Session["staffID"] = lecturerObj.staffID;
+                Session["school"] = lecturerObj.lecturerSchool;
+                Session["staffRole"] = lecturerObj.staffRole;
             }
-
             Response.Redirect("Default.aspx");*/
             // ------ temp
         }

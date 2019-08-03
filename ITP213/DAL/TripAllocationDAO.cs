@@ -28,7 +28,7 @@ namespace ITP213.DAL
             INNER JOIN account on student.accountID = account.accountID
             WHERE course='C85'
              */
-            string sqlStr = "SELECT * FROM student INNER JOIN account on student.accountID = account.accountID WHERE course=@sCourse";
+            string sqlStr = "SELECT * FROM student INNER JOIN account on student.UUID = account.UUID WHERE course=@sCourse";
 
             SqlConnection myConn = new SqlConnection(DBConnect);
             da = new SqlDataAdapter(sqlStr, myConn);
@@ -65,7 +65,7 @@ namespace ITP213.DAL
             /*
             SELECT * FROM lecturer INNER JOIN account on lecturer.accountID = account.accountID WHERE school='SIT';
              */
-            string sqlStr = "SELECT * FROM lecturer INNER JOIN account on lecturer.accountID = account.accountID WHERE school=@lSchool and staffID!=@staffID;";
+            string sqlStr = "SELECT * FROM lecturer INNER JOIN account on lecturer.UUID = account.UUID WHERE school=@lSchool and staffID!=@staffID;";
 
             SqlConnection myConn = new SqlConnection(DBConnect);
             da = new SqlDataAdapter(sqlStr, myConn);
@@ -260,7 +260,7 @@ namespace ITP213.DAL
             /*
             SELECT * FROM overseasEnrolledStudent INNER JOIN student on student.adminNo = overseasEnrolledStudent.adminNo INNER JOIN account on account.accountID = student.accountID where tripID=30
              */
-            string sqlStr = "SELECT * FROM overseasEnrolledStudent INNER JOIN student on student.adminNo = overseasEnrolledStudent.adminNo INNER JOIN account on account.accountID = student.accountID where tripID = @tripID";
+            string sqlStr = "SELECT * FROM overseasEnrolledStudent INNER JOIN student on student.adminNo = overseasEnrolledStudent.adminNo INNER JOIN account on account.UUID = student.UUID where tripID = @tripID";
 
             SqlConnection myConn = new SqlConnection(DBConnect);
             da = new SqlDataAdapter(sqlStr, myConn);
