@@ -151,6 +151,19 @@ namespace ITP213.DAL
             //return response;
         }
 
+        public void check_accounts_expired()
+        {
+            string queryStr = "UPDATE account SET accountStatus= 'Ban' WHERE (DATEDIFF(year,accountCreated,GETDATE()) >= 3)";
+            SqlConnection conn = new SqlConnection(DBConnect);
+            SqlCommand cmd = new SqlCommand(queryStr, conn);
+            try
+            {
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            } catch (Exception ex) { throw new Exception(ex.ToString()); }
+        }
+
         public string HTML_Encoding(string text)
         {
             string encodedString;

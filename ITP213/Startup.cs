@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using ITP213.DAL;
 using Blockchain_Text;
 using System.Diagnostics;
+using Newtonsoft.Json;
+
+
 
 [assembly: OwinStartup(typeof(ITP213.Startup))]
 
@@ -45,8 +48,23 @@ namespace ITP213
             Blockchain AuditLogBC = new Blockchain();
             BlockchainManagerDAO bcManager = new BlockchainManagerDAO();
             Debug.Write("Test");
-            BackgroundJob.Enqueue(() => AuditLogBC.AddBlock(new Block(DateTime.Now, null, bcManager.GetDailyBlock())));
-            RecurringJob.AddOrUpdate(() => AuditLogBC.AddBlock(new Block(DateTime.Now, null,bcManager.GetDailyBlock())), Cron.Daily);
+            //BackgroundJob.Enqueue(() => AuditLogBC.AddBlock(new Block(DateTime.Now, null, bcManager.GetDailyBlock())));
+            //RecurringJob.AddOrUpdate(() => AuditLogBC.AddBlock(new Block(DateTime.Now, null,bcManager.GetDailyBlock())), Cron.Daily);
+            RecurringJob.AddOrUpdate(() => UpdateDailyEventLogtoBlockchain(), Cron.Daily);
+            BackgroundJob.Enqueue(() => UpdateDailyEventLogtoBlockchain());
+        }
+
+        public void UpdateDailyEventLogtoBlockchain()
+        {
+            P2PClient Client = new P2PClient();
+            BlockchainManagerDAO bcManager = new BlockchainManagerDAO();
+            string LogtoUpload = bcManager.GetDailyBlock();
+
+
+            Program.PhillyCoin.AddBlock(new Block(DateTime.Now, null, LogtoUpload));
+            P2PClient.Connect("127.0.0.1:6000/Blockchain");
+            //Client.Send("127.0.0.1:6000/Blockchain",JsonConvert.SerializeObject(Program.PhillyCoin));
+
 
         }
     }

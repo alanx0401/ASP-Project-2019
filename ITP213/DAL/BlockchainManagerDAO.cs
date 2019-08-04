@@ -24,12 +24,21 @@ namespace ITP213.DAL
         public string GetDailyBlock()
         {
             SecurityEventLog SELog = new SecurityEventLog();
-            List<SecurityEventLog> SELogList = SELog.searchEventLogDate(DateTime.Today, DateTime.Today);
+            List<SecurityEventLog> SELogList = SELog.searchEventLogDate(DateTime.Now, DateTime.Now);
             string SELogtoJSON = JsonConvert.SerializeObject(SELogList);
             string SELogtoJSONHashed = hashEventLog(SELogtoJSON);
             
 
-            return SELogtoJSON + "Hash:" + SELogtoJSONHashed;
+            return SELogtoJSON + " Hash:" + SELogtoJSONHashed;
+        }
+
+        public string GetAdminBlock()
+        {
+            SecurityEventLog SELog = new SecurityEventLog();
+            List<SecurityEventLog> SELogList = SELog.auditLog("admin");
+            string SELogtoJSON = JsonConvert.SerializeObject(SELogList);
+            string SELogtoJSONHashed = hashEventLog(SELogtoJSON);
+            return SELogtoJSON + " Hash:" + SELogtoJSONHashed;
         }
     }
 }

@@ -13,19 +13,21 @@ namespace Blockchain_Text
 
         public Blockchain()
         {
-            InitializeChain();
-            AddGenesisBlock();
+            
         }
 
 
         public void InitializeChain()
         {
             Chain = new List<Block>();
+            AddGenesisBlock();
         }
 
         public Block CreateGenesisBlock()
         {
-            return new Block(DateTime.Now, null, "{}");
+            Block block = new Block(DateTime.Now, null, "{This is a GenesisBlock.}");
+            block.Mine(Difficulty);
+            return block;
         }
 
         public void AddGenesisBlock()
