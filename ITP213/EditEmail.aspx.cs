@@ -49,85 +49,91 @@ namespace ITP213
         protected void btnConfirmUpdate_Click(object sender, EventArgs e)
         {
             DAL.Settings obj = DAL.SettingsDAO.getAccountTableByUUID(Session["UUID"].ToString());
-            if (obj != null)
+            if (Page.IsValid)
             {
-                // Email
-                if (tbEmail.Text != obj.email)  // ****** improvement: inform the previous email owner about the change in email. They can click on the link. If they didn't request for it, they can change back to the original email
+                if (obj != null)
                 {
-                    if (tbPasswordEmail.Visible == true && lblPasswordEmail.Visible == true && PanelCaptcha.Visible == true)
+                
+                    // Email
+                    if (tbEmail.Text != obj.email)  // ****** improvement: inform the previous email owner about the change in email. They can click on the link. If they didn't request for it, they can change back to the original email
                     {
-
-
-                        Boolean passwordResult = checkPassword(tbPasswordEmail.Text.Trim());
-                        if (passwordResult == true && IsReCaptchValid() == true) // password
+                    
+                        if (tbPasswordEmail.Visible == true && lblPasswordEmail.Visible == true && PanelCaptcha.Visible == true)
                         {
-                            string newEmail = tbEmail.Text.Trim();
-                            string previousEmail = obj.email; // email has not been changed yet
 
-                            // decide if user should store old email in the database (only store them if email has been verified!)
-                            if (obj.emailVerified == "Yes")
+
+                            Boolean passwordResult = checkPassword(tbPasswordEmail.Text.Trim());
+                            if (passwordResult == true && IsReCaptchValid() == true) // password
                             {
-                                string randomToken = Guid.NewGuid().ToString(); // token in case email is not changed by user
-                                string encodeRandomToken = DAL.Functions.Validations.EmailAndPhoneValidation.EncodeToken(randomToken);
-                                DateTime changedDate = DateTime.Now;
+                                string newEmail = tbEmail.Text.Trim();
+                                string previousEmail = obj.email; // email has not been changed yet
 
-                                int result2 = EditAccountDAO.insertOldEmailByUUID(previousEmail, Session["UUID"].ToString(), randomToken, DateTime.Now);
-                                if (result2 == 1)
+                                // decide if user should store old email in the database (only store them if email has been verified!)
+                                if (obj.emailVerified == "Yes")
                                 {
-                                    // send an email to the old email about the changing into new email
-                                    string title = "NYP Travel - Security Alert";
-                                    Uri uri = HttpContext.Current.Request.Url;
-                                    string host = uri.Scheme + Uri.SchemeDelimiter + uri.Host + ":" + uri.Port;
-                                    var htmlContent = "Hi, " + obj.name + ". You have requested to change your email to " + newEmail + " at "+ changedDate.ToString() + ". If you did not change your email, please click <strong><a href=\"" + host + "/ConfirmEmail.aspx/?y=" + encodeRandomToken + "\" + >here</a></strong>. Thank you!";
-                                    DAL.Functions.Validations.EmailAndPhoneValidation.Execute(obj.name, previousEmail, encodeRandomToken, title, htmlContent);
+                                    string randomToken = Guid.NewGuid().ToString(); // token in case email is not changed by user
+                                    string encodeRandomToken = DAL.Functions.Validations.EmailAndPhoneValidation.EncodeToken(randomToken);
+                                    DateTime changedDate = DateTime.Now;
 
-                                    int result = EditAccountDAO.updateEmailByUUID(newEmail, Session["UUID"].ToString());
-
-                                    if (result == 1)
+                                    int result2 = EditAccountDAO.insertOldEmailByUUID(previousEmail, Session["UUID"].ToString(), randomToken, DateTime.Now);
+                                    if (result2 == 1)
                                     {
-                                        // send out email: *******
-                                        DAL.Functions.Validations.EmailAndPhoneValidation.sendingEmailVerification(newEmail);
+                                        // send an email to the old email about the changing into new email
+                                        string title = "NYP Travel - Security Alert";
+                                        Uri uri = HttpContext.Current.Request.Url;
+                                        string host = uri.Scheme + Uri.SchemeDelimiter + uri.Host + ":" + uri.Port;
+                                        var htmlContent = "Hi, " + obj.name + ". You have requested to change your email to " + newEmail + " at " + changedDate.ToString() + ". If you did not change your email, please click <strong><a href=\"" + host + "/ConfirmEmail.aspx/?y=" + encodeRandomToken + "\" + >here</a></strong>. Thank you!";
+                                        DAL.Functions.Validations.EmailAndPhoneValidation.Execute(obj.name, previousEmail, encodeRandomToken, title, htmlContent);
 
-                                        Response.Redirect("/ManageYourAccount.aspx");
+                                        int result = EditAccountDAO.updateEmailByUUID(newEmail, Session["UUID"].ToString());
+
+                                        if (result == 1)
+                                        {
+                                            // send out email: *******
+                                            DAL.Functions.Validations.EmailAndPhoneValidation.sendingEmailVerification(newEmail);
+
+                                            Response.Redirect("/ManageYourAccount.aspx");
+                                        }
+                                        else
+                                        {
+                                            lblError.Text = "Sorry! An error has occurred.";
+                                        }
                                     }
                                     else
                                     {
                                         lblError.Text = "Sorry! An error has occurred.";
                                     }
                                 }
-                                else
+                                else // does not need to send out security alert email cos it has not been verified yet
                                 {
-                                    lblError.Text = "Sorry! An error has occurred.";
+                                    int result = EditAccountDAO.updateEmailByUUID(newEmail, Session["UUID"].ToString());
+                                    if (result == 1)
+                                    {
+                                        // send out email: *******
+                                        DAL.Functions.Validations.EmailAndPhoneValidation.sendingEmailVerification(newEmail);
+
+
+                                    }
+                                    else
+                                    {
+                                        lblError.Text = "Sorry! An error has occurred.";
+                                    }
                                 }
                             }
-                            else // does not need to send out security alert email cos it has not been verified yet
+                            else
                             {
-                                int result = EditAccountDAO.updateEmailByUUID(newEmail, Session["UUID"].ToString());
-                                if (result == 1)
-                                {
-                                    // send out email: *******
-                                    DAL.Functions.Validations.EmailAndPhoneValidation.sendingEmailVerification(newEmail);
-
-
-                                }
-                                else
-                                {
-                                    lblError.Text = "Sorry! An error has occurred.";
-                                }
+                                lblError.Text = "You have entered the wrong password or captcha value.";
                             }
                         }
                         else
                         {
-                            lblError.Text = "You have entered the wrong password or captcha value.";
+                            tbPasswordEmail.Visible = true;
+                            lblPasswordEmail.Visible = true;
+                            PanelCaptcha.Visible = true;
+                            lblError.Text = "Please enter your password to continue";
                         }
                     }
-                    else
-                    {
-                        tbPasswordEmail.Visible = true;
-                        lblPasswordEmail.Visible = true;
-                        PanelCaptcha.Visible = true;
-                        lblError.Text = "Please enter your password to continue";
-                    }
+                    
                     
                 }
                 else
@@ -203,6 +209,28 @@ namespace ITP213
                 }
             }
             return result;
+        }
+
+        protected void CVEmail_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            args.IsValid = false;
+            string email = tbEmail.Text.Trim();
+            Boolean result = DAL.Functions.Validations.RegisterValidation.checkIfEmailExist(email);
+
+            if (!Page.IsValid)
+            {
+                if (result != true) // email does not exists in db
+                {
+                    args.IsValid = true;
+                }
+            }
+            else
+            {
+                if (result != true) // email does not exists in db
+                {
+                    args.IsValid = true;
+                }
+            }
         }
     }
 }

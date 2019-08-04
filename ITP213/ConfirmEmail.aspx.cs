@@ -84,56 +84,23 @@ namespace ITP213
                         Register obj = RegisterDAO.checkTokenInEmailVerificationTable(emailToken); // if emailToken exist
                         if (obj != null) // token exists
                         {
-                            // check if the verification email has expired
-                            var currentDateTime = DateTime.Now;
-                            var emailDateTimeSend = obj.dateTimeSend;
-                            var diff = currentDateTime.Subtract(emailDateTimeSend);
 
                             string UUID = obj.UUID;
 
-                            if (diff.Hours < 24) // token is still valid, change account verification
+                            int result = RegisterDAO.deleteVerifyEmailOTPTable(UUID);
+                            if (result == 1)
                             {
-                                int result = RegisterDAO.deleteVerifyEmailOTPTable(UUID);
-                                if (result == 1)
+                                int result2 = RegisterDAO.updateEmailVerifiedInAccountTable(UUID);
+                                if (result2 == 1)
                                 {
-                                    int result2 = RegisterDAO.updateEmailVerifiedInAccountTable(UUID);
-                                    if (result2 == 1)
-                                    {
-                                        lblResult.Text = "Email is successfully verified.";
-                                    }
-                                    else
-                                    {
-                                        lblResult.Text = "Sorry! An error has occurred!";
-                                    }
+                                    lblResult.Text = "Email is successfully verified.";
+                                }
+                                else
+                                {
+                                    lblResult.Text = "Sorry! An error has occurred!";
                                 }
                             }
-                            else // token expired
-                            {
-                                lblResult.Text = "We're sorry, the email address verification link you've submitted is invalid, expired, or has already been used.";
-                                /*int result = DAL.RegisterDAO.deleteVerifyEmailOTPTable(UUID); // delete current expired token
-                                if (result == 1)
-                                {
-                                    string randomToken = Guid.NewGuid().ToString(); // email Token
-                                    string encodeRandomToken = EncodeToken(randomToken);
-
-                                    // insert
-                                    int result2 = RegisterDAO.insertIntoVerifyEmail(UUID, randomToken);
-                                    if (result2 == 1)
-                                    {
-                                        // get account Table
-                                        DAL.Login LoginObj = RegisterDAO.getLoginByUUID(UUID);
-
-                                        Execute(LoginObj.name, LoginObj.email, encodeRandomToken);
-                                        lblResult.Text = "We're sorry, the email address verification link you've submitted is invalid, expired, or has already been used.";
-                                    }
-                                    else
-                                    {
-                                        lblResult.Text = "We're sorry, the email address verification link you've submitted is invalid, expired, or has already been used.";
-                                    }
-
-
-                                }*/
-                            }
+                            
                         }
                         else // token does not exist
                         {

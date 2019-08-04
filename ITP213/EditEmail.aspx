@@ -40,7 +40,7 @@
         <div class="form-row">
             <div class="form-group col-md-4">
                 Email:
-                <asp:TextBox ID="tbEmail" runat="server" class="form-control"></asp:TextBox>
+                <asp:TextBox ID="tbEmail" runat="server" class="form-control"></asp:TextBox><asp:CustomValidator ID="CVEmail" runat="server" ErrorMessage="Email has already been taken." ControlToValidate="tbEmail" ForeColor="Red" Display="Dynamic" OnServerValidate="CVEmail_ServerValidate"></asp:CustomValidator>
                 
                 <asp:button runat="server" text="Resend Verification" ID="btnResendEmailVerification" class="btn btn-light" OnClick="btnResendEmailVerification_Click"/>
             </div>
@@ -64,7 +64,7 @@
         </div>
     </p>
     <asp:Button ID="btnConfirmUpdate" runat="server" Text="Update Information" OnClick="btnConfirmUpdate_Click" class="btn btn-success"/>
-    </p>
+    <asp:ValidationSummary ID="ValidationSummary1" runat="server" ForeColor="Red" />
     <p> 
         <asp:Label ID="lblError" runat="server" ForeColor="Red"></asp:Label>
     </p>

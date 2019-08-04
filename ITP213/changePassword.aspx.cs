@@ -170,7 +170,7 @@ namespace ITP213
 
             Boolean result = false;
 
-            string filename = "DAL\\Validation\\Data\\dictionary.txt";
+            string filename = "DAL\\Functions\\Validations\\Data\\dictionary.txt";
             string FILEPATH = HttpRuntime.AppDomainAppPath + filename;
             // temp
             try

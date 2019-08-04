@@ -104,7 +104,7 @@ namespace ITP213
             var resendPhone = DAL.Functions.Validations.EmailAndPhoneValidation.resendPhoneVerification(obj.email, tbPhoneNumber.Text.Trim());
             if (resendPhone.Item1 == true)
             {
-                lblError.Text = resendPhone.Item2.ToString();
+                //lblError.Text = resendPhone.Item2.ToString();
                 PanelOTP.Visible = true;
                 checkVerificationTime();
             }
@@ -160,7 +160,7 @@ namespace ITP213
                                 {
                                     string otpPassword = sendOTPResult.Item2;
                                     PanelEnterPasswordToChangePhoneNo.Visible = false;
-                                    lblError.Text = "OTP Password: " + otpPassword;
+                                    //lblError.Text = "OTP Password: " + otpPassword;
                                     lblError.ForeColor = System.Drawing.Color.Green;
 
                                     checkVerificationTime();

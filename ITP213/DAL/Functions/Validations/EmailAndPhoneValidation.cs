@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using Twilio.Rest.Api.V2010.Account;
 using Twilio.Types;
 
 namespace ITP213.DAL.Functions.Validations
@@ -56,10 +57,10 @@ namespace ITP213.DAL.Functions.Validations
                                                     | SecurityProtocolType.Tls11
                                                     | SecurityProtocolType.Tls12
                                                     | SecurityProtocolType.Ssl3;
-                /*var message = MessageResource.Create(
+                var message = MessageResource.Create(
                     to: to,
                     from: from,
-                    body: "Your OTP for phone verification is " + password);*/
+                    body: "Your OTP for phone verification is " + password);
                 verdict = true;
             }
             catch (Exception ex)
@@ -395,54 +396,63 @@ namespace ITP213.DAL.Functions.Validations
         {
             Boolean verdict = false;
             string lblError = String.Empty;
-
-            DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(email);
-            string UUID = loginObj.UUID; // retriving UUID from loginObj
-            // check if verification email has been sent before
-            if (RegisterDAO.checkEmailVerificationTable(UUID) == null) // nth in the verification table
+            try
             {
-                string randomToken = Guid.NewGuid().ToString(); // email Token
-                string encodeRandomToken = EncodeToken(randomToken);
-
-                // insert
-                int result = RegisterDAO.insertIntoVerifyEmail(UUID, randomToken);
-                if (result == 1)
+                DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(email);
+                string UUID = loginObj.UUID; // retriving UUID from loginObj
+                                             // check if verification email has been sent before
+                if (RegisterDAO.checkEmailVerificationTable(UUID) == null) // nth in the verification table
                 {
-                    // send an email to the old email about the changing into new email
-                    string title = "NYP Travel - Email Confirmation";
-                    Uri uri = HttpContext.Current.Request.Url;
-                    string host = uri.Scheme + Uri.SchemeDelimiter + uri.Host + ":" + uri.Port;
-                    var htmlContent = "Hi, " + loginObj.name + ".<br/> Please confirm your account by clicking <strong><a href=\"" + host + "/ConfirmEmail.aspx/?x=" + encodeRandomToken + "\" + >here</a></strong>";
+                    string randomToken = Guid.NewGuid().ToString(); // email Token
+                    string encodeRandomToken = EncodeToken(randomToken);
 
-                    verdict = true;
-                    Execute(loginObj.name, email, encodeRandomToken, title, htmlContent);
+                    // insert
+                    int result = RegisterDAO.insertIntoVerifyEmail(UUID, randomToken);
+                    if (result == 1)
+                    {
+                        // send an email to the old email about the changing into new email
+                        string title = "NYP Travel - Email Confirmation";
+                        Uri uri = HttpContext.Current.Request.Url;
+                        string host = uri.Scheme + Uri.SchemeDelimiter + uri.Host + ":" + uri.Port;
+                        var htmlContent = "Hi, " + loginObj.name + ".<br/> Please confirm your account by clicking <strong><a href=\"" + host + "/ConfirmEmail.aspx/?x=" + encodeRandomToken + "\" + >here</a></strong>";
+
+                        verdict = true;
+                        Execute(loginObj.name, email, encodeRandomToken, title, htmlContent);
+                    }
+                    else
+                    {
+                        lblError = "We're sorry, the email address verification link you've submitted is invalid, expired, or has already been used.";
+                    }
                 }
                 else
                 {
-                    lblError = "We're sorry, the email address verification link you've submitted is invalid, expired, or has already been used.";
+                    // ****===> move this to resend email? When user request to resend email verification
+                    DAL.Register obj = DAL.RegisterDAO.checkEmailVerificationTable(UUID);
+
+                    // check if the verification email has expired
+                    var currentDateTime = DateTime.Now;
+                    var emailDateTimeSend = obj.dateTimeSend;
+                    var diff = currentDateTime.Subtract(emailDateTimeSend);
+                    //var total = (diff.Hours * 60 * 60) + (diff.Minutes * 60) + diff.Seconds;
+
+                    if (diff.Hours < 24) // token is still valid
+                    {
+                        lblError = "We have already sent your email verification. Please check your email.";
+                    }
+                    else
+                    {
+                        lblError = "Email Verification expired. Please click 'resend email verification' button to receive new token.";
+                    }
                 }
+                
             }
-            else
+            catch (Exception ex)
             {
-                // ****===> move this to resend email? When user request to resend email verification
-                DAL.Register obj = DAL.RegisterDAO.checkEmailVerificationTable(UUID);
-
-                // check if the verification email has expired
-                var currentDateTime = DateTime.Now;
-                var emailDateTimeSend = obj.dateTimeSend;
-                var diff = currentDateTime.Subtract(emailDateTimeSend);
-                //var total = (diff.Hours * 60 * 60) + (diff.Minutes * 60) + diff.Seconds;
-
-                if (diff.Hours < 24) // token is still valid
-                {
-                    lblError = "We have already sent your email verification. Please check your email.";
-                }
-                else
-                {
-                    lblError = "Email Verification expired. Please click 'resend email verification' button to receive new token.";
-                }
+                return Tuple.Create(verdict=false, lblError="Sorry! An error has occurred. Please try again.");
             }
+
             return Tuple.Create(verdict, lblError);
+
         }
 
         public static Tuple<Boolean, string> resendEmailVerification(string email)

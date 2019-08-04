@@ -124,6 +124,60 @@ namespace ITP213.DAL.Peishan_Function
            
         }
 
+        public static Tuple<Boolean, string> checkDeviceRegister(string email)
+        {
+            string lblError = string.Empty;
+            Boolean verdict = false;
+
+            DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(email);
+            string UUID = loginObj.UUID; // retriving UUID from loginObj
+
+            string country = GetCountrybyip();
+            string macAddress = GetMACAddress();
+            string publicIP = getExternalIp();
+
+            Login obj = getMacAddressFromNewDeviceLogin(UUID, macAddress);
+            if (obj != null) // macAddress exist in this user
+            {
+                // update
+                int result = updateIntoNewDeviceLoginTable(UUID, GetMACAddress(), publicIP);
+                if (result == 1)
+                {
+                    verdict = true;
+                }
+                else
+                {
+                    lblError = "Sorry! An error has occurred! Please try again later!";
+                }
+            }
+            else
+            {
+                // insert
+                int result = DAL.RegisterDAO.insertIntoNewDeviceLogin(GetMACAddress(), country, getExternalIp(), DateTime.Now, UUID);
+
+                if (result == 1)
+                {
+                    // ***** send an Email to alert user
+
+                    /*string title = "Security Alert - New Device Login";
+
+                    var htmlContent = "Hi, " + loginObj.name + ". An unknown device login is found. Country: " + country + ", IP address: " + getExternalIp() + ".";
+
+                    verdict = true;
+                    Functions.Validations.EmailAndPhoneValidation.Execute(loginObj.name, email, "Hi", title, htmlContent);*/
+                    //=========================================
+                    verdict = true;
+                }
+                else
+                {
+                    lblError = "Sorry! An error has occurred! Please try again later!";
+                }
+            }
+
+            return Tuple.Create(verdict, lblError);
+
+        }
+
         public static Login getMacAddressFromNewDeviceLogin(string UUID, string macAddress) // to check if exiiting macAddress Exist, if it did, return macAddress to update the Last Login column
         {
             // Get connection string from web.config

@@ -106,7 +106,7 @@ namespace ITP213
                     var hi = DAL.Functions.Validations.EmailAndPhoneValidation.SendOTP(tbEmail.Text.Trim(), tbContactNumber.Text.Trim());
                     if (hi.Item1 == true) // successfully send OTP
                     {
-                        lblError.Text = "OTP Password: " + hi.Item2.ToString();
+                        //lblError.Text = "OTP Password: " + hi.Item2.ToString();
                     }
                     else
                     {
@@ -487,14 +487,14 @@ namespace ITP213
         }*/
         private void newDeviceLogin()
         {
-            Boolean result = DAL.Peishan_Function.NewDeviceLogin.checkDeviceLogin(tbEmail.Text.Trim()).Item1;
+            Boolean result = DAL.Peishan_Function.NewDeviceLogin.checkDeviceRegister(tbEmail.Text.Trim()).Item1;
             if (result == true) // insert and update success
             {
 
             }
             else
             {
-                lblError.Text = DAL.Peishan_Function.NewDeviceLogin.checkDeviceLogin(tbEmail.Text.Trim()).Item2;
+                //lblError.Text = DAL.Peishan_Function.NewDeviceLogin.checkDeviceLogin(tbEmail.Text.Trim()).Item2;
             }
         }
         public static Tuple<Boolean, string> checkDeviceLogin(string email)

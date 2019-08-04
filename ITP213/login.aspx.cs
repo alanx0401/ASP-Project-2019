@@ -230,6 +230,7 @@ namespace ITP213
                 DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
                 string UUID = loginObj.UUID;
 
+
                 DAL.Login AccountFailedAttemptObj = LoginDAO.getAccountFailedAttemptByUUID(UUID);
 
                 if (AccountFailedAttemptObj != null) // update failed attempt
@@ -305,6 +306,7 @@ namespace ITP213
                 if (rb2FATypes.SelectedItem.Text == "Google Authenticator")
                 {
                     // lblError.Text = "You clicked Google Authenticator";
+                    btnResendPhoneVerification.Visible = false;
                 }
                 else if (rb2FATypes.SelectedItem.Text == "OTP")
                 {
@@ -312,7 +314,8 @@ namespace ITP213
                     var result = DAL.Functions.Validations.EmailAndPhoneValidation.SendOTP(tbEmail.Text.Trim(), obj.mobile.ToString());
                     if (result.Item1 == true)
                     {
-                        lblError.Text = "OTP: " + result.Item2.ToString();
+                        //lblError.Text = "OTP: " + result.Item2.ToString();
+                        btnResendPhoneVerification.Visible = true;
                         btnResendPhoneVerification.Enabled = false;
                     }
                     else
@@ -409,13 +412,15 @@ namespace ITP213
 
             if (settingsObj.emailVerified == "Yes" && settingsObj.phoneVerified == "Yes")
             {
+                
                 string countryUserShouldBeIn = checkCountry();
                 string countryUserIsCurrentlyIn = GetCountrybyip();
                 if (countryUserShouldBeIn == countryUserIsCurrentlyIn)
                 {
-                    //=======================================
+                    // Password Expiration: cannot be more than a year
+                    
+
                     Session["UUID"] = loginObj.UUID;
-                    // **** Find ways to remove the session below
                     Session["accountID"] = loginObj.UUID;
                     Session["accountType"] = loginObj.accountType;
                     Session["name"] = loginObj.name;
@@ -475,7 +480,6 @@ namespace ITP213
                         Session["adminNo"] = parentObj.adminNo;
                     }*/
 
-                    // Password Expiration: cannot be more than a year
                     checkPasswordExpiration();
 
                     Response.Redirect("Default.aspx");
