@@ -13,9 +13,17 @@ namespace ITP213
 {
     public partial class changePassword : System.Web.UI.Page
     {
+        string uuid;
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (Request.QueryString["uuid"] != null)
+            {
+                uuid = Request.QueryString["uuid"].ToString();
+            }
+            if (Session["UUID"] != null)
+            {
+                uuid = Session["UUID"].ToString();
+            }
         }
 
 

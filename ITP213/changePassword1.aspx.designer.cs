@@ -10,16 +10,16 @@
 namespace ITP213 {
     
     
-    public partial class login {
+    public partial class changePassword1 {
         
         /// <summary>
-        /// lblTitle control.
+        /// Label1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTitle;
+        protected global::System.Web.UI.WebControls.Label Label1;
         
         /// <summary>
         /// form1 control.
@@ -40,40 +40,22 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.Panel PanelPart1;
         
         /// <summary>
-        /// tbEmail control.
+        /// tbCurrentPassword control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbEmail;
+        protected global::System.Web.UI.WebControls.TextBox tbCurrentPassword;
         
         /// <summary>
-        /// RFVEmail control.
+        /// tbPassword1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RFVEmail;
-        
-        /// <summary>
-        /// REVEmail control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator REVEmail;
-        
-        /// <summary>
-        /// tbPassword control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbPassword;
+        protected global::System.Web.UI.WebControls.TextBox tbPassword1;
         
         /// <summary>
         /// RFVPassword control.
@@ -85,139 +67,76 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RFVPassword;
         
         /// <summary>
-        /// ReCaptchContainer control.
+        /// CVPassword1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ReCaptchContainer;
+        protected global::System.Web.UI.WebControls.CustomValidator CVPassword1;
         
         /// <summary>
-        /// cbRememberMe control.
+        /// CVPassword2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbRememberMe;
+        protected global::System.Web.UI.WebControls.CustomValidator CVPassword2;
         
         /// <summary>
-        /// lblForgetAccount control.
+        /// REVPassword control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblForgetAccount;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator REVPassword;
         
         /// <summary>
-        /// lblCreateAccount control.
+        /// CompareValidatorCurrentPassword0 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCreateAccount;
+        protected global::System.Web.UI.WebControls.CompareValidator CompareValidatorCurrentPassword0;
         
         /// <summary>
-        /// btnLogin control.
+        /// tbConfirmPassword control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnLogin;
+        protected global::System.Web.UI.WebControls.TextBox tbConfirmPassword;
         
         /// <summary>
-        /// PanelPart2 control.
+        /// RFVConfirmPassword control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel PanelPart2;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RFVConfirmPassword;
         
         /// <summary>
-        /// RRVrb2FATypes control.
+        /// CVConfirmPassword control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RRVrb2FATypes;
+        protected global::System.Web.UI.WebControls.CompareValidator CVConfirmPassword;
         
         /// <summary>
-        /// rb2FATypes control.
+        /// btnChangePassword control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rb2FATypes;
-        
-        /// <summary>
-        /// btnSubmitChoice control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubmitChoice;
-        
-        /// <summary>
-        /// PanelPart3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel PanelPart3;
-        
-        /// <summary>
-        /// tb2FAPin control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb2FAPin;
-        
-        /// <summary>
-        /// RFVVerifyPassword control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RFVVerifyPassword;
-        
-        /// <summary>
-        /// REVVerifyPassword control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator REVVerifyPassword;
-        
-        /// <summary>
-        /// btnBack2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnBack2;
-        
-        /// <summary>
-        /// btnSubmitPassword control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubmitPassword;
+        protected global::System.Web.UI.WebControls.Button btnChangePassword;
         
         /// <summary>
         /// ValidationSummary1 control.

@@ -47,6 +47,8 @@ namespace ITP213
                 {
                     ScriptManager.RegisterClientScriptBlock(this, GetType(), "mykey", "alert('Browser don't support cookies. Please install one of the modern browser.');", true);
                 }
+
+                
             }
 
             // added in Year 3 Sem 1

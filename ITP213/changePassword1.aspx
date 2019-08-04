@@ -1,10 +1,9 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="register.aspx.cs" Inherits="ITP213.register" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="changePassword1.aspx.cs" Inherits="ITP213.changePassword1" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title></title>
     <!--favicon-->
     <link rel="shortcut icon" type="image/png" href="Images/favicon.png" />
@@ -27,16 +26,16 @@
     <link rel='stylesheet' href='Content/jquery-ui-timepicker-addon.min.css' />
     <!--Tab-->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
-    <script type="text/javascript">  
-        $(document).ready(function () {  
-            $('#show_password').hover(function show() {  
+    <script>
+        $(document).ready(function () {
+            $('#show_password').hover(function show() {
                 //Change the attribute to text  
-                $('#tbPassword').attr('type', 'text');
+                $('#tbPassword1').attr('type', 'text');
                 $('.icon_password').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
-            },  
-            function () {  
+            },
+            function () {
                 //Change the attribute back to password  
-                $('#tbPassword').attr('type', 'password');
+                $('#tbPassword1').attr('type', 'password');
                 $('.icon_password').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
             });
             $('#show_confirmPassword').hover(function show() {
@@ -50,20 +49,17 @@
                 $('.icon_confirmPassword').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
             });
             //show_confirmPassword
+            $('#show_currentPassword').hover(function show() {
+                //Change the attribute to text  
+                $('#tbCurrentPassword').attr('type', 'text');
+                $('.icon_currentPassword').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+            },
+            function () {
+                //Change the attribute back to password  
+                $('#tbCurrentPassword').attr('type', 'password');
+                $('.icon_currentPassword').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+            });
         });
-        function cbReadAgreementValidation(sender, args)
-        {
-            var x = document.getElementById('cbReadAgreement');
-            if (x.checked == true)
-            {
-                args.IsValid = true;
-            }
-            else
-            {
-                args.IsValid = false;
-            }
-            return;
-        }
     </script>
 </head>
 <body>
@@ -77,37 +73,27 @@
     <div class="container py-5">
         <div class="row">
             <div class="col-md-12">
-                <h4 class="text-center text-white mb-4">NYP Register</h4>
+                <h4 class="text-center text-white mb-4">NYP Login</h4>
                 <div class="row">
                     <div class="col-md-4 mx-auto">
                         <!--Login form-->
                         <div class="card rounded-0">
                             <div class="card-header">
                                 <h5 class="mb-0">
-                                    <asp:Label ID="Label1" runat="server" Text="Register"></asp:Label></h5>
+                                    <asp:Label ID="Label1" runat="server" Text="Change Password"></asp:Label></h5>
                             </div>
 
                             <div class="card-body">
                                 <form id="form1" runat="server">
                                     <asp:Panel ID="PanelPart1" runat="server">
-                                        <div class="form-group">
-                                            <asp:TextBox ID="tbName" runat="server" placeholder="Name"></asp:TextBox>
-                                            <asp:RequiredFieldValidator ID="RFVName" runat="server" ErrorMessage="Please enter your name." ControlToValidate="tbName" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
-                                        </div>
-                                        <div class="form-group">
-                                            <asp:TextBox ID="tbAdminNo" runat="server" placeholder="Admin No"></asp:TextBox>
-                                            <asp:RequiredFieldValidator ID="RFVAdminNo" runat="server" ErrorMessage="Please enter your admin no." ControlToValidate="tbAdminNo" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
-                                            <asp:RegularExpressionValidator ID="REVAdminNo" runat="server" ErrorMessage="Admin Number is not in a correct format." ControlToValidate="tbAdminNo" ForeColor="Red" ValidationExpression="^\d{6}[a-z|A-Z]$" Display="Dynamic">*</asp:RegularExpressionValidator>
-                                            <asp:CustomValidator ID="CVAdminNo" runat="server" ErrorMessage="Admin number has already been taken." ControlToValidate="tbAdminNo" ForeColor="Red" Display="Dynamic" OnServerValidate="CVAdminNo_ServerValidate">*</asp:CustomValidator>
-                                        </div>
-                                        <div class="form-group">
-                                            <asp:TextBox ID="tbEmail" runat="server" placeholder="Email" TextMode="Email"></asp:TextBox>
-                                            <asp:RequiredFieldValidator ID="RFVEmail" runat="server" ErrorMessage="Please enter your email." ControlToValidate="tbEmail" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
-                                            <asp:RegularExpressionValidator ID="REVEmail" runat="server" ErrorMessage="Please enter a valid email format" ForeColor="Red" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" ControlToValidate="tbEmail" Display="Dynamic">*</asp:RegularExpressionValidator>
-                                            <asp:CustomValidator ID="CVEmail" runat="server" ErrorMessage="Email has already been taken." ControlToValidate="tbEmail" ForeColor="Red" Display="Dynamic" OnServerValidate="CVEmail_ServerValidate">*</asp:CustomValidator>
+                                        <div class="form-group input-group" style="left: 0px; top: 0px">
+                                            <!--<asp:TextBox ID="tbCurrentPassword" runat="server" TextMode="Password" placeholder="Current Password"></asp:TextBox>--->
+                                            <div class="input-group-append">  
+                                                
+                                            </div>
                                         </div>
                                         <div class="form-group input-group">
-                                            <asp:TextBox ID="tbPassword" runat="server" placeholder="Password" TextMode="Password"></asp:TextBox>
+                                            <asp:TextBox ID="tbPassword1" runat="server" placeholder="Password" TextMode="Password"></asp:TextBox>
                                             <div class="input-group-append">  
                                                 <button id="show_password" type="button" style="padding: 0; border: none; background: none;">  
                                                     <span class="fa fa-eye-slash icon_password"></span>  
@@ -123,10 +109,10 @@
                                                     <li id="symbol" class="invalid">At least <strong>1 <a href="#" data-toggle="tooltip" data-placement="top" title="For example: @%+\\\/'!#$^?:.(){}\[\]~\-_.">symbol</a></strong></li>
                                                 </ul>
                                             </div>
-                                            <asp:RequiredFieldValidator ID="RFVPassword" runat="server" ErrorMessage="Please enter your password." ControlToValidate="tbPassword" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
-                                            <asp:CustomValidator ID="CVPassword" runat="server" ErrorMessage="Password cannot contain your name or admin number." ControlToValidate="tbPassword" ForeColor="Red" Display="Dynamic" OnServerValidate="CVPassword_ServerValidate">*</asp:CustomValidator>
-                                            <asp:CustomValidator ID="CVPassword1" runat="server" ErrorMessage="Password is too common" ForeColor="Red" ControlToValidate="tbPassword" Display="Dynamic" OnServerValidate="CVPassword1_ServerValidate" >*</asp:CustomValidator>
-                                            <asp:RegularExpressionValidator ID="REVPassword" runat="server" ErrorMessage="Password does not meet the requirements." ControlToValidate="tbPassword" Display="Dynamic" ForeColor="Red" ValidationExpression="(?=^.{8,100}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@%+\\\/'!#$^?:.(){}\[\]~\-_.])(?!.*\s).*$">*</asp:RegularExpressionValidator>
+                                            <asp:RequiredFieldValidator ID="RFVPassword" runat="server" ControlToValidate="tbPassword1" Display="Dynamic" ErrorMessage="Please enter your password." ForeColor="Red">*</asp:RequiredFieldValidator>
+                                            <asp:CustomValidator ID="CVPassword1" runat="server" ErrorMessage="Password cannot contain your name or admin number." ControlToValidate="tbPassword1" ForeColor="Red" Display="Dynamic" OnServerValidate="CVPassword1_ServerValidate">*</asp:CustomValidator>
+                                            <asp:CustomValidator ID="CVPassword2" runat="server" ErrorMessage="Password is too common" ForeColor="Red" ControlToValidate="tbPassword1" Display="Dynamic" OnServerValidate="CVPassword1_ServerValidate" >*</asp:CustomValidator>
+                                            <asp:RegularExpressionValidator ID="REVPassword" runat="server" ErrorMessage="Password does not meet the requirements." ControlToValidate="tbPassword1" Display="Dynamic" ForeColor="Red" ValidationExpression="(?=^.{8,100}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@%+\\\/'!#$^?:.(){}\[\]~\-_.])(?!.*\s).*$">*</asp:RegularExpressionValidator>
                                             <style>
                                                 #pswd_info {
                                                     position: absolute;
@@ -181,56 +167,35 @@
                                                     display:none;
                                                 }
                                             </style>
+
+                                            <asp:CompareValidator ID="CompareValidatorCurrentPassword0" runat="server" ControlToCompare="tbCurrentPassword" ControlToValidate="tbPassword1" Display="Dynamic" ErrorMessage="Cannot use the same password as current password!" ForeColor="Red" Operator="NotEqual">*</asp:CompareValidator>
+
                                         </div>
-                                        <div class="form-group input-group">
+                                        <div class="form-group input-group" style="left: 0px; top: 0px">
                                             <asp:TextBox ID="tbConfirmPassword" runat="server" TextMode="Password" placeholder="Confirm Password"></asp:TextBox>
                                             <div class="input-group-append">  
                                                 <button id="show_confirmPassword" type="button" style="padding: 0; border: none; background: none;">  
                                                     <span class="fa fa-eye-slash icon_confirmPassword"></span>  
                                                 </button> 
+                                                <asp:RequiredFieldValidator ID="RFVConfirmPassword" runat="server" ControlToValidate="tbConfirmPassword" Display="Dynamic" ErrorMessage="Please enter the same password." ForeColor="Red">*</asp:RequiredFieldValidator>
+                                                <asp:CompareValidator ID="CVConfirmPassword" runat="server" ErrorMessage="Password does not match!" ControlToCompare="tbPassword1" ControlToValidate="tbConfirmPassword" ForeColor="Red" Display="Dynamic">*</asp:CompareValidator>
                                             </div>
-                                            <asp:RequiredFieldValidator ID="RFVConfirmPassword" runat="server" ErrorMessage="Please enter the same password." ControlToValidate="tbConfirmPassword" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
-                                            <asp:CompareValidator ID="CVConfirmPassword" runat="server" ErrorMessage="Password does not match!" ControlToCompare="tbPassword" ControlToValidate="tbConfirmPassword" ForeColor="Red" Display="Dynamic">*</asp:CompareValidator>
-                                        </div>
-                                    </asp:Panel>
-                                    <asp:Panel ID="PanelPart2" runat="server" Visible="false">
-                                        <div class="form-group">
-                                            <asp:TextBox ID="tbDateOfBirth" runat="server" class="form-control" TextMode="DateTime" ClientIDMode="Static" placeholder="Date of birth"></asp:TextBox>
-                                            <asp:RequiredFieldValidator ID="RFVDateOfBirth" runat="server" ErrorMessage="Please enter your date of birth" ControlToValidate="tbDateOfBirth" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
-                                            <asp:CompareValidator ID="CVDateOfBirth" runat="server" ErrorMessage="Please enter a valid date." ControlToValidate="tbDateOfBirth" Display="Dynamic" ForeColor="Red" Operator="DataTypeCheck" Type="Date">*</asp:CompareValidator>
-                                            <asp:CompareValidator ID="CVDateOfBirth1" Operator="LessThan" type="Date" ControltoValidate="tbDateOfBirth" ErrorMessage="Please enter your correct date of birth" runat="server" Display="Dynamic" ForeColor="Red" Text="*"/>
-                                        </div>
-                                        <div class="form-group">
-                                            <asp:TextBox ID="tbContactNumber" runat="server" placeholder="Contact Number"></asp:TextBox>
-                                            <asp:RequiredFieldValidator ID="RFVContactNumber" runat="server" ErrorMessage="Please enter your contact number" ControlToValidate="tbContactNumber" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
-                                        </div>
-                                        <div class="form-group">
-                                            <asp:CheckBox ID="cbReadAgreement" lass="form-check-input" runat="server" Text="I have read the agreement." />
-                                            <asp:CustomValidator ID="cvReadAgreement" runat="server" ErrorMessage="Please check read agreement" ClientValidationFunction="cbReadAgreementValidation" Display="Dynamic" ForeColor="Red">*</asp:CustomValidator>
-                                        </div>
-                                    </asp:Panel>
-                                    <asp:Panel ID="PanelPart3" runat="server" Visible="false">
-                                        <div class="form-group">
-                                            <asp:TextBox ID="tbVerifyPassword" runat="server" placeholder="Enter code"></asp:TextBox>
-                                            <asp:RequiredFieldValidator ID="RFVVerifyPassword" runat="server" ErrorMessage="Please enter your password" ControlToValidate="tbVerifyPassword" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
-                                            <asp:RegularExpressionValidator ID="REVVerifyPassword" runat="server" ErrorMessage="Please enter the password in a correct format" ControlToValidate="tbVerifyPassword" Display="Dynamic" ForeColor="Red" ValidationExpression="^\d{6}$">*</asp:RegularExpressionValidator>
                                         </div>
                                     </asp:Panel>
 
                                     <p>
-                                        <asp:Label ID="lblLogin" runat="server"><a href="/login.aspx">Sign in instead.</a></asp:Label>
-                                        <asp:Button ID="btnNext" class="btn btn-primary float-right" runat="server" Text="Next" OnClick="btnNext_Click" />
-                                        <asp:Button ID="btnNext1" class="btn btn-primary float-right" runat="server" Text="Next" OnClick="btnNext1_Click" Visible="false"/>
-                                        <asp:Button ID="btnBack1" class="btn btn-default float-left" runat="server" Text="Back" Visible="false" OnClick="btnBack1_Click" CausesValidation="False" />
-                                        <asp:Button ID="btnRegister" class="btn btn-success float-right" runat="server" Text="Register" Visible="false" OnClick="btnRegister_Click" />
+                                        <asp:Button ID="btnChangePassword" class="btn btn-success float-right" runat="server" Text="Change Password" Visible="true" OnClick="btnChangePassword_Click"/>
                                     </p>
+                                    <br />
+                                    <p>
+                                        <asp:ValidationSummary ID="ValidationSummary1" runat="server" ForeColor="Red" />
                                     <p>
                                         <asp:Label ID="lblError" runat="server"></asp:Label>
-                                        <!--<asp:Label ID="lblError0" runat="server"></asp:Label>-->
-                                        <asp:ValidationSummary ID="ValidationSummary1" runat="server" ForeColor="Red" />
+                                    </p>
+
                                 </form>
                                 <style>
-                                    #tbEmail, #tbPassword, #tbName, #tbContactNumber, #tbConfirmPassword, #tbDateOfBirth, #tbAdminNo, #tbVerifyPassword {
+                                    #tbPassword1, #tbConfirmPassword {
                                         width: 87%;
                                         padding: 10px;
                                         box-sizing: border-box;
@@ -243,9 +208,9 @@
                                         border-bottom: 2px solid #bebed2;
                                     }
 
-                                        #tbEmail:focus, #tbPassword:focus, #tbName:focus, #tbContactNumber:focus, #tbConfirmPassword:focus, #tbDateOfBirth:focus, #tbAdminNo:focus, #tbVerifyPassword:focus {
-                                            border-bottom: 2px solid #78788c;
-                                        }
+                                    #tbPassword1:focus, tbConfirmPassword:focus, #tbConfirmPassword:focus{
+                                        border-bottom: 2px solid #78788c;
+                                    }
                                 </style>
                             </div>
                         </div>
@@ -276,27 +241,11 @@
     <!--Custom scripts for all pages-->
     <script src="Scripts/script.min.js"></script>
     <!--//Custom scripts for all pages-->
-
-    <script>
-        $(document).ready(function () {
-            $(function () {
-                $("#tbDateOfBirth").datepicker({
-                    //maxDate: 0,
-                    changeMonth: true,
-                    changeYear: true,
-                    yearRange: '1950:2013',
-                    //showButtonPanel: true,
-                    maxDate: '31/12/2013',
-                    dateFormat: 'dd-mm-yy'
-                });
-            });
-        });
-    </script>
     <script>
         $(document).ready(function () {
 
             //code here
-            $('#tbPassword').keyup(function () {
+            $('#tbPassword1').keyup(function () {
                 // keyup code here
                 // set password variable
                 var pswd = $(this).val();
