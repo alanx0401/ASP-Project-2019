@@ -82,7 +82,7 @@ namespace ITP213.DAL.Peishan_Function
             string macAddress = GetMACAddress();
             string publicIP = getExternalIp();
 
-            Login obj = getMacAddressFromNewDeviceLogin(UUID, macAddress, publicIP);
+            Login obj = getMacAddressFromNewDeviceLogin(UUID, macAddress);
             if (obj != null) // macAddress exist in this user
             {
                 // update
@@ -110,7 +110,7 @@ namespace ITP213.DAL.Peishan_Function
                     var htmlContent = "Hi, " + loginObj.name + ". An unknown device login is found. Country: "+ country + ", IP address: "+ getExternalIp()+".";
 
                     verdict = true;
-                    DAL.Peishan_Function.EmailAndPhoneValidation.Execute(loginObj.name, email, "Hi", title, htmlContent);
+                    Functions.Validations.EmailAndPhoneValidation.Execute(loginObj.name, email, "Hi", title, htmlContent);
                     //=========================================
                     verdict = true;
                 }
@@ -124,7 +124,7 @@ namespace ITP213.DAL.Peishan_Function
            
         }
 
-        public static Login getMacAddressFromNewDeviceLogin(string UUID, string macAddress, string PublicIPAddress) // to check if exiiting macAddress Exist, if it did, return macAddress to update the Last Login column
+        public static Login getMacAddressFromNewDeviceLogin(string UUID, string macAddress) // to check if exiiting macAddress Exist, if it did, return macAddress to update the Last Login column
         {
             // Get connection string from web.config
             string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
@@ -133,7 +133,7 @@ namespace ITP213.DAL.Peishan_Function
 
             // Create adapter 
             // Write SQL Statement to retrieve all columns from account by email & password using query parameter
-            string sqlString = "SELECT macAddress FROM newDeviceLogin WHERE UUID = @UUID AND macAddress=@macAddress AND PublicIPAddress=@PublicIPAddress";
+            string sqlString = "SELECT macAddress FROM newDeviceLogin WHERE UUID = @UUID AND macAddress=@macAddress";
 
             Login obj = new Login(); // create a login instance;
 
@@ -141,7 +141,6 @@ namespace ITP213.DAL.Peishan_Function
             da = new SqlDataAdapter(sqlString, myConn);
             da.SelectCommand.Parameters.AddWithValue("@UUID", UUID);
             da.SelectCommand.Parameters.AddWithValue("@macAddress", macAddress);
-            da.SelectCommand.Parameters.AddWithValue("@PublicIPAddress", PublicIPAddress);
             // fill dataset
             da.Fill(ds, "accountTable");
             int rec_cnt = ds.Tables["accountTable"].Rows.Count;
@@ -170,8 +169,8 @@ namespace ITP213.DAL.Peishan_Function
              */
             StringBuilder sqlStr = new StringBuilder();
             sqlStr.AppendLine("UPDATE newDeviceLogin ");
-            sqlStr.AppendLine("SET LastLogin=GetDate()");
-            sqlStr.AppendLine("WHERE macAddress=@macAddress and UUID=@UUID and PublicIPAddress=@PublicIPAddress");
+            sqlStr.AppendLine("SET LastLogin=GetDate(), PublicIPAddress=@PublicIPAddress");
+            sqlStr.AppendLine("WHERE macAddress=@macAddress and UUID=@UUID");
 
 
             SqlConnection myConn = new SqlConnection(DBConnect);

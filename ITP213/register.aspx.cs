@@ -51,8 +51,8 @@ namespace ITP213
             string email = tbEmail.Text.Trim();
             string password = tbPassword.Text.Trim();
             string realName = tbName.Text.Trim();
-            Boolean validateAdminNumberResult = DAL.Validation.RegisterValidation.checkIfAdminNumberExist(adminNo);
-            Boolean validateEmailResult = DAL.Validation.RegisterValidation.checkIfEmailExist(email);
+            Boolean validateAdminNumberResult = DAL.Functions.Validations.RegisterValidation.checkIfAdminNumberExist(adminNo);
+            Boolean validateEmailResult = DAL.Functions.Validations.RegisterValidation.checkIfEmailExist(email);
 
             bool adminNoOk = !AllPartsOfLength(adminNo, 3)
                 .Any(part => password.Contains(part));
@@ -103,7 +103,7 @@ namespace ITP213
                 int result = RegisterDAO.updateById(tbContactNumber.Text, tbDateOfBirth.Text, tbAdminNo.Text); // Based on admin no
                 if (result == 1) // contactNumber and dateOfBirth are successfully updated
                 { 
-                    var hi = DAL.Peishan_Function.EmailAndPhoneValidation.SendOTP(tbEmail.Text.Trim(), tbContactNumber.Text.Trim());
+                    var hi = DAL.Functions.Validations.EmailAndPhoneValidation.SendOTP(tbEmail.Text.Trim(), tbContactNumber.Text.Trim());
                     if (hi.Item1 == true) // successfully send OTP
                     {
                         lblError.Text = "OTP Password: " + hi.Item2.ToString();
@@ -148,28 +148,27 @@ namespace ITP213
         }
         protected void btnRegister_Click(object sender, EventArgs e) // Verify Phone & Sending Email Verification
         {
-            // Assuming that email verification has been sent & user verified their phone code, 
-            // we need to insert the current device details now
-            insertIntoNewDeviceLoginTable();
-
-            // Sending email verification
-            string sendEmail = ConfigurationManager.AppSettings["SendEmail"];
-            if (sendEmail.ToLower() == "true")
-            {
-                sendingEmailVerification();
-            }
-
-            // Verify phone code
-            bool result = DAL.Peishan_Function.EmailAndPhoneValidation.phoneVerification(tbVerifyPassword.Text.Trim(), tbEmail.Text.Trim());
+            
+            bool result = DAL.Functions.Validations.EmailAndPhoneValidation.phoneVerification(tbVerifyPassword.Text.Trim(), tbEmail.Text.Trim());
             if (result == true)
             {
+                newDeviceLogin();
+
+
+                // Sending email verification
+                string sendEmail = ConfigurationManager.AppSettings["SendEmail"];
+                if (sendEmail.ToLower() == "true")
+                {
+                    sendingEmailVerification();
+                }
+
                 string email = tbEmail.Text.Trim();
-                email = DAL.Peishan_Function.EmailAndPhoneValidation.EncodeToken(email);
+                email = DAL.Functions.Validations.EmailAndPhoneValidation.EncodeToken(email);
                 Response.Redirect("/Login.aspx?x="+email);
             }
             else
             {
-                lblError.Text = "Sorry! An error has occurred!";
+                lblError.Text = "Password entered is either incorrect or expired.";
                 lblError.ForeColor = System.Drawing.Color.Red;
             }
 
@@ -180,7 +179,7 @@ namespace ITP213
         {
             args.IsValid = false;
             string adminNo = tbAdminNo.Text.Trim();
-            Boolean result = DAL.Validation.RegisterValidation.checkIfAdminNumberExist(adminNo);
+            Boolean result = DAL.Functions.Validations.RegisterValidation.checkIfAdminNumberExist(adminNo);
             if (!Page.IsValid)
             {
 
@@ -202,7 +201,7 @@ namespace ITP213
         {
             args.IsValid = false;
             string email = tbEmail.Text.Trim();
-            Boolean result = DAL.Validation.RegisterValidation.checkIfEmailExist(email);
+            Boolean result = DAL.Functions.Validations.RegisterValidation.checkIfEmailExist(email);
 
             if (!Page.IsValid)
             {
@@ -284,7 +283,7 @@ namespace ITP213
 
             Boolean result = false;
 
-            string filename = "DAL\\Validation\\Data\\dictionary.txt";
+            string filename = "DAL\\Functions\\Validations\\Data\\dictionary.txt";
             string FILEPATH = HttpRuntime.AppDomainAppPath + filename;
             // temp
             try
@@ -402,7 +401,7 @@ namespace ITP213
         public void sendingEmailVerification()
         {
 
-            var result = DAL.Peishan_Function.EmailAndPhoneValidation.sendingEmailVerification(tbEmail.Text);
+            var result = DAL.Functions.Validations.EmailAndPhoneValidation.sendingEmailVerification(tbEmail.Text);
             if (result.Item1 == true)
             {
 
@@ -469,7 +468,7 @@ namespace ITP213
 
         }
 
-        private void insertIntoNewDeviceLoginTable()
+        /*private void insertIntoNewDeviceLoginTable()
         {
             DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
             string UUID = loginObj.UUID; // retriving UUID from loginObj
@@ -485,13 +484,78 @@ namespace ITP213
             {
                 lblError.Text = "Sorry! An error has occurred! Please try again later!";
             }
+        }*/
+        private void newDeviceLogin()
+        {
+            Boolean result = DAL.Peishan_Function.NewDeviceLogin.checkDeviceLogin(tbEmail.Text.Trim()).Item1;
+            if (result == true) // insert and update success
+            {
+
+            }
+            else
+            {
+                lblError.Text = DAL.Peishan_Function.NewDeviceLogin.checkDeviceLogin(tbEmail.Text.Trim()).Item2;
+            }
+        }
+        public static Tuple<Boolean, string> checkDeviceLogin(string email)
+        {
+            string lblError = string.Empty;
+            Boolean verdict = false;
+
+            DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(email);
+            string UUID = loginObj.UUID; // retriving UUID from loginObj
+
+            string country = DAL.Peishan_Function.NewDeviceLogin.GetCountrybyip();
+            string macAddress = DAL.Peishan_Function.NewDeviceLogin.GetMACAddress();
+            string publicIP = getExternalIp();
+
+            DAL.Login obj = DAL.Peishan_Function.NewDeviceLogin.getMacAddressFromNewDeviceLogin(UUID, macAddress);
+            if (obj != null) // macAddress exist in this user
+            {
+                // update
+                int result = DAL.Peishan_Function.NewDeviceLogin.updateIntoNewDeviceLoginTable(UUID, DAL.Peishan_Function.NewDeviceLogin.GetMACAddress(), publicIP);
+                if (result == 1)
+                {
+                    verdict = true;
+                }
+                else
+                {
+                    lblError = "Sorry! An error has occurred! Please try again later!";
+                }
+            }
+            else
+            {
+                // insert
+                int result = DAL.RegisterDAO.insertIntoNewDeviceLogin(DAL.Peishan_Function.NewDeviceLogin.GetMACAddress(), country, getExternalIp(), DateTime.Now, UUID);
+
+                if (result == 1)
+                {
+                    // ***** send an Email to alert user
+
+                    string title = "Security Alert - New Device Login";
+
+                    var htmlContent = "Hi, " + loginObj.name + ". An unknown device login is found. Country: " + country + ", IP address: " + getExternalIp() + ".";
+
+                    verdict = true;
+                    DAL.Functions.Validations.EmailAndPhoneValidation.Execute(loginObj.name, email, "Hi", title, htmlContent);
+                    //=========================================
+                    verdict = true;
+                }
+                else
+                {
+                    lblError = "Sorry! An error has occurred! Please try again later!";
+                }
+            }
+
+            return Tuple.Create(verdict, lblError);
+
         }
 
         protected void btnResendPhoneVerification_Click(object sender, EventArgs e)
         {
             DAL.Login obj = DAL.LoginDAO.getLoginByEmailAndPassword(tbEmail.Text);
             // check password
-            var resendPhone = DAL.Peishan_Function.EmailAndPhoneValidation.resendPhoneVerification(obj.email, obj.mobile);
+            var resendPhone = DAL.Functions.Validations.EmailAndPhoneValidation.resendPhoneVerification(obj.email, obj.mobile);
             if (resendPhone.Item1 == true)
             {
                 lblError.Text = resendPhone.Item2.ToString();
@@ -530,7 +594,7 @@ namespace ITP213
                 var currentDateTime = DateTime.Now;
                 var phoneDateTimeSend = verificationObj.dateTimeSend;
                 var diff = currentDateTime.Subtract(phoneDateTimeSend);
-                var total = (diff.Hours * 60 * 60) + (diff.Minutes * 60) + diff.Seconds;
+                var total = (diff.Days * 24 * 60 * 60) + (diff.Hours * 60 * 60) + (diff.Minutes * 60) + diff.Seconds;
 
                 if (total < 25)
                 {

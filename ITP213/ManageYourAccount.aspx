@@ -32,46 +32,66 @@
     <h1>Manage Your Account</h1>
     <!--2. Change the title!-->
     <hr />
-    <p>
-        <!--3. This is where you code all your features-->
+        <div class="form-row container">
+            <div class="form-group col-md-6">
+                <p>
+                    <!--3. This is where you code all your features-->
 
-        Phone Number:
-        <asp:Label ID="lblPhoneNumber" runat="server" Text=""></asp:Label>
-        (<asp:Label ID="lblVerifiedPhoneStatus" runat="server" Text=""></asp:Label>)
-        &nbsp;[<asp:HyperLink ID="HyperLinkPhoneNum" runat="server">Change</asp:HyperLink>
-        ]
-    </p>
-    <p>
-        Email:
-        <asp:Label ID="lblEmail" runat="server"></asp:Label>
-        (<asp:Label ID="lblVerifiedEmailStatus" runat="server"></asp:Label>) [<asp:HyperLink ID="HyperLinkEmail" runat="server">Change</asp:HyperLink>
-        ]
-    </p>
-
-    <asp:Panel ID="Panel1" runat="server" Visible="false">
-        <p>
-            One Time Password:
-            <asp:Label ID="lblOTP" runat="server" Text=""></asp:Label>
-            &nbsp;[<asp:Button ID="btnOTP" runat="server" Text="Disable" Style="padding: 0; border: none; background: none; color: #0000FF" OnClick="btnOTP_Click"/>
-            ]
-            
-        </p>
-
-    </asp:Panel>
-    <asp:Panel ID="PanelCaptcha" runat="server" Visible="false">
-        <div class="form-row">
-            <div class="form-group">
-                <div id="ReCaptchContainer"></div>
+                    Phone Number:
+                    <asp:Label ID="lblPhoneNumber" runat="server" Text=""></asp:Label>
+                    (<asp:Label ID="lblVerifiedPhoneStatus" runat="server" Text=""></asp:Label>)
+                    &nbsp;[<asp:HyperLink ID="HyperLinkPhoneNum" runat="server">Change</asp:HyperLink>
+                    ]
+                </p>
             </div>
-
         </div>
-    </asp:Panel>
-    Google Auth:
-        <asp:Label ID="lblGoogleAuth" runat="server" Text=""></asp:Label>
-    &nbsp;[<asp:Button ID="btnGoogleAuth" runat="server" Visible="true" Text="Enable" Style="padding: 0; border: none; background: none; color: #0000FF" OnClick="btnGoogleAuth_Click" />]<br />
-    <asp:HyperLink ID="HyperLinkChangePassword" runat="server">Change Password</asp:HyperLink>
-    <br />
-    <p>
+        <div class="form-row container">
+            <div class="form-group col-md-6">
+                <p>
+                    Email:
+                    <asp:Label ID="lblEmail" runat="server"></asp:Label>
+                    (<asp:Label ID="lblVerifiedEmailStatus" runat="server"></asp:Label>) [<asp:HyperLink ID="HyperLinkEmail" runat="server">Change</asp:HyperLink>
+                    ]
+                </p>
+            </div>
+        </div>
+        <div class="form-row container">
+            <div class="form-group col-md-6">
+                <asp:Panel ID="Panel1" runat="server" Visible="false">
+                    <p>
+                        One Time Password:
+                        <asp:Label ID="lblOTP" runat="server" Text=""></asp:Label>
+                        &nbsp;[<asp:Button ID="btnOTP" runat="server" Text="Disable" Style="padding: 0; border: none; background: none; color: #0000FF" OnClick="btnOTP_Click"/>
+                        ]
+            
+                    </p>
+
+                </asp:Panel>
+                <asp:Panel ID="PanelCaptcha" runat="server" Visible="false">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <div id="ReCaptchContainer"></div>
+                            <asp:Button ID="btnConfirmCaptcha" runat="server" Text="Confirm" class="btn btn-success" OnClick="btnConfirmCaptcha_Click" />
+                        </div>
+
+                    </div>
+                </asp:Panel>
+            </div>
+        </div>
+        <div class="form-row container">
+            <div class="form-group col-md-6">
+                Google Auth:
+                <asp:Label ID="lblGoogleAuth" runat="server" Text=""></asp:Label>
+                &nbsp;[<asp:Button ID="btnGoogleAuth" runat="server" Visible="true" Text="Enable" Style="padding: 0; border: none; background: none; color: #0000FF" OnClick="btnGoogleAuth_Click" />]<br />
+            </div>
+        </div>
+        <div class="form-row container">
+            <div class="form-group col-md-6">
+                <asp:HyperLink ID="HyperLinkChangePassword" runat="server">Change Password</asp:HyperLink>
+            </div>
+        </div>
+    
+    <div class="container float-left" style="overflow-x:auto;">
         <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" CellPadding="4" DataKeyNames="PublicIPAddress,UUID,macAddress" DataSourceID="SqlDataSource1" ForeColor="#333333" GridLines="None">
             <AlternatingRowStyle BackColor="White" />
             <Columns>
@@ -90,16 +110,20 @@
             <SortedDescendingCellStyle BackColor="#FCF6C0" />
             <SortedDescendingHeaderStyle BackColor="#820000" />
         </asp:GridView>
-        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\ITP213.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient" SelectCommand="SELECT [PublicIPAddress], [UUID], [LastLogin], [Location], [macAddress] FROM [NewDeviceLogin] WHERE ([UUID] = @UUID)">
-            <SelectParameters>
-                <asp:SessionParameter Name="UUID" SessionField="UUID" Type="String" />
-            </SelectParameters>
-        </asp:SqlDataSource>
-    </p>
-
-    <p>
-        <asp:Label ID="lblResult" runat="server" ForeColor="Green"></asp:Label>
-    </p>
+    </div>
+    <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\ITP213.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient" SelectCommand="SELECT [PublicIPAddress], [UUID], [LastLogin], [Location], [macAddress] FROM [NewDeviceLogin] WHERE ([UUID] = @UUID)">
+        <SelectParameters>
+            <asp:SessionParameter Name="UUID" SessionField="UUID" Type="String" />
+        </SelectParameters>
+    </asp:SqlDataSource>
+    <br />
+    <br />
+    <br />
+    <div class="form-row container">
+        <div class="form-group col-md-6">
+            <asp:Label ID="lblResult" runat="server" ForeColor="Green"></asp:Label>
+        </div>
+    </div>
     <!--//Page Content-->
     <script src="https://www.google.com/recaptcha/api.js?onload=renderRecaptcha&render=explicit" async defer></script>
     <script type="text/javascript">

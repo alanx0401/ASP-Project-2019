@@ -3,22 +3,16 @@ using SendGrid;
 using SendGrid.Helpers.Mail;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using Twilio.Rest.Api.V2010.Account;
 using Twilio.Types;
 
-namespace ITP213.DAL.Peishan_Function
+namespace ITP213.DAL.Functions.Validations
 {
-    /// <summary>
-    /// ******** Note: SMS feature is incomplete!
-    /// </summary>
     public class EmailAndPhoneValidation
     {
         // For phone verification
@@ -46,23 +40,36 @@ namespace ITP213.DAL.Peishan_Function
 
             return otp;
         }
-        public static void sendSMSForPhoneVerification(string password, string verifyNumber)
+        public static Boolean sendSMSForPhoneVerification(string password, string verifyNumber)
         {
             // sms
-            string accountSid = Environment.GetEnvironmentVariable("TWILIO_ACCOUNT_SID");
-            string authToken = Environment.GetEnvironmentVariable("TWILIO_AUTH_TOKEN");
-            Twilio.TwilioClient.Init(accountSid, authToken);
-            var to = new PhoneNumber("+65" + verifyNumber); // Verifying number
-            var from = new PhoneNumber("+14249032648"); // Twilio num
+            Boolean verdict = false;
+            try
+            {
+                string accountSid = Environment.GetEnvironmentVariable("TWILIO_ACCOUNT_SID");
+                string authToken = Environment.GetEnvironmentVariable("TWILIO_AUTH_TOKEN");
+                Twilio.TwilioClient.Init(accountSid, authToken);
+                var to = new PhoneNumber("+65" + verifyNumber); // Verifying number
+                var from = new PhoneNumber("+14249032648"); // Twilio num
 
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
-                                                | SecurityProtocolType.Tls11
-                                                | SecurityProtocolType.Tls12
-                                                | SecurityProtocolType.Ssl3;
-            /*var message = MessageResource.Create(
-                to: to,
-                from: from,
-                body: "Your OTP for phone verification is " + password);*/
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                                                    | SecurityProtocolType.Tls11
+                                                    | SecurityProtocolType.Tls12
+                                                    | SecurityProtocolType.Ssl3;
+                /*var message = MessageResource.Create(
+                    to: to,
+                    from: from,
+                    body: "Your OTP for phone verification is " + password);*/
+                verdict = true;
+            }
+            catch (Exception ex)
+            {
+                verdict = false;
+                return verdict;
+            }
+
+            return verdict;
+
         }
         public static Tuple<Boolean, string> SendOTP(string email, string number)
         {
@@ -97,10 +104,17 @@ namespace ITP213.DAL.Peishan_Function
                     if (result == 1)
                     {
                         // ************
-                        sendSMSForPhoneVerification(otpPassword, number); // send an sms to the user --> costs $0.05 per sms
+                        bool sendSMSresult = sendSMSForPhoneVerification(otpPassword, number); // send an sms to the user --> costs $0.05 per sms
 
-                        //lblError.Text = "Your otp password: " + otpPassword; // ****temp
-                        verdict = true;
+                        if (sendSMSresult == true)
+                        {
+                            //lblError.Text = "Your otp password: " + otpPassword; // ****temp
+                            verdict = true;
+                        }
+                        else
+                        {
+                            verdict = false;
+                        }
                     }
 
                     else
@@ -143,7 +157,7 @@ namespace ITP213.DAL.Peishan_Function
                             lblError.ForeColor = System.Drawing.Color.Red;*/
                         }
                     }
-                    
+
                 }
 
             }
@@ -153,11 +167,11 @@ namespace ITP213.DAL.Peishan_Function
             }
             finally
             {
-                
+
             }
             return Tuple.Create(verdict, otpPassword);
         }
-        
+
         public static Tuple<string, string> hashingAndSaltingPassword(string pwd)
         {
             //hashing & salting pwd
@@ -194,7 +208,7 @@ namespace ITP213.DAL.Peishan_Function
             Boolean verdict = false;
             try
             {
-                
+
                 DAL.Login loginObj = LoginDAO.getLoginByEmailAndPassword(email);
                 string UUID = loginObj.UUID;
 
@@ -207,7 +221,7 @@ namespace ITP213.DAL.Peishan_Function
                     var currentDateTime = DateTime.Now;
                     var otpDateTimeSend = verifyPhoneOTPObj.dateTimeSend;
                     var diff = currentDateTime.Subtract(otpDateTimeSend);
-                    var total = (diff.Hours * 60 * 60) + (diff.Minutes * 60) + diff.Seconds;
+                    var total = (diff.Days * 24 * 60 * 60) + (diff.Hours * 60 * 60) + (diff.Minutes * 60) + diff.Seconds;
 
                     if (total < 25)
                     {
@@ -252,7 +266,7 @@ namespace ITP213.DAL.Peishan_Function
                     }
                     else // ******************send a new otp // if the minute difference is more than 1, password is invalid; Hence, there's a need to generate new password
                     {
-                        
+
                     }
 
                 }
@@ -294,7 +308,7 @@ namespace ITP213.DAL.Peishan_Function
                 var currentDateTime = DateTime.Now;
                 var otpDateTimeSend = verifyPhoneOTPObj.dateTimeSend;
                 var diff = currentDateTime.Subtract(otpDateTimeSend);
-                var total = (diff.Hours * 60 * 60) + (diff.Minutes * 60) + diff.Seconds;
+                var total = (diff.Days * 24 * 60 * 60) + (diff.Hours * 60 * 60) + (diff.Minutes * 60) + diff.Seconds;
 
                 if (total < 25) // if the minute difference is less than 5, password is still valid
                 {
@@ -323,7 +337,7 @@ namespace ITP213.DAL.Peishan_Function
                         if (result2 == 1)
                         {
                             // ************
-                            //sendSMSForPhoneVerification(otpPassword, tbContactNumber.Text);
+                            sendSMSForPhoneVerification(otpPassword, loginObj.mobile);
                             //lblError.Text = "Resending otp as it expires: Your otp password: " + otpPassword; // ****temp
                             verdict = true;
 
@@ -343,8 +357,8 @@ namespace ITP213.DAL.Peishan_Function
                 }
             }
             return Tuple.Create(verdict, otpPassword, lblError);
-         }
-           
+        }
+
         // For email verification
         public static async Task<SendEmailResponse> Execute(string displayName, string email, string randomToken, string title, string bodyMessage)
         {
@@ -401,7 +415,7 @@ namespace ITP213.DAL.Peishan_Function
                     var htmlContent = "Hi, " + loginObj.name + ".<br/> Please confirm your account by clicking <strong><a href=\"" + host + "/ConfirmEmail.aspx/?x=" + encodeRandomToken + "\" + >here</a></strong>";
 
                     verdict = true;
-                    DAL.Peishan_Function.EmailAndPhoneValidation.Execute(loginObj.name, email, encodeRandomToken, title, htmlContent);
+                    Execute(loginObj.name, email, encodeRandomToken, title, htmlContent);
                 }
                 else
                 {
@@ -454,7 +468,7 @@ namespace ITP213.DAL.Peishan_Function
                     var htmlContent = "Hi, " + loginObj.name + ". Please confirm your account by clicking <strong><a href=\"" + host + "/ConfirmEmail.aspx/?x=" + encodeRandomToken + "\" + >here</a></strong>";
 
                     verdict = true;
-                    DAL.Peishan_Function.EmailAndPhoneValidation.Execute(loginObj.name, email, encodeRandomToken, title, htmlContent);
+                    Execute(loginObj.name, email, encodeRandomToken, title, htmlContent);
                 }
                 else
                 {

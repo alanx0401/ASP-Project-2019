@@ -205,5 +205,67 @@ namespace ITP213
             }
             return result;
         }
+
+        protected void btnConfirmCaptcha_Click(object sender, EventArgs e)
+        {
+            DAL.Settings obj = DAL.SettingsDAO.getAccountTableByUUID(Session["UUID"].ToString());
+            if (obj != null)
+            {
+                if (obj.otpEnabled == "Yes")
+                {
+                    if (IsReCaptchValid() == true)
+                    {
+                        int result = DAL.SettingsDAO.updateOTPEnabledInAccount(Session["UUID"].ToString(), "No");
+                        if (result == 1)
+                        {
+                            lblResult.Text = "You have successfully disabled OTP";
+                            lblOTP.Text = "Not enabled";
+                            btnOTP.Text = "Enable"; // use the database's number and add it.
+
+                            PanelCaptcha.Visible = false;
+                        }
+                        else
+                        {
+                            lblResult.Text = "Sorry! An error has ocurred. Please try again later.";
+                        }
+                    }
+                    else
+                    {
+                        lblResult.Text = "Please select CAPTCHA";
+                    }
+                }
+                else
+                {
+                    if (PanelCaptcha.Visible == true)
+                    {
+                        if (IsReCaptchValid() == true)
+                        {
+                            int result = DAL.SettingsDAO.updateOTPEnabledInAccount(Session["UUID"].ToString(), "Yes");
+                            if (result == 1)
+                            {
+                                lblResult.Text = "You have successfully enabled OTP";
+                                lblOTP.Text = "Enabled";
+                                btnOTP.Text = "Disable"; // change number and also change number from db
+
+                                PanelCaptcha.Visible = false;
+                            }
+                            else
+                            {
+                                lblResult.Text = "Sorry! An error has ocurred. Please try again later.";
+                            }
+                        }
+                        else
+                        {
+                            lblResult.Text = "Please select CAPTCHA";
+                        }
+                    }
+                    else
+                    {
+                        PanelCaptcha.Visible = true;
+                    }
+                }
+
+            }
+         }
     }
 }

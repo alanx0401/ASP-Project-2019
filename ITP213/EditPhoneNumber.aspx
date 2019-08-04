@@ -41,6 +41,7 @@
             <div class="form-group col-md-4">
                  Phone Number:
                 <asp:TextBox ID="tbPhoneNumber" runat="server" class="form-control"></asp:TextBox>
+                <asp:RegularExpressionValidator ID="REVContactNumber" runat="server" ErrorMessage="Contact Number is in a wrong format. It must be a Singapore number." ControlToValidate="tbPhoneNumber" Display="Dynamic" ForeColor="Red" ValidationExpression="^[89]\d{7}$">*</asp:RegularExpressionValidator>
                 
                 <asp:ScriptManager ID="ScriptManager1" runat="server">
                 </asp:ScriptManager>
