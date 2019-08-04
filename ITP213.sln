@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29001.49
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITP213", "ITP213\ITP213.csproj", "{A19B1E52-65E9-4187-8C44-167CCA7F6127}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlockchainDemo", "P2PNetwork\BlockchainDemo\BlockchainDemo.csproj", "{0C97DCEB-C1E5-498E-ABAB-C781E235053B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{A19B1E52-65E9-4187-8C44-167CCA7F6127}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A19B1E52-65E9-4187-8C44-167CCA7F6127}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A19B1E52-65E9-4187-8C44-167CCA7F6127}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C97DCEB-C1E5-498E-ABAB-C781E235053B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C97DCEB-C1E5-498E-ABAB-C781E235053B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C97DCEB-C1E5-498E-ABAB-C781E235053B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C97DCEB-C1E5-498E-ABAB-C781E235053B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {664C7AAB-C233-4415-8748-4E492B273CC9}
 	EndGlobalSection
 EndGlobal

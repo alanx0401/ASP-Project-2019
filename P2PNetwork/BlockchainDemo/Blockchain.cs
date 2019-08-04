@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Blockchain_Text
+namespace BlockchainDemo
 {
     class Blockchain
     {
@@ -13,7 +13,7 @@ namespace Blockchain_Text
 
         public Blockchain()
         {
-            
+
         }
 
 
@@ -56,10 +56,10 @@ namespace Blockchain_Text
                 Block currentBlock = Chain[i];
                 Block previousBlock = Chain[i - 1];
 
-                if (currentBlock.Hash != currentBlock.CalculateHash())
-                {
-                    return false;
-                }
+                //if (currentBlock.Hash != currentBlock.CalculateHash())
+                //{
+                //    return false;
+                //}
 
                 if (currentBlock.PreviousHash != previousBlock.Hash)
                 {

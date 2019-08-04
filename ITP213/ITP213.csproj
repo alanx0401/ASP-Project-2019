@@ -200,10 +200,14 @@
       <HintPath>..\packages\Twilio.5.30.0\lib\net451\Twilio.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="websocket-sharp, Version=1.0.4.0, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebSocketSharpFork.1.0.4.0\lib\net35\websocket-sharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="AddRemarks.aspx" />
     <Content Include="DAL\Functions\Validations\Data\dictionary.txt" />
+    <Content Include="Global.asax" />
     <Content Include="ListUser.aspx" />
     <Content Include="App_Data\ITP213.mdf" />
     <Content Include="App_Data\ITP213_log.ldf">
@@ -302,6 +306,7 @@
     <Content Include="StudentWithdrawalRequest.aspx" />
     <Content Include="StudentWithdrawalResult.aspx" />
     <Content Include="SubmitFeedback.aspx" />
+    <Content Include="Task.aspx" />
     <Content Include="TestDetails.aspx" />
     <Content Include="TripAllocation.aspx" />
     <Content Include="UnauthorizedErrorPage.aspx" />
@@ -334,6 +339,11 @@
     <Compile Include="DAL\Functions\NewDeviceLogin.cs" />
     <Compile Include="DAL\Functions\Validations\EmailAndPhoneValidation.cs" />
     <Compile Include="DAL\Functions\Validations\RegisterValidation.cs" />
+    <Compile Include="DAL\Blockchain-Functions\P2PClient.cs" />
+    <Compile Include="DAL\Blockchain-Functions\Program.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="ListUser.aspx.cs">
       <DependentUpon>ListUser.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -663,6 +673,13 @@
     </Compile>
     <Compile Include="SubmitFeedback.aspx.designer.cs">
       <DependentUpon>SubmitFeedback.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Task.aspx.cs">
+      <DependentUpon>Task.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Task.aspx.designer.cs">
+      <DependentUpon>Task.aspx</DependentUpon>
     </Compile>
     <Compile Include="TestDetails.aspx.cs">
       <DependentUpon>TestDetails.aspx</DependentUpon>

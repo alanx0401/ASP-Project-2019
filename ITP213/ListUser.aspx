@@ -8,7 +8,7 @@
     <asp:GridView ID="gv_UserTable" runat="server" AllowSorting="True" AutoGenerateColumns="False" DataKeyNames="UUID" DataSourceID="SqlDataSource1" OnRowEditing="gv_UserTable_RowEditing" OnRowUpdating="gv_UserTable_RowUpdating" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" OnRowDataBound="gv_UserTable_RowDataBound" CellPadding="4" ForeColor="#333333" GridLines="None">
         <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
         <Columns>
-            <asp:BoundField ControlStyle-CssClass="col" DataField="UUID" HeaderText="UUID" ReadOnly="True" SortExpression="UUID">
+            <asp:BoundField DataField="UUID" HeaderText="UUID" ReadOnly="True" SortExpression="UUID">
             <ControlStyle CssClass="col" />
             </asp:BoundField>
             <asp:BoundField DataField="name" HeaderText="name" SortExpression="name" />

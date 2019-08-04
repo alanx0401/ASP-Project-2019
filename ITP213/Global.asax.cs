@@ -1,25 +1,21 @@
 ﻿using System;
-using System.Threading.Tasks;
-using Microsoft.Owin;
-using Owin;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Security;
+using System.Web.SessionState;
 using Hangfire;
 using Hangfire.SqlServer;
-using Hangfire.Dashboard;
-using System.Collections.Generic;
-using ITP213.DAL;
-using Blockchain_Text;
 using System.Diagnostics;
+using Blockchain_Text;
+using ITP213.DAL;
 using Newtonsoft.Json;
-
-
-
-[assembly: OwinStartup(typeof(ITP213.Startup))]
+using WebSocketSharp;
 
 namespace ITP213
 {
-    public class Startup
+    public class Global : System.Web.HttpApplication
     {
-
         private IEnumerable<IDisposable> GetHangfireServers()
         {
             GlobalConfiguration.Configuration
@@ -38,33 +34,61 @@ namespace ITP213
 
             yield return new BackgroundJobServer();
         }
-
-        public void Configuration(IAppBuilder app)
+        protected void Application_Start(object sender, EventArgs e)
         {
-            // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=316888
-            app.UseHangfireAspNet(GetHangfireServers);
-            app.UseHangfireDashboard();
+
+            HangfireAspNet.Use(GetHangfireServers);
+            BackgroundJob.Enqueue(() => Debug.WriteLine("Hello world from Hangfire!"));
+
+            Program.PhillyCoin.InitializeChain();
+            P2PClient.Connect("ws://127.0.0.1:6000/Blockchain");
 
             Blockchain AuditLogBC = new Blockchain();
             BlockchainManagerDAO bcManager = new BlockchainManagerDAO();
-            Debug.Write("Test");
+            SecurityDAO secMng = new SecurityDAO();
             //BackgroundJob.Enqueue(() => AuditLogBC.AddBlock(new Block(DateTime.Now, null, bcManager.GetDailyBlock())));
             //RecurringJob.AddOrUpdate(() => AuditLogBC.AddBlock(new Block(DateTime.Now, null,bcManager.GetDailyBlock())), Cron.Daily);
             RecurringJob.AddOrUpdate(() => UpdateDailyEventLogtoBlockchain(), Cron.Daily);
+            RecurringJob.AddOrUpdate(() => secMng.check_accounts_expired(), Cron.Yearly);
             BackgroundJob.Enqueue(() => UpdateDailyEventLogtoBlockchain());
         }
 
         public void UpdateDailyEventLogtoBlockchain()
         {
-            P2PClient Client = new P2PClient();
             BlockchainManagerDAO bcManager = new BlockchainManagerDAO();
             string LogtoUpload = bcManager.GetDailyBlock();
-
-
             Program.PhillyCoin.AddBlock(new Block(DateTime.Now, null, LogtoUpload));
-            P2PClient.Connect("127.0.0.1:6000/Blockchain");
-            //Client.Send("127.0.0.1:6000/Blockchain",JsonConvert.SerializeObject(Program.PhillyCoin));
+            //Client.Send("ws://127.0.0.1:6000/Blockchain", JsonConvert.SerializeObject(Program.PhillyCoin));
 
+        }
+
+            protected void Session_Start(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Application_AuthenticateRequest(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Application_Error(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Session_End(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Application_End(object sender, EventArgs e)
+        {
 
         }
     }
