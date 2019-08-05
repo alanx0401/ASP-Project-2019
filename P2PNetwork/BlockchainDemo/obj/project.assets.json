@@ -724,23 +724,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\chien\\.nuget\\packages\\": {},
+    "C:\\Users\\Asus\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Year 3 Sem 1\\ASP\\Project\\Git\\ASP Project 2019\\P2PNetwork\\BlockchainDemo\\BlockchainDemo.csproj",
+      "projectUniqueName": "C:\\Users\\Asus\\source\\repos\\ASP-Project-2019\\P2PNetwork\\BlockchainDemo\\BlockchainDemo.csproj",
       "projectName": "BlockchainDemo",
-      "projectPath": "D:\\Year 3 Sem 1\\ASP\\Project\\Git\\ASP Project 2019\\P2PNetwork\\BlockchainDemo\\BlockchainDemo.csproj",
-      "packagesPath": "C:\\Users\\chien\\.nuget\\packages\\",
-      "outputPath": "D:\\Year 3 Sem 1\\ASP\\Project\\Git\\ASP Project 2019\\P2PNetwork\\BlockchainDemo\\obj\\",
+      "projectPath": "C:\\Users\\Asus\\source\\repos\\ASP-Project-2019\\P2PNetwork\\BlockchainDemo\\BlockchainDemo.csproj",
+      "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Asus\\source\\repos\\ASP-Project-2019\\P2PNetwork\\BlockchainDemo\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\chien\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

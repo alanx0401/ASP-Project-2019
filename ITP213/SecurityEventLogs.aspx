@@ -81,7 +81,6 @@
     <div>
         <asp:Panel ID="PanelEvents" runat="server">
           <p>All Security Events Logs</p>
-            <asp:Button ID="btnUUID" runat="server" Text="Switch to display UUID" OnClick="btnUUID_Click"/>
             <asp:Button ID="btnusername" runat="server" Text="Switch to display username" OnClick="btnusername_Click"/>
           <asp:Panel runat="server" ScrollBars="Vertical" Height="400px" Width="1000px">
              <asp:GridView ID="GVEventLogs" runat="server" AutoGenerateColumns="False" Height="200px" Width="1000px" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None">
@@ -150,8 +149,8 @@
           <p>Search Security Event based on range of dates:&nbsp</p>
         <table>  
             <tr>
-                <td>Start: <asp:TextBox ID="tbStartDate" runat="server" class="form-control" TextMode="DateTime" style="width:120px" ClientIDMode="Static"></asp:TextBox></td>
-                <td>End: <asp:TextBox ID="tbEndDate" runat="server" class="form-control" TextMode="DateTime" style="width:120px" ClientIDMode="Static"></asp:TextBox></td>
+                <td>Start Date<asp:TextBox ID="tbStartDate" runat="server" class="form-control" TextMode="DateTime" style="width:120px" ClientIDMode="Static"></asp:TextBox></td>
+                <td>End Date<asp:TextBox ID="tbEndDate" runat="server" class="form-control" TextMode="DateTime" style="width:120px" ClientIDMode="Static"></asp:TextBox></td>
                 <td><asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" /></td>
             </tr>
         </table>
