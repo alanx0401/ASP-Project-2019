@@ -307,6 +307,8 @@ namespace ITP213
                 {
                     // lblError.Text = "You clicked Google Authenticator";
                     btnResendPhoneVerification.Visible = false;
+                    Label1.Visible = false;
+                    Label1.Text = "0";
                 }
                 else if (rb2FATypes.SelectedItem.Text == "OTP")
                 {
@@ -317,6 +319,8 @@ namespace ITP213
                         //lblError.Text = "OTP: " + result.Item2.ToString();
                         btnResendPhoneVerification.Visible = true;
                         btnResendPhoneVerification.Enabled = false;
+                        Label1.Visible = true;
+                        Label1.Text = "25";
                     }
                     else
                     {
