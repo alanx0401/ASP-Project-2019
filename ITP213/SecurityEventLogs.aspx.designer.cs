@@ -40,13 +40,22 @@ namespace ITP213 {
         protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceChart;
         
         /// <summary>
-        /// SqlDataSourceGVParticularEvent control.
+        /// SqlDataSourceParticularEvent control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceGVParticularEvent;
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceParticularEvent;
+        
+        /// <summary>
+        /// SqlDataSourceDataRange control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceDataRange;
         
         /// <summary>
         /// DDLSearch control.

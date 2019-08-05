@@ -48,18 +48,24 @@
     <!-- Page Content -->
      <!--2. Change the title!--> 
     <hr />
-    <asp:SqlDataSource ID="SqlDataSourceDDLParticularEvent" runat="server" ConnectionString="<%$ ConnectionStrings: ConnStr %>" SelectCommand="SELECT DISTINCT [eventDesc] FROM [Eventlogs]"></asp:SqlDataSource>  
+    <asp:SqlDataSource ID="SqlDataSourceDDLParticularEvent" runat="server" ConnectionString="<%$ ConnectionStrings:ConnStr %>" SelectCommand="SELECT DISTINCT [eventDesc] FROM [Eventlogs]" ProviderName="System.Data.SqlClient"></asp:SqlDataSource>  
     <asp:SqlDataSource ID="SqlDataSourceGVUserMode" runat="server" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\ITP213.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient" SelectCommand="SELECT eventID, eventDesc, dateTimeDetails, account.name As username FROM EventLogs INNER JOIN account ON account.UUID = Eventlogs.UUID  ORDER BY eventID DESC
     " OnSelecting="SqlDataSourceGVUserMode_Selecting"></asp:SqlDataSource>
-    <asp:SqlDataSource ID="SqlDataSourceChart" runat="server" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\ITP213.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient" SelectCommand="SELECT eventDesc, COUNT (*) AS countEvent FROM [Eventlogs] WHERE (([dateTimeDetails] &gt;= @dateTimeDetails) AND ([dateTimeDetails] &lt;= @dateTimeDetails2)) GROUP BY eventDesc">
+    <asp:SqlDataSource ID="SqlDataSourceChart" runat="server" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\ITP213.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient" SelectCommand="SELECT eventDesc, COUNT (*) AS countEvent FROM [Eventlogs] WHERE (([dateTimeDetails] &gt;= @dateTimeDetails) AND ([dateTimeDetails] &lt;  @dateTimeDetails2)) GROUP BY eventDesc">
             <SelectParameters>
                 <asp:ControlParameter ControlID="tbStartDate" Name="dateTimeDetails" PropertyName="Text" Type="DateTime" />
                 <asp:ControlParameter ControlID="tbEndDate" Name="dateTimeDetails2" PropertyName="Text" Type="DateTime" />
             </SelectParameters>
         </asp:SqlDataSource>
-    <asp:SqlDataSource ID="SqlDataSourceGVParticularEvent" runat="server" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\ITP213.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient" SelectCommand="SELECT [eventDesc], [dateTimeDetails], [UUID] FROM [Eventlogs] WHERE ([eventDesc] = @eventDesc)">
+    <asp:SqlDataSource ID="SqlDataSourceParticularEvent" runat="server" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\ITP213.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient" SelectCommand="SELECT eventDesc, dateTimeDetails, account.name FROM EventLogs INNER JOIN account ON  EventLogs.UUID = account.UUID WHERE ([eventDesc] = @eventDesc)">
         <SelectParameters>
             <asp:ControlParameter ControlID="DDLEventDesc" Name="eventDesc" PropertyName="SelectedValue" Type="String" />
+        </SelectParameters>
+     </asp:SqlDataSource>
+    <asp:SqlDataSource ID="SqlDataSourceDataRange" runat="server" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\ITP213.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient" SelectCommand="SELECT [eventID], [eventDesc], [dateTimeDetails] FROM [Eventlogs] WHERE (([dateTimeDetails] &gt;= @dateTimeDetails) AND ([dateTimeDetails] &lt; @dateTimeDetails2)) ORDER BY eventID DESC">
+        <SelectParameters>
+            <asp:ControlParameter ControlID="tbStartDate" Name="dateTimeDetails" PropertyName="Text" Type="DateTime" />
+            <asp:ControlParameter ControlID="tbEndDate" Name="dateTimeDetails2" PropertyName="Text" Type="DateTime" />
         </SelectParameters>
      </asp:SqlDataSource>
     <div>     
@@ -100,7 +106,7 @@
                       <asp:BoundField DataField="eventID" HeaderText="S/N" InsertVisible="False" ReadOnly="True" SortExpression="eventID" />
                       <asp:BoundField DataField="eventDesc" HeaderText="Event Description" SortExpression="eventDesc" />
                       <asp:BoundField DataField="dateTimeDetails" HeaderText="Date Occurred" SortExpression="dateTimeDetails" />
-                      <asp:BoundField DataField="username" HeaderText="User" SortExpression="username" />
+                      <asp:BoundField DataField="username" HeaderText="Username" SortExpression="username" />
                   </Columns>
                   <FooterStyle BackColor="#C6C3C6" ForeColor="Black" />
                   <HeaderStyle BackColor="#4A3C8C" Font-Bold="True" ForeColor="#E7E7FF" />
@@ -120,11 +126,11 @@
           <p>Search Security Event based on security event description:<asp:DropDownList ID="DDLEventDesc" runat="server" AutoPostBack="True" DataSourceID="SqlDataSourceDDLParticularEvent" DataTextField="eventDesc" DataValueField="eventDesc">
              </asp:DropDownList></p>
           <asp:Panel runat="server" ScrollBars="vertical" Height="200px" Width="1000px">
-           <asp:GridView ID="GVParticularEvent" runat="server" Height="200px" Width="1000px" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None" AutoGenerateColumns="False" DataSourceID="SqlDataSourceGVParticularEvent">
+           <asp:GridView ID="GVParticularEvent" runat="server" Height="200px" Width="1000px" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None" AutoGenerateColumns="False" DataSourceID="SqlDataSourceParticularEvent" OnSelectedIndexChanged="GVParticularEvent_SelectedIndexChanged">
                <Columns>
                    <asp:BoundField DataField="eventDesc" HeaderText="Event Description" SortExpression="eventDesc" />
                    <asp:BoundField DataField="dateTimeDetails" HeaderText="Date Occurred" SortExpression="dateTimeDetails" />
-                   <asp:BoundField DataField="UUID" HeaderText="UUID" SortExpression="UUID" />
+                   <asp:BoundField DataField="name" HeaderText="Username" SortExpression="name" />
                </Columns>
                <FooterStyle BackColor="#C6C3C6" ForeColor="Black" />
                <HeaderStyle BackColor="#4A3C8C" Font-Bold="True" ForeColor="#E7E7FF" />
@@ -151,10 +157,11 @@
         </table>
         <asp:Panel runat="server" ScrollBars="Vertical" Height="200px" Width="1000px">
               <asp:GridView ID="GVEventDateRange" runat="server" AutoGenerateColumns="False" Height="200px" Width="1000px" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None">
-             <Columns>
-                 <asp:BoundField DataField="dateTimeDetails" HeaderText="Date Occurred" />
-                 <asp:BoundField DataField="eventDesc" HeaderText="Event Description" />
-             </Columns>
+                  <Columns>
+                      <asp:BoundField DataField="eventID" HeaderText="S/N" />
+                      <asp:BoundField DataField="eventDesc" HeaderText="Event Description" />
+                      <asp:BoundField DataField="dateTimeDetails" HeaderText="Date Occurred" />
+                  </Columns>
                   <FooterStyle BackColor="#C6C3C6" ForeColor="Black" />
                   <HeaderStyle BackColor="#4A3C8C" Font-Bold="True" ForeColor="#E7E7FF" />
                   <PagerStyle BackColor="#C6C3C6" ForeColor="Black" HorizontalAlign="Right" />

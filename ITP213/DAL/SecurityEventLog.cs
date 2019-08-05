@@ -14,113 +14,124 @@ namespace ITP213.DAL
     public class SecurityEventLog
     {
         string _conn = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
-        private int _eventID;
-        private string _eventDesc = "";
-        private DateTime _dateTimeDetails; // this is another way to specify empty string
-        private string _UUID = "";
-
-        //Default Constructor
-        public SecurityEventLog()
-        {
-
-        }
-
-        // Constructor that take in all data required to build a EventLogs object
-        public SecurityEventLog(int eventID, string eventDesc, DateTime dateTimeDetails, string UUID)
-        {
-            _eventID = eventID;
-            _eventDesc = eventDesc;
-            _dateTimeDetails = dateTimeDetails;
-            _UUID = UUID;
-        }
-
+        
         // Get/Set the attributes of the EventLogs object.
-        public int eventID
-        {
-            get { return _eventID; }
-            set { _eventID = value; }
-        }
-        public string eventDesc
-        {
-            get { return _eventDesc; }
-            set { _eventDesc = value; }
-        }
-        public DateTime dateTimeDetails
-        {
-            get { return _dateTimeDetails; }
-            set { _dateTimeDetails = value; }
-        }
+        public int eventID { get; set; }
+        public string eventDesc { get; set; }
+        public DateTime dateTimeDetails { get; set; }
+        public string UUID { get; set; }
+        public string accountName { get; set; }
 
-        public string UUID
+        public List<SecurityEventLog> GetSecurityEventLogs()
         {
-            get { return _UUID; }
-            set { _UUID = value; }
-        }
+            List<SecurityEventLog> resultList = new List<SecurityEventLog>();
+            SqlDataAdapter da;
+            DataSet ds = new DataSet();
 
-        public List<SecurityEventLog> GetEvents()
-        {
-            List<SecurityEventLog> prodList = new List<SecurityEventLog>();
-            int eventID;
-            string eventDesc;
-            DateTime dateTimeDetails;
-            string UUID;
-            string query = "SELECT * FROM EventLogs Order By eventID DESC";
-            SqlConnection conn = new SqlConnection(_conn);
-            SqlCommand cmd = new SqlCommand(query, conn);
-            conn.Open();
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
+            StringBuilder sqlStr = new StringBuilder();
+            sqlStr.AppendLine("SELECT * FROM Eventlogs");
+
+            SqlConnection con = new SqlConnection(_conn);
+            da = new SqlDataAdapter(sqlStr.ToString(), con);
+
+            // fill dataset
+            da.Fill(ds, "resultTable");
+            int rec_cnt = ds.Tables["resultTable"].Rows.Count;
+            if (rec_cnt > 0)
             {
-                eventID = int.Parse(dr["eventID"].ToString());
-                eventDesc = dr["eventDesc"].ToString();
-                dateTimeDetails = Convert.ToDateTime(dr["dateTimeDetails"].ToString());
-                UUID = dr["UUID"].ToString();
-                SecurityEventLog obj = new SecurityEventLog(eventID, eventDesc, dateTimeDetails, UUID);
-                prodList.Add(obj);
-            }
+                foreach (DataRow row in ds.Tables["resultTable"].Rows)
+                {
+                    SecurityEventLog obj = new SecurityEventLog();
 
-            conn.Close();
-            dr.Close();
-            dr.Dispose();
-
-            return prodList;
-        }
-
-        //To display contents in GVEventLogs based on EventDesc 
-        public List<SecurityEventLog> getEventDesc(string eventDesc)
-        {
-            List<SecurityEventLog> eventDescList = new List<SecurityEventLog>();
-            int eventID;
-            DateTime dateTimeDetails;
-            string UUID;
-            string queryStr = "SELECT * FROM Eventlogs WHERE eventDesc = @eventDesc";
-            SqlConnection conn = new SqlConnection(_conn);
-            SqlCommand cmd = new SqlCommand(queryStr, conn);
-            cmd.Parameters.AddWithValue("@eventDesc", eventDesc);
-            conn.Open();
-            SqlDataReader dr = cmd.ExecuteReader();
-            if (dr.Read())
-            {
-                eventID = int.Parse(dr["eventID"].ToString());
-                dateTimeDetails = Convert.ToDateTime(dr["dateTimeDetails"].ToString());
-                UUID = dr["UUID"].ToString();
-                SecurityEventLog eventDescObj = new SecurityEventLog(eventID, eventDesc, dateTimeDetails, UUID);
-                eventDescList.Add(eventDescObj);
+                    obj.eventID = Convert.ToInt32(row["eventID"].ToString());
+                    obj.dateTimeDetails = Convert.ToDateTime(row["dateTimeDetails"].ToString());
+                    obj.eventDesc = row["eventDesc"].ToString();
+                    obj.UUID = row["UUID"].ToString();
+                    resultList.Add(obj);
+                }
             }
             else
             {
-                eventDescList = null;
+                resultList = null;
             }
-
-            conn.Close();
-            dr.Close();
-            dr.Dispose();
-
-            return eventDescList;
+            return resultList;
         }
-        
+
+        /*public List<SecurityEventLog> GetSecurityEventLogsbyUsername()
+        {
+            List<SecurityEventLog> resultList = new List<SecurityEventLog>();
+            SqlDataAdapter da;
+            DataSet ds = new DataSet();
+
+            StringBuilder sqlStr = new StringBuilder();
+            sqlStr.AppendLine("SELECT eventID,eventDesc,dateTimeDetails, account.name FROM Eventlogs INNER JOIN account on account.UUID = EventLogs.UUID");
+
+            SqlConnection con = new SqlConnection(_conn);
+            da = new SqlDataAdapter(sqlStr.ToString(), con);
+
+            // fill dataset
+            da.Fill(ds, "resultTable");
+            int rec_cnt = ds.Tables["resultTable"].Rows.Count;
+            if (rec_cnt > 0)
+            {
+                foreach (DataRow row in ds.Tables["resultTable"].Rows)
+                {
+                    SecurityEventLog obj = new SecurityEventLog();
+
+                    obj.eventID = Convert.ToInt32(row["eventID"].ToString());
+                    obj.dateTimeDetails = Convert.ToDateTime(row["dateTimeDetails"].ToString());
+                    obj.eventDesc = row["eventDesc"].ToString();
+                    obj.accountName = row["account.name"].ToString();
+                    resultList.Add(obj);
+                }
+            }
+            else
+            {
+                resultList = null;
+            }
+            return resultList;
+        }*/
+
+        //To display contents in GVEventLogs based on EventDesc 
+        public List<SecurityEventLog> GetParticularEvents(string eventDesc)
+        {
+            SqlDataAdapter da;
+            DataSet ds = new DataSet();
+
+            StringBuilder sqlCommand = new StringBuilder();
+            sqlCommand.AppendLine("SELECT eventID, eventDesc, dateTimeDetails, account.name As Users  FROM Eventlogs Inner Join account on account.UUID = EventLogs.UUID WHERE eventDesc = @eventDesc");
+       
+            List<SecurityEventLog> resultList = new List<SecurityEventLog>();
+
+            SqlConnection con = new SqlConnection(_conn);
+            da = new SqlDataAdapter(sqlCommand.ToString(), con);
+            da.SelectCommand.Parameters.AddWithValue("@eventDesc", eventDesc);
+            
+            // fill dataset
+            da.Fill(ds, "resultTable");
+            int rec_cnt = ds.Tables["resultTable"].Rows.Count;
+              if (rec_cnt > 0)
+            {
+                foreach (DataRow row in ds.Tables["resultTable"].Rows)
+                {
+                    SecurityEventLog obj = new SecurityEventLog();
+                    obj.eventID = Convert.ToInt32(row["eventID"].ToString());
+                    obj.dateTimeDetails = Convert.ToDateTime(row["dateTimeDetails"].ToString());
+                    obj.eventDesc = row["eventDesc"].ToString();
+                    obj.accountName = row["Users"].ToString();
+                    //obj.UUID = row["UUID"].ToString();
+                    resultList.Add(obj);
+                }
+            }
+            else
+            {
+                resultList = null;
+            }
+            return resultList;
+        }
+
         //To display audit logs in GVEventLogs based on Admin Account Type 
-        public List<SecurityEventLog>auditLog(string accountType)
+        public List<SecurityEventLog> auditLog(string accountType)
         {
             List<SecurityEventLog> resultList = new List<SecurityEventLog>();
             //Get connection string from web.config
@@ -136,6 +147,7 @@ namespace ITP213.DAL
             SqlConnection myConn = new SqlConnection(DBConnect);
             da = new SqlDataAdapter(sqlStr.ToString(), myConn);
             da.SelectCommand.Parameters.AddWithValue("@accountType", accountType);
+            da.SelectCommand.Parameters.AddWithValue("@dateTimeDetails", DateTime.Today);
             // fill dataset
             da.Fill(ds, "resultTable");
             int rec_cnt = ds.Tables["resultTable"].Rows.Count;
@@ -159,23 +171,21 @@ namespace ITP213.DAL
             return resultList;
         }
 
-
         //To display contents in GVEventLogs based on start date an end date 
         public List<SecurityEventLog> searchEventLogDate(DateTime startDate, DateTime endDate)
         {
             List<SecurityEventLog> resultList = new List<SecurityEventLog>();
-            //Get connection string from web.config
-            string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
 
             SqlDataAdapter da;
             DataSet ds = new DataSet();
 
             StringBuilder sqlStr = new StringBuilder();
-            sqlStr.AppendLine("SELECT * FROM EventLogs INNER JOIN account ON account.UUID = Eventlogs.UUID WHERE dateTimeDetails BETWEEN @startDate AND @endDate Order By dateTimeDetails DESC");
+            //sqlStr.AppendLine("SELECT eventDesc, dateTimeDetails FROM EventLogs WHERE dateTimeDetails >= @startDate AND dateTimeDetails < @endDate ORDER BY dateTimeDetails DESC");
+            sqlStr.AppendLine("SELECT eventID, eventDesc, dateTimeDetails FROM EventLogs WHERE dateTimeDetails BETWEEN @startDate AND @endDate ORDER BY dateTimeDetails DESC");
             //Create Adapter
 
-            SqlConnection myConn = new SqlConnection(DBConnect);
-            da = new SqlDataAdapter(sqlStr.ToString(), myConn);
+            SqlConnection con = new SqlConnection(_conn);
+            da = new SqlDataAdapter(sqlStr.ToString(), con);
             da.SelectCommand.Parameters.AddWithValue("@startDate", startDate);
             da.SelectCommand.Parameters.AddWithValue("@endDate", endDate);
             // fill dataset
@@ -186,8 +196,7 @@ namespace ITP213.DAL
                 foreach (DataRow row in ds.Tables["resultTable"].Rows)
                 {
                     SecurityEventLog obj = new SecurityEventLog();
-
-                    //obj.eventID = Convert.ToInt32(row["eventID"].ToString());
+                    obj.eventID = Convert.ToInt32(row["eventID"].ToString());
                     obj.dateTimeDetails = Convert.ToDateTime(row["dateTimeDetails"].ToString());
                     obj.eventDesc = row["eventDesc"].ToString();
                     //obj.UUID = row["UUID"].ToString();

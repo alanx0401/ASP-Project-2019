@@ -58,6 +58,12 @@
                 <asp:ControlParameter ControlID="lbUUID" Name="UUID" PropertyName="Text" Type="String" />
             </SelectParameters>
         </asp:SqlDataSource>
+     <asp:SqlDataSource ID="SqlDataSourceDataRange" runat="server" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\ITP213.mdf;Integrated Security=True" ProviderName="System.Data.SqlClient" SelectCommand="SELECT [eventID], [eventDesc], [dateTimeDetails] FROM [Eventlogs] WHERE (([dateTimeDetails] &gt;= @dateTimeDetails) AND ([dateTimeDetails] &lt; @dateTimeDetails2)) ORDER BY eventID DESC">
+        <SelectParameters>
+            <asp:ControlParameter ControlID="tbStartDate" Name="dateTimeDetails" PropertyName="Text" Type="DateTime" />
+            <asp:ControlParameter ControlID="tbEndDate" Name="dateTimeDetails2" PropertyName="Text" Type="DateTime" />
+        </SelectParameters>
+     </asp:SqlDataSource>
      <div>     
         <fieldset>
             <legend>Security Events for: <asp:Label ID="lbUser"  runat="server" Text=""></asp:Label></legend>

@@ -31,10 +31,15 @@ namespace ITP213
         }
         protected void bind()
         {
-            List<SecurityEventLog> eventsList = new List<SecurityEventLog>();
-            eventsList = obj.GetEvents();
-            GVEventLogs.DataSource = eventsList;
+            List<SecurityEventLog> securityEventLogs = new List<SecurityEventLog>();
+            securityEventLogs = obj.GetSecurityEventLogs();
+            GVEventLogs.DataSource = securityEventLogs;
             GVEventLogs.DataBind();
+            // string eventDesc = DDLEventDesc.SelectedValue.ToString();
+            //List<SecurityEventLog> particularEventLog = new List<SecurityEventLog>();
+            // particularEventLog = obj.GetParticularEvents(eventDesc);
+            //GVEventLogs.DataSource = securityEventLogs;
+            //GVEventLogs.DataBind();
 
         }
 
@@ -86,11 +91,12 @@ namespace ITP213
         {
             DateTime startDate = Convert.ToDateTime(tbStartDate.Text);
             DateTime endDate = Convert.ToDateTime(tbEndDate.Text);
-            List<SecurityEventLog> eventsList = new List<SecurityEventLog>();
-            eventsList = obj.searchEventLogDate(startDate, endDate);
-            GVEventDateRange.DataSource = eventsList;
+            List<SecurityEventLog> securityEventLogs = new List<SecurityEventLog>();
+            securityEventLogs = obj.searchEventLogDate(startDate, endDate);
+            GVEventDateRange.DataSource = securityEventLogs;
             GVEventDateRange.DataBind();
         }
+
         protected void SqlDataSourceGVUserMode_Selecting(object sender, SqlDataSourceSelectingEventArgs e)
         {
 
@@ -107,6 +113,11 @@ namespace ITP213
             btnUUID.Enabled = false;
             GVEventLogs.Visible = false;
             GVEventsByUsername.Visible = true;
+        }
+
+        protected void GVParticularEvent_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
