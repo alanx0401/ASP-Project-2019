@@ -490,7 +490,7 @@ namespace ITP213
                 }
                 else
                 {
-                    lblError.Text = "Sorry, you are not allow to log in.";
+                    lblError.Text = "You are unable to login because you have not verify your email or password!";
                 }
             }
             else
