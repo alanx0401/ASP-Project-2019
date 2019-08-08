@@ -24,7 +24,7 @@ namespace ITP213.DAL
         public string GetDailyBlock()
         {
             SecurityEventLog SELog = new SecurityEventLog();
-            List<SecurityEventLog> SELogList = SELog.searchEventLogDate(DateTime.Now, DateTime.Now);
+            List<SecurityEventLog> SELogList = SELog.GetSecurityEventLogsByDate(DateTime.Now, DateTime.Now);
             string SELogtoJSON = JsonConvert.SerializeObject(SELogList);
             string SELogtoJSONHashed = hashEventLog(SELogtoJSON);
             

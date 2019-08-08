@@ -88,7 +88,7 @@ namespace ITP213
             DateTime startDate = Convert.ToDateTime(tbStartDate.Text);
             DateTime endDate = Convert.ToDateTime(tbEndDate.Text);
             List<SecurityEventLog> securityEventLogs = new List<SecurityEventLog>();
-            securityEventLogs = obj.searchEventLogDate(startDate, endDate);
+            securityEventLogs = obj.GetSecurityEventLogsByDate(startDate, endDate);
             GVEventDateRange.DataSource = securityEventLogs;
             GVEventDateRange.DataBind();
         }

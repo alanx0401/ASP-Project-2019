@@ -93,7 +93,7 @@ namespace ITP213.DAL
         }*/
 
         //To display contents in GVEventLogs based on EventDesc 
-        public List<SecurityEventLog> GetParticularEvents(string eventDesc)
+        public List<SecurityEventLog> GetParticularSecurityEventLogs(string eventDesc)
         {
             SqlDataAdapter da;
             DataSet ds = new DataSet();
@@ -172,7 +172,7 @@ namespace ITP213.DAL
         }
 
         //To display contents in GVEventLogs based on start date an end date 
-        public List<SecurityEventLog> searchEventLogDate(DateTime startDate, DateTime endDate)
+        public List<SecurityEventLog> GetSecurityEventLogsByDate(DateTime startDate, DateTime endDate)
         {
             List<SecurityEventLog> resultList = new List<SecurityEventLog>();
 

@@ -42,9 +42,9 @@ namespace ITP213
         {
             string UUID;
             UUID = Session["UUID"].ToString();
-            List<userSecurityEventLog> eventsList = new List<userSecurityEventLog>();
-            eventsList = obj.getEventDesc(UUID);
-            GVEventLogs.DataSource = eventsList;
+            List<userSecurityEventLog> eventList = new List<userSecurityEventLog>();
+            eventList = obj.GetSecurityEventLogsBYUUID(UUID);
+            GVEventLogs.DataSource = eventList;
             GVEventLogs.DataBind();
 
         }
@@ -85,7 +85,7 @@ namespace ITP213
             DateTime startDate = Convert.ToDateTime(tbStartDate.Text);
             DateTime endDate = Convert.ToDateTime(tbEndDate.Text);
             List<userSecurityEventLog> eventsList = new List<userSecurityEventLog>();
-            eventsList = obj.searchEventLogDate(startDate, endDate, UUID);
+            eventsList = obj.GetSecurityEventLogsByDate(startDate, endDate, UUID);
             GVEventDateRange.DataSource = eventsList;
             GVEventDateRange.DataBind();
         }

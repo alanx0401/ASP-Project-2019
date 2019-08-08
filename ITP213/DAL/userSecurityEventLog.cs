@@ -13,35 +13,17 @@ namespace ITP213.DAL
     public class userSecurityEventLog
     {
         string _conn = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
-        string _eventDesc = null;
-        DateTime _dateTimeDetails;
 
-        public string eventDesc
-        {
-            get { return _eventDesc; }
-            set { _eventDesc = value; }
-        }
-        public DateTime dateTimeDetails
-        {
-            get { return _dateTimeDetails; }
-            set { _dateTimeDetails = value; }
-        }
+        // Get/Set the attributes of the EventLogs object.
+        public int eventID { get; set; }
+        public string eventDesc { get; set; }
+        public DateTime dateTimeDetails { get; set; }
+        public string UUID { get; set; }
 
-        public userSecurityEventLog()
-        {
-
-        }
-        public userSecurityEventLog(string eventDesc, DateTime dateTimeDetails)
-        {
-            _eventDesc = eventDesc;
-            _dateTimeDetails = dateTimeDetails;
-        }
-        //To display contents in GVEventLogs based on EventDesc 
-        public List<userSecurityEventLog> getEventDesc(string UUID)
+        //To display contents in GVEventLogs based on UUID 
+        public List<userSecurityEventLog> GetSecurityEventLogsBYUUID(string UUID)
         {
             List<userSecurityEventLog> resultList = new List<userSecurityEventLog>();
-
-            //string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
             SqlDataAdapter da;
             DataSet ds = new DataSet();
 
@@ -49,8 +31,8 @@ namespace ITP213.DAL
             sqlStr.AppendLine("SELECT eventDesc, dateTimeDetails FROM Eventlogs WHERE UUID = @UUID");
             //Create Adapter
 
-            SqlConnection myConn = new SqlConnection(_conn);
-            da = new SqlDataAdapter(sqlStr.ToString(), myConn);
+            SqlConnection con = new SqlConnection(_conn);
+            da = new SqlDataAdapter(sqlStr.ToString(), con);
             da.SelectCommand.Parameters.AddWithValue("@UUID", UUID);
             // fill dataset
             da.Fill(ds, "resultTable");
@@ -73,12 +55,10 @@ namespace ITP213.DAL
         }
 
         //To display contents in GVEventLogs based on start date, end date and UUID 
-        public List<userSecurityEventLog> searchEventLogDate(DateTime startDate, DateTime endDate, string UUID)
+        public List<userSecurityEventLog> GetSecurityEventLogsByDate(DateTime startDate, DateTime endDate, string UUID)
         {
             List<userSecurityEventLog> resultList = new List<userSecurityEventLog>();
-            //Get connection string from web.config
-            //string DBConnect = ConfigurationManager.ConnectionStrings["ConnStr"].ConnectionString;
-
+ 
             SqlDataAdapter da;
             DataSet ds = new DataSet();
 
@@ -86,8 +66,8 @@ namespace ITP213.DAL
             sqlStr.AppendLine("SELECT eventDesc,dateTimeDetails FROM EventLogs WHERE dateTimeDetails BETWEEN @startDate AND @endDate AND UUID = @UUID Order By dateTimeDetails DESC");
             //Create Adapter
 
-            SqlConnection myConn = new SqlConnection(_conn);
-            da = new SqlDataAdapter(sqlStr.ToString(), myConn);
+            SqlConnection con = new SqlConnection(_conn);
+            da = new SqlDataAdapter(sqlStr.ToString(), con);
             da.SelectCommand.Parameters.AddWithValue("@startDate", startDate);
             da.SelectCommand.Parameters.AddWithValue("@endDate", endDate);
             da.SelectCommand.Parameters.AddWithValue("@UUID", UUID);
@@ -110,6 +90,6 @@ namespace ITP213.DAL
             }
             return resultList;
         }
-
     }
+
 }
